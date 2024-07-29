@@ -1,0 +1,6 @@
+[submodule "dev_modules/@ocdla/ors"]
+	path = dev_modules/@ocdla/ors
+	url = https://github.com/ocdladefense/node-ors.git
+[submodule "dev_modules/@ocdla/lib-http"]
+	path = dev_modules/@ocdla/lib-http
+	url = https://git@github.com/ocdladefense/node-lib-http
