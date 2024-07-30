@@ -104,7 +104,8 @@ __webpack_require__.r(__webpack_exports__);
 function App() {
   // const [bool, setBool] = React.useState(1);
   var typeBool = true;
-  var appType = typeBool ? 'node-ors' : 'ors-viewer';
+  // let appType = process.env.APP_TYPE || 'books-online';
+  var appType = typeBool ? 'books-online' : 'ors-viewer';
   return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("header", {
     "class": "flex flex-col lg:h-32"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Navbar__WEBPACK_IMPORTED_MODULE_1__["default"], null), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Breadcrumbs__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -158,7 +159,7 @@ function Body(_ref) {
   };
   return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("main", {
     "class": "flex flex-col gap-4 p-4 lg:col-span-4 lg:col-start-2 lg:me-auto lg:p-8"
-  }, type === 'node-ors' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
+  }, type === 'books-online' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
     "class": "flex flex-col gap-4"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("h1", {
     "class": "text-3xl font-bold"
@@ -251,7 +252,7 @@ function Breadcrumbs(_ref) {
     "class": "container mx-auto flex items-center whitespace-pre border border-t-0 p-4 text-black lg:h-16"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
     "class": "container mx-auto flex items-center"
-  }, type === 'node-ors' ?
+  }, type === 'books-online' ?
   // <div class='flex items-center gap-2'>
   (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
     type: "standard",
@@ -578,7 +579,7 @@ function Sidebar_Left(_ref) {
   var type = _ref.type;
   return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("aside", {
     "class": "hidden h-[87.5vh] overflow-scroll border-x lg:block"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", null, type === 'node-ors' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", null, type === 'books-online' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
     href: "https://pubs.ocdla.org/fsm/foreword",
     heading: "Chapter 1",
     body: ""
@@ -1049,7 +1050,7 @@ function Sidebar_Right(_ref) {
     "class": "hidden h-[87.5vh] overflow-scroll border-x text-xs lg:block"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
     "class": "p-4"
-  }, type === 'node-ors' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("abbr", {
+  }, type === 'books-online' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("abbr", {
     "class": "flex flex-col gap-4"
     // Blank **title** attribute is required.
     ,
