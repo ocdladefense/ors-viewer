@@ -2,6 +2,595 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/@ocdla/lib-http/HttpClient.js":
+/*!****************************************************!*\
+  !*** ./node_modules/@ocdla/lib-http/HttpClient.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ HttpClient)
+/* harmony export */ });
+/* harmony import */ var _caches_HttpCache_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./caches/HttpCache.js */ "./node_modules/@ocdla/lib-http/caches/HttpCache.js");
+/* harmony import */ var _caches_LocalStorageCache_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./caches/LocalStorageCache.js */ "./node_modules/@ocdla/lib-http/caches/LocalStorageCache.js");
+/* harmony import */ var _Url_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Url.js */ "./node_modules/@ocdla/lib-http/Url.js");
+/* harmony import */ var _HttpHeader_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./HttpHeader.js */ "./node_modules/@ocdla/lib-http/HttpHeader.js");
+
+
+
+
+
+
+console.log("I am local HTTP module");
+
+class HttpClient {
+
+  // Store references to mocking classes.
+  // Mocking classes are registered against domains.
+  static mocks = {};
+
+  // For performance reasons, store outbound requests.
+  // This enables what would otherwise be multiple requests to
+  // the same URL to resolve to the same fetch request.
+  static outbound = {};
+
+
+  /**
+   * 
+   * @param {Request} req 
+   * @returns Response
+   */
+
+
+  /*
+  @param cacheOptions - Object with two keys: 'cache' and 'params'. Constructor is the name of our cache implementation. Params is an object that will be passed to that constructor.
+  */
+  constructor(config = {}) {
+    // Turns on and off hashing
+    this.debug = config.debug || false;
+    let cache = config['cacheOptions'] || null;
+    this.cache = cache ? new cache['cache'](cache['params']) : null; // Dynamically instantiate our cache service from the config. Leave null to use browser cache.
+  }
+
+
+  send(req) {
+    if (navigator.onLine == false) {
+      throw new Error("Network offline.");
+    }
+
+      
+    // Will hold any reference to a mocking class for the request.
+    let mock;
+
+    // Will hold a reference to the cached response, if there is one.
+    let cached; 
+
+    // Reference to the pending outbound request.
+    let pending;
+
+    // Key for our cache. If we are debugging, don't hash it. Otherwise, hash it.
+    let key = this.debug ? req.method + req.url : HttpClient.cyrb53(req.method + req.url);
+
+    // Get the cache control from our request headers. If there is no cache control, use an empty string.
+    let cacheHeader = req.headers.get("cache-control") || "";
+    let cacheControl = new _HttpHeader_js__WEBPACK_IMPORTED_MODULE_3__["default"](
+      "cache-control",
+      cacheHeader
+    );
+
+    // Store our complex condition in a variable. If the request is a GET, we have a caching solution, and the cache control doesn't specify no-cache.
+    let usingCaching = req.method == "GET" && this.cache && !cacheControl.hasValue("no-cache"); 
+
+    try {
+
+      mock = this.getMock(req);
+
+      if(mock)
+      {
+        return mock.getResponse(req);
+      }
+
+
+      // Check the cache for a response.
+      if (usingCaching)
+      {
+        // cached = HttpCache.get(req);
+        // check the cache for a matching response;
+        // if nothing's there we return null.
+        cached = this.cache.match(key);
+        // Prefer a completed response, if one already happens to be in the cache.
+        if(cached) return cached;
+      }
+
+
+      // If there is a pending request to the same URL, return it.
+      if (HttpClient.outbound[key])
+      {
+        return HttpClient.outbound[key];
+      }
+
+
+      // If we've made it this far, we need to go to the network to get the resource.
+      pending = fetch(req).then((resp) => {
+
+        // Remove the pending request, as we've now fulfilled it.
+        delete HttpClient.outbound[key];
+
+
+        // If we are using caching, store the response in the cache.
+        if (usingCaching) {
+            this.cache.put(key, resp.clone());
+        } 
+
+
+        return resp;
+      });
+
+
+      // Store the pending request.
+      // This will prevent multiple unfulfilled requests to the same URL.
+      HttpClient.outbound[key] = pending;
+
+
+      return pending;
+
+    } catch (e) {
+
+      console.error(e);
+      if (req.headers.get("Accept") == "application/json") {
+        return Response.json({
+          success: false,
+          error: true,
+          code: e.cause,
+          message: e.message
+        }, {status: 500});
+      }
+
+      else return new Response(e.message, {status: 500});
+    }
+
+
+  }
+
+  static register(domain, mock) {
+    let url = new _Url_js__WEBPACK_IMPORTED_MODULE_2__["default"](domain);
+    domain = url.getDomain();
+
+    HttpClient.mocks[domain] = mock;
+  }
+
+  getMock(req) {
+    let url = new _Url_js__WEBPACK_IMPORTED_MODULE_2__["default"](req.url);
+    let domain = url.getDomain();
+
+    return HttpClient.mocks[domain];
+  }
+
+  static cyrb53(str, seed = 0) {
+    let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+    for(let i = 0, ch; i < str.length; i++) {
+        ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+    }
+    h1  = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+    h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+    h2  = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+    h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+
+    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+  }
+
+}
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@ocdla/lib-http/HttpHeader.js":
+/*!****************************************************!*\
+  !*** ./node_modules/@ocdla/lib-http/HttpHeader.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ HttpHeader)
+/* harmony export */ });
+
+class HttpHeader {
+
+    constructor(name, value) {
+        this.name = name;
+        this.values = HttpHeader.parseValues(value);
+    }
+
+    // 1. theres 1 value, no commas: pass
+    // 2. theres multiple value, commas: pass
+    // 3. some of those values are parameters, semicolons and commas: 
+    // 4. some of those parameters have values, semicolons, commas, and equals:
+
+    static parseValues(value) {
+        let map = {};
+        let values = value.split(",");
+        
+        for (let i = 0; i < values.length; i++) {
+            let current = values[i].trim();
+            let [k,v] = current.split("="); // at index 0, when no "=", k = current, v = undefined
+            map[k] = v;
+        }
+
+        return map;
+    }
+
+    /**
+   * 
+   * @returns {bool}
+   */
+    hasValue(v) {
+        // if v doesn't exist, it returns undefined which is falsy
+        return this.values.hasOwnProperty(v);
+    }
+
+    getParameter(k) {
+        return this.values[k];
+    }
+    
+    getName() {
+        return this.name;
+    }
+} 
+
+/***/ }),
+
+/***/ "./node_modules/@ocdla/lib-http/Url.js":
+/*!*********************************************!*\
+  !*** ./node_modules/@ocdla/lib-http/Url.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Url)
+/* harmony export */ });
+
+const URL_SCHEME_SEPARATOR = "://";
+
+const URL_PATH_SEPARATOR = "/";
+
+const URL_QUERYSTRING_SEPARATOR = "?";
+
+const URL_FRAGMENT_SEPARATOR = "#";
+
+const SCHEME_HTTP = "http";
+
+const SCHEME_HTTPS = "https";
+
+const SCHEME_FILE = "file";
+
+
+class Url {
+    
+    url = null;
+
+    scheme = SCHEME_HTTP;
+
+    domain = null;
+
+    path = "";
+
+    query = {};
+
+    constructor(url) {
+
+        this.url = url;
+        
+        let re = /:\/\/|\?/gis;
+
+        let parts = this.url.split(re);
+
+        this.scheme = parts.shift();
+
+        let qs;
+
+        if (parts.length == 2) {
+            qs = parts.pop();
+        }
+
+        let d = parts[0];
+
+        parts = d.split(URL_PATH_SEPARATOR);
+
+        this.domain = parts.shift();
+
+        this.path = URL_PATH_SEPARATOR + parts.join(URL_PATH_SEPARATOR);
+        
+        if (qs != null) {
+            this.query = Url.parseQueryString(qs);
+        }
+    }
+
+    static parseQueryString(qs) {
+        let queryParts = qs.split("&");
+        let query = {};
+        for (let i = 0; i < queryParts.length; i++) {
+            let kvp = queryParts[i];
+            let parts = kvp.split("=");
+            let key = parts[0];
+            let value = parts[1];
+            query[key] = value;
+        }
+
+        return query;
+    }
+
+
+    static formatQueryString(obj) {
+        let params = [];
+        for (let prop in obj) {
+            let kvp;
+            kvp = prop + "=" + obj[prop];
+            params.push(kvp);
+        };
+        return params.join("&");
+    }
+
+    getLastPathSegment() {
+        let parts = this.path.split("/");
+        let last = parts.pop();
+        return last;
+    }
+
+
+    getDomain() {
+        return this.domain;
+    }
+
+    getScheme() {
+        return this.scheme;
+    }
+
+    getPath() {
+        return this.path;
+    }
+
+    getQuery() {
+        return this.query;
+    }
+
+    buildQuery(key, value) {
+        this.query[key] = value;
+    }
+
+    toString() {
+        let queryString = "";
+        let fragment = "";
+
+        let kvpa = [];
+        // start with our query object and build a string
+        for (var prop in this.query) {
+
+            let value = this.query[prop];
+            let kvp = !value ? prop : (prop + "=" + this.query[prop]);
+            kvpa.push(kvp);
+        }
+
+        queryString = !kvpa.length ? "" : (URL_QUERYSTRING_SEPARATOR + kvpa.join("&"));
+
+        return this.scheme + URL_SCHEME_SEPARATOR + this.domain + this.path + queryString + fragment;
+    }
+} 
+
+/***/ }),
+
+/***/ "./node_modules/@ocdla/lib-http/caches/HttpCache.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@ocdla/lib-http/caches/HttpCache.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ HttpCache)
+/* harmony export */ });
+class HttpCache {
+
+    static cache = {};
+
+    put(key, resp) {
+        HttpCache.cache[key] = resp;
+    }
+
+    get(key) {
+        return HttpCache.cache[key] || null;
+    }
+
+    // Stay compatible with other cache interfaces.
+    match(key) {
+        return this.get(key);
+    }
+
+
+}
+
+/***/ }),
+
+/***/ "./node_modules/@ocdla/lib-http/caches/LocalStorage/LocalStorage.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@ocdla/lib-http/caches/LocalStorage/LocalStorage.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ LocalStorage)
+/* harmony export */ });
+class LocalStorage {
+    // JSON Object that holds default string key names and default values if no values exist
+    static DEFAULTS = {};
+
+    constructor(config = {}) {
+        // Define the default string keys to access the local storage. Expects JSON object with string keys and default value types.
+        // EX. {"news": {lastFetch: new Date(), stories: null},  "favorites": new Array()}
+        if (config.defaults !== undefined)
+            LocalStorage.DEFAULTS = config.defaults;
+    }
+
+    // Using the string key, return from local storage the value stored. If it is undefined, search on the defaults object for a base structure
+    getValue(key) { 
+        return localStorage[key] === undefined ? LocalStorage.DEFAULTS[key] : JSON.parse(localStorage[key]); 
+    }
+
+    // Using the string key, set local storage to the passed value
+    setValue(key, value) { 
+        if (value !== undefined) 
+            localStorage[key] = JSON.stringify(value); 
+    }
+   
+    // Clear all local storage
+    clearAll() { 
+        // TODO: This should really be constrained to the keys that it accesses.
+        localStorage.clear(); 
+    }    
+}
+
+/***/ }),
+
+/***/ "./node_modules/@ocdla/lib-http/caches/LocalStorage/LocalStorageResponse.js":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@ocdla/lib-http/caches/LocalStorage/LocalStorageResponse.js ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ LocalStorageResponse)
+/* harmony export */ });
+class LocalStorageResponse {
+
+    headers = {};
+
+    body = null;
+
+    expires = null;
+
+    constructor(body, headers, expires) {
+        this.body = body;
+        this.headers = headers || this.headers;
+        this.expires = expires || this.expires;
+    }
+
+    addHeader(k, v) {
+        this.headers[k] = v;
+    }
+
+    getHeaders() {
+        return this.headers;
+    }
+
+    getBody() {
+        return this.body;
+    }
+
+
+    toString() {
+        return JSON.stringify(this);
+    }
+
+    /*
+     Convert this object to a standard JavaScript Response object.
+    */
+    toResponse() {
+        return Response.json(JSON.parse(this.body), {headers: this.headers});
+    }
+
+    // Convert stored JSON in the format '{"headers":{"h1":"h1","h2":"h2","h3":"h3"},"body":"{"prop1":"val1"}"}'.
+    static fromJson(cachedJson) {
+        const {body,headers,expires} = JSON.parse(cachedJson);
+
+        return new LocalStorageResponse(body,headers,expires);
+    }
+
+    // Convert an instance JavaScript Response to an instance of this class.
+    static fromHttpResponse(httpResp, expires=null) {
+        let headers = new Headers(httpResp.headers);
+        return httpResp.text().then( body => new LocalStorageResponse(body,headers,expires) );
+    }
+}
+
+/***/ }),
+
+/***/ "./node_modules/@ocdla/lib-http/caches/LocalStorageCache.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@ocdla/lib-http/caches/LocalStorageCache.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ LocalStorageCache)
+/* harmony export */ });
+/* harmony import */ var _LocalStorage_LocalStorageResponse_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LocalStorage/LocalStorageResponse.js */ "./node_modules/@ocdla/lib-http/caches/LocalStorage/LocalStorageResponse.js");
+/* harmony import */ var _LocalStorage_LocalStorage_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LocalStorage/LocalStorage.js */ "./node_modules/@ocdla/lib-http/caches/LocalStorage/LocalStorage.js");
+
+
+
+
+class LocalStorageCache {
+    // @params: refresh - If refresh is specified, the cache will be refreshed every refresh seconds.
+    constructor(config = {}) {
+        this.refreshTime = config.refresh || null;
+    }
+    put(key, httpResp) {
+        let expires = this.refreshTime >= 0 ? Date.now() + (this.refreshTime * 1000) : false
+        let resp = _LocalStorage_LocalStorageResponse_js__WEBPACK_IMPORTED_MODULE_0__["default"].fromHttpResponse(httpResp, expires);
+        resp.then( resp => {      
+            let localStorage = new _LocalStorage_LocalStorage_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
+            localStorage.setValue(key, resp.toString());
+        });
+    }
+
+    get(key) {
+        const localStorageParams = {
+            defaults: {
+                [key]: null
+            }
+        };
+
+        // We get the value of the key. If there is nothing, we expect to get back null.
+        let localStorage = new _LocalStorage_LocalStorage_js__WEBPACK_IMPORTED_MODULE_1__["default"](localStorageParams);
+        let json = localStorage.getValue(key);
+
+        if (json) {
+            let cachedResp;
+            cachedResp = _LocalStorage_LocalStorageResponse_js__WEBPACK_IMPORTED_MODULE_0__["default"].fromJson(json);
+            if (LocalStorageCache.isResponseFresh(cachedResp))
+                return cachedResp.toResponse();
+        }
+        
+        return null;
+
+    }
+
+    match(key) {
+        return this.get(key);
+    }
+
+    // Returns true if the cached response is fresh: i.e. not stale.
+    static isResponseFresh(entry) {
+        let expires = entry.expires;
+        if (!expires) return true;
+        return Date.now() < new Date(expires).getTime();
+    }
+}
+
+/***/ }),
+
 /***/ "./src/js/App.jsx":
 /*!************************!*\
   !*** ./src/js/App.jsx ***!
@@ -1224,6 +1813,55 @@ function Sidebar_Right(_ref) {
 
 /***/ }),
 
+/***/ "./src/js/index.js":
+/*!*************************!*\
+  !*** ./src/js/index.js ***!
+  \*************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _css_input_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/input.css */ "./src/css/input.css");
+/* harmony import */ var _ocdla_view__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ocdla/view */ "./node_modules/@ocdla/view/view.js");
+/* harmony import */ var _ocdla_ors_src_OrsChapter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ocdla/ors/src/OrsChapter */ "./node_modules/@ocdla/ors/src/OrsChapter.js");
+/* harmony import */ var _ocdla_lib_http_HttpClient__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ocdla/lib-http/HttpClient */ "./node_modules/@ocdla/lib-http/HttpClient.js");
+/* harmony import */ var _ocdla_lib_http_Url__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ocdla/lib-http/Url */ "./node_modules/@ocdla/lib-http/Url.js");
+/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./App */ "./src/js/App.jsx");
+
+/** @jsx vNode */
+/* eslint-disable no-unused-vars */
+
+
+
+
+
+/* eslint-enable */
+
+var $body = document.querySelector('body');
+var url = new _ocdla_lib_http_Url__WEBPACK_IMPORTED_MODULE_4__["default"]('https://appdev.ocdla.org/books-online/index.php');
+url.buildQuery('chapter', '1');
+var req = new Request(url.toString());
+var client = new _ocdla_lib_http_HttpClient__WEBPACK_IMPORTED_MODULE_3__["default"]();
+var resp = await client.send(req);
+var msword = await _ocdla_ors_src_OrsChapter__WEBPACK_IMPORTED_MODULE_2__["default"].fromResponse(resp);
+msword.chapterNum = 1;
+var xml = _ocdla_ors_src_OrsChapter__WEBPACK_IMPORTED_MODULE_2__["default"].toStructuredChapter(msword);
+// Inspect the available properties for use in building section outline (left nav) and content.
+// section outline (left nav) is listed in sectionTitles property.
+// xml.doc contains the entire document.
+// xml.toString() will return the entire document as an HTML string for use with innerHTML.
+console.log(xml);
+console.log(xml.doc);
+var html = xml.toString();
+var root = _ocdla_view__WEBPACK_IMPORTED_MODULE_1__.View.createRoot($body);
+// const root = View.createRoot('#root');
+
+root.render((0,_ocdla_view__WEBPACK_IMPORTED_MODULE_1__.vNode)(_App__WEBPACK_IMPORTED_MODULE_5__["default"], null)); // JSX Tests
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } }, 1);
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./src/css/input.css":
 /*!***********************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/postcss-loader/dist/cjs.js!./src/css/input.css ***!
@@ -1244,7 +1882,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `/*
-! tailwindcss v3.4.6 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.7 | MIT License | https://tailwindcss.com
 *//*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
 2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
@@ -2090,6 +2728,9 @@ video {
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
+.outline {
+  outline-style: solid;
+}
 .contrast-\\[0\\] {
   --tw-contrast: contrast(0);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -2233,7 +2874,7 @@ video {
     padding-bottom: 4rem;
   }
 }
-`, "",{"version":3,"sources":["webpack://./src/css/input.css"],"names":[],"mappings":"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","sourcesContent":["@tailwind base;\n@tailwind components;\n@tailwind utilities;\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/css/input.css"],"names":[],"mappings":"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","sourcesContent":["@tailwind base;\n@tailwind components;\n@tailwind utilities;\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2677,6 +3318,593 @@ function styleTagTransform(css, styleElement) {
   }
 }
 module.exports = styleTagTransform;
+
+/***/ }),
+
+/***/ "./node_modules/@ocdla/ors/src/OrsChapter.js":
+/*!***************************************************!*\
+  !*** ./node_modules/@ocdla/ors/src/OrsChapter.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ OrsChapter)
+/* harmony export */ });
+/* harmony import */ var _Outline_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Outline.js */ "./node_modules/@ocdla/ors/src/Outline.js");
+
+
+const gSubRe = /^\(([0-9a-zA-Z]+)\)(.*)/gm;
+const subRe = /^\(([0-9a-zA-Z]+)\)(.*)/;
+
+// Fetches the contents of the original ORS chapter from the Oregon Legislature web site.
+// Transforms it in to a well-formed HTML document.
+class OrsChapter {
+    // The chapter number.
+    chapterNum = null;
+
+    // Title of this chapter - must be a string.
+    title;
+
+    // The chapter's underlying XML document.
+    doc = null;
+
+    // Parsed title of each section of this chapter.
+    sectionTitles = {};
+
+    // Contains references to DOM node <b> elements.
+    // Might be unused.
+    sectionHeadings = {};
+
+    constructor(chapterNum) {
+        this.chapterNum = chapterNum;
+        this.doc = new Document();
+    }
+
+    // Convert one unstructured chapter into a structured chapter.
+    // Use the anchors in the unstructured chapter to build a structured chapter
+    // where each section and subsection(s) are grouped and wrapped in the appropriate node hierarchy.
+    static toStructuredChapter(chapter) {
+        let ch = new OrsChapter(chapter.chapterNum);
+        let doc = ch.doc;
+        ch.chapterTitle = chapter.chapterTitle;
+        ch.sectionTitles = chapter.sectionTitles;
+
+        let wordSection = doc.createElement('div');
+        wordSection.setAttribute('class', 'WordSection1');
+
+        for (var prop in chapter.sectionTitles) {
+            // Create a new section element.
+            const section = doc.createElement('div');
+            section.setAttribute('id', 'section-' + prop);
+
+            // console.log(prop);
+            let startId = 'section-' + parseInt(prop);
+            let endId = chapter.getNextSectionId(startId);
+            let clonedSection = chapter.cloneFromIds(startId, endId);
+            let [header, matches] = chapter.retrievePTags(clonedSection);
+
+            // If matches are returned as just a string which means no subsections exist for that section then you just build the element with the text that is stored in matches and append it to the section
+            if (typeof matches == 'string') {
+                let element = _Outline_js__WEBPACK_IMPORTED_MODULE_0__["default"].buildSection(
+                    doc,
+                    'description',
+                    'section-' + prop + '-description',
+                    matches,
+                    0
+                );
+                section.appendChild(element);
+            } else {
+                chapter.iterateMatches(matches, 0, section, prop);
+            }
+            wordSection.appendChild(section);
+        }
+        doc.appendChild(wordSection);
+
+        return ch;
+    }
+
+    static fromResponse(resp, chapterNum) {
+        return resp
+            .arrayBuffer()
+            .then(function (buffer) {
+                const decoder = new TextDecoder('iso-8859-1');
+                return decoder.decode(buffer);
+            })
+            .then(html => {
+                const parser = new DOMParser();
+
+                let chapter = new OrsChapter(chapterNum);
+                // Tell the parser to look for html
+                chapter.doc = parser.parseFromString(html, 'text/html');
+
+                let [sectionTitles, sectionHeadings] =
+                    _Outline_js__WEBPACK_IMPORTED_MODULE_0__["default"].retrieveSectionTitles(chapter.doc);
+                chapter.sectionTitles = sectionTitles;
+                chapter.sectionHeadings = sectionHeadings;
+                chapter.injectAnchors();
+
+                return chapter;
+            });
+    }
+
+    // Inserts anchors as <div> tags in the doc.
+    // Note: this affects the underlying structure
+    //  of the XML document.
+    injectAnchors() {
+        for (var prop in this.sectionTitles) {
+            let headingDiv = this.doc.createElement('div');
+            headingDiv.setAttribute('id', 'section-' + prop);
+            headingDiv.setAttribute('class', 'ocdla-heading');
+            headingDiv.setAttribute('data-chapter', this.chapterNum);
+            headingDiv.setAttribute('data-section', prop);
+
+            let target = this.sectionHeadings[prop];
+            target.parentNode.insertBefore(headingDiv, target);
+        }
+        var subset = this.doc.querySelector('.WordSection1');
+        let headingDiv = this.doc.createElement('div');
+        headingDiv.setAttribute('class', 'ocdla-heading');
+        headingDiv.setAttribute('id', 'end');
+        subset.appendChild(headingDiv);
+    }
+
+    /**
+     *
+     * @param {String} id
+     * @returns DOMNode
+     */
+    getSection(id) {
+        return this.doc.getElementById('section-' + id);
+    }
+
+    /**
+     *
+     * @param {String} id
+     * @returns DOMNode
+     */
+    querySelectorAll(references) {
+        let nodes = [];
+        console.log('references length is: ', references);
+        for (let i = 0; i < references.length; i++) {
+            let reference = references[i];
+            let chapter, section, subsection;
+            let rangeStart, rangeEnd;
+            [rangeStart, rangeEnd] = reference.split('-');
+            console.log('Ranges', rangeStart, rangeEnd);
+            [chapter, section, subsection] =
+                OrsChapter.parseReference(rangeStart);
+            console.log(chapter, section, subsection);
+            let ids = subsection
+                ? [parseInt(section), subsection].join('-')
+                : parseInt(section);
+            ids = '#section-' + ids;
+            console.log(ids);
+            let node = this.docTwo.querySelector(ids);
+            if (null == node) return null;
+
+            // If the selector specifies a range of subsections retrieve only those.
+            if (rangeEnd) {
+                console.log('RANGE DETECTED!');
+                node = node.parentNode.cloneNode(true);
+                node = OrsChapter.extractRange(node, rangeStart, rangeEnd);
+            }
+
+            nodes.push(node);
+            console.log(nodes);
+        }
+        return nodes;
+    }
+
+    static extractRange(node, startRef, endRef) {
+        console.log(node, startRef, endRef);
+        // check node.children
+        // match (1)(a)(A)(i) etc.
+
+        let start = OrsChapter.parseSubsections(startRef);
+        let end = OrsChapter.parseSubsections(endRef);
+        let remove = [];
+        let regEx, regStart, regEnd;
+
+        regStart = start.pop();
+        regEnd = end.pop();
+        regEx = new RegExp('[' + regStart + '-' + regEnd + ']');
+
+        let children = node.children;
+        for (var i = 0; i < children.length; i++) {
+            let child = children[i];
+            let id = child.getAttribute('id');
+            if (!id) continue;
+            let parts = id.split('-');
+            let compare = parts.pop();
+            console.log('Comparing ', compare, regEx);
+            if (!compare.match(regEx)) {
+                console.log('match not found');
+                remove.push(child);
+            } else {
+                console.log('match found');
+            }
+        }
+
+        for (var n of remove) {
+            node.removeChild(n);
+        }
+
+        return node;
+    }
+
+    static parseSubsections(reference) {
+        let subs = reference.match(/(?<=\()([0-9a-zA-Z]+)(?=\))/g);
+
+        console.log('parseSubsections()', subs);
+
+        return subs;
+    }
+
+    static parseReference(reference) {
+        let chapter, section, subsection;
+        let parts = reference.match(/([0-9a-zA-Z]+)/g);
+        chapter = parts.shift();
+        section = parts.shift();
+
+        // Parse a range of subsections.
+        // Parse a comma-delimitted series of subsections.
+        //this.references = reference.split(",");
+        subsection = parts.length > 0 ? parts.join('-') : null;
+        return [chapter, section, subsection];
+    }
+
+    // there are exceptions!!!
+    // such as (5)(a).
+    // it will find the 5, and put subsection level to 0.
+    // HOWEVER, we are actually supposed to be on (a).
+    // the level is supposed to be 1.
+    // the next subsection in the list is (A).
+    // this is ONLY EXPECTED when level is 1. Not when level is 0.
+    // so it breaks. Hurray!
+
+    retrievePTags(section) {
+        let text = '';
+        let pTags = section.children;
+
+        let fn = function (match, p1, offset, original) {
+            let duo = match.split(')(');
+            return duo.join(')\n(');
+        };
+
+        let header = pTags[0].querySelector('b');
+        header = pTags[0].removeChild(header);
+        header = header.innerText;
+
+        for (var index in pTags) {
+            let child = pTags[index];
+            let childText = '';
+
+            if (child != null) {
+                childText = child.innerText;
+            }
+
+            if (childText == null || childText == '') {
+                continue;
+            }
+
+            childText = childText.trim().replaceAll('\n', ' ');
+            text += childText + '\n';
+        }
+
+        let matches = text.replaceAll(
+            /(^\([0-9a-zA-Z]+\)\([0-9a-zA-Z]+\))/gm,
+            fn
+        );
+
+        matches = matches.match(gSubRe);
+
+        return matches === null ? [header, text] : [header, matches];
+    }
+
+    iterateMatches(
+        matches,
+        currentIndex,
+        parent,
+        sectionNumber,
+        lastLevel = '0'
+    ) {
+        //if we leave off at a roman numeral then
+
+        //console.log(matches);
+        // console.log(sectionNumber);
+        if (sectionNumber == 555) {
+            console.log(matches);
+        }
+        if (currentIndex >= matches.length) {
+            return parent;
+        }
+
+        //for (var i = currentIndex; i < matches.length; i++) {
+        // let match = fun(matches, currentIndex);
+        let match = matches[currentIndex].match(subRe);
+        let nextMatch = matches[currentIndex + 1];
+        let id, divId, text, level;
+        if (match == null) {
+            // not a subsection
+            // what do?
+            // nothing. we shouldn't handle this case, this is either descriptive text or not..?
+            // maybe handle for single section text like 701.002.
+            id = 'description';
+            text = matches[currentIndex];
+            level = '0';
+            return;
+        } else {
+            id = match[1];
+            text = '(' + id + ')' + match[2];
+            level = _Outline_js__WEBPACK_IMPORTED_MODULE_0__["default"].findLevel(id, nextMatch);
+        }
+
+        //console.log(match);
+        // 0 should be full text?
+        // 1 is id
+        // 2 is text without subsection
+
+        if (level > lastLevel) {
+            parent = parent.lastChild;
+        } else if (level < lastLevel) {
+            if (lastLevel - level == 1) {
+                parent = parent.parentNode;
+            } else if (lastLevel - level == 2) {
+                parent = parent.parentNode.parentNode;
+            } else if (lastLevel - level == 3) {
+                parent = parent.parentNode.parentNode.parentNode;
+            }
+        }
+        if (parent == null) {
+            console.warn('Parent is null');
+            console.log(matches, sectionNumber);
+            return;
+        }
+        divId = parent.getAttribute('id') + '-' + id;
+        let element = _Outline_js__WEBPACK_IMPORTED_MODULE_0__["default"].buildSection(this.doc, id, divId, text, level);
+        parent.appendChild(element);
+        // identify subsections
+        // build subsection grouping elements
+
+        this.iterateMatches(
+            matches,
+            ++currentIndex,
+            parent,
+            sectionNumber,
+            level
+        );
+    }
+
+    removeNodes(selector) {
+        let nodes = this.doc.querySelectorAll(selector);
+        for (var i = 0; i < nodes.length; i++) {
+            let node = nodes[i];
+            node.parentNode.removeChild(node);
+        }
+    }
+
+    buildToc() {
+        let toc = [];
+
+        for (let key in this.sectionTitles) {
+            let val = this.sectionTitles[key];
+            toc.push(
+                `<li><span class="section-number">${this.chapterNum}.${key}</span><a data-action="view-section" data-section="${key}" href="#">${val}</a></li>`
+            );
+        }
+
+        var joinedToc = toc.join(' ');
+        return joinedToc;
+    }
+
+    // Highlights a selected section on the page
+    highlight(section, endSection) {
+        console.log(this.chapterNum);
+        console.log(section);
+        console.log(endSection);
+        let range = this.doc.createRange();
+
+        var firstNode = this.doc.getElementById(section);
+        console.log(firstNode);
+        var secondNode = this.doc.getElementById(endSection);
+        console.log(secondNode);
+        range.setStartBefore(firstNode);
+        range.setEnd(
+            secondNode.parentNode,
+            secondNode.parentNode.childNodes.length
+        );
+
+        console.log(range);
+
+        var newParent = this.doc.createElement('div');
+        newParent.setAttribute('style', 'background-color:yellow;');
+
+        var contents = range.extractContents();
+        console.log(contents);
+    }
+
+    cloneFromIds(startId, endId) {
+        var startNode = this.doc.getElementById(startId);
+        if (null == startNode) {
+            throw new Error('NODE_NOT_FOUND_ERROR: (#' + startId + ')');
+        }
+        var endNode = this.doc.getElementById(endId);
+        if (null == startNode) {
+            throw new Error('NODE_NOT_FOUND_ERROR: (#' + endId + ')');
+        }
+
+        return this.clone(startNode, endNode);
+    }
+
+    // Clones the contents inside a range.
+    clone(startNode, endNode) {
+        let range = document.createRange();
+
+        range.setStartBefore(startNode);
+        range.setEndBefore(endNode);
+
+        var contents = range.cloneContents();
+
+        var spans = contents.querySelectorAll('span');
+        // remove styling from each span
+        for (var elements in spans) {
+            let element = spans[elements];
+            if (element.style) {
+                element.style = null;
+            }
+        }
+        // console.log(contents);
+        return contents;
+    }
+
+    // Given a valid section number,
+    // returns the next section in this ORS chapter.
+    // Used for building ranges.
+    getNextSectionId(sectionNum) {
+        var headings = this.doc.querySelectorAll('.ocdla-heading');
+        var section = this.doc.getElementById(sectionNum);
+
+        if (null == section) {
+            throw new Error(
+                'NODE_NOT_FOUND_ERROR: Could not locate ' + sectionNum
+            );
+        }
+        for (let i = 0; i < headings.length; i++) {
+            if (headings.item(i) == section) {
+                let nextSection = headings.item(i + 1);
+                return nextSection.getAttribute('id');
+            }
+        }
+    }
+
+    // Outputs the document as an HTML string
+    toString() {
+        const serializer = new XMLSerializer();
+        const subset = this.doc.querySelector('.WordSection1');
+
+        return serializer.serializeToString(subset);
+    }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@ocdla/ors/src/Outline.js":
+/*!************************************************!*\
+  !*** ./node_modules/@ocdla/ors/src/Outline.js ***!
+  \************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ OrsOutline)
+/* harmony export */ });
+/**
+ * @class OrsOutline
+ * @description This class is used to create an outline of the ORS chapter.
+ */
+
+class OrsOutline {
+    /**
+     * In an ORS chapter, the section titles are bolded.
+     * This method retrieves the section titles and their corresponding section numbers.
+     */
+    static retrieveSectionTitles(doc) {
+        // Createa nodeList of all the <b> elements in the body
+        let headings = doc.querySelectorAll('b');
+        let titles = [],
+            elems = [];
+
+        for (var i = 0; i < headings.length; i++) {
+            let boldParent = headings[i];
+            var trimmed = headings[i].textContent.trim();
+            if (trimmed.indexOf('Note') === 0) continue;
+            let strings = trimmed.split('\n');
+            let chapter, section, key, val;
+
+            // If array has only one element,
+            // Then we know this doesn't follow the regular statute pattern.
+            if (strings.length === 1) {
+                key = strings[0];
+                val = boldParent.nextSibling
+                    ? boldParent.nextSibling.textContent
+                    : '';
+            } else {
+                // otherwise our normal case.
+                key = strings[0];
+                val = strings[1];
+
+                let numbers = key.split('.');
+                chapter = numbers[0];
+                section = numbers[1];
+            }
+
+            // Might need to change this one to remove parseInt
+            titles[parseInt(section)] = val;
+            elems[parseInt(section)] = boldParent;
+        }
+
+        return [titles, elems];
+    }
+
+    static findLevel(text, nextMatch) {
+        let subNumRe = /^[0-9]+/;
+        let subUpperRe = /^[A-Z]+/;
+        let subRe = /^\(([0-9a-zA-Z]+)\)(.*)/;
+
+        let nextId;
+
+        if (nextMatch != null) {
+            nextId = nextMatch.match(subRe)[1];
+        }
+
+        if (text.match(subNumRe)) {
+            return '0';
+        } else if (
+            !OrsOutline.isRomanNumeral(text, nextId) &&
+            !text.match(subUpperRe)
+        ) {
+            return '1';
+        } else if (text.match(subUpperRe)) {
+            return '2';
+        } else if (OrsOutline.isRomanNumeral(text, nextId)) {
+            return '3';
+        }
+    }
+
+    static isRomanNumeral(text, nextText) {
+        let romanReg = /^[ivx]+/;
+        if (nextText == null) {
+            return text.match(romanReg);
+        }
+        return (
+            text.match(romanReg) &&
+            (nextText.match(romanReg) || text.length > 1)
+        );
+    }
+
+    static buildSection(doc, id, divId, text, level) {
+        let sub = doc.createElement('div');
+        sub.setAttribute('id', divId);
+        sub.setAttribute('class', 'level-' + level);
+
+        let span = doc.createElement('span');
+        span.setAttribute('class', 'subsection');
+
+        if (id !== 'description') {
+            span.innerText = '(' + id + ')';
+        }
+
+        let theText = doc.createTextNode(text);
+
+        sub.appendChild(span);
+        sub.appendChild(theText);
+
+        return sub;
+    }
+}
+
 
 /***/ }),
 
@@ -3369,6 +4597,75 @@ function vNode(name,attributes,...children) {
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/async module */
+/******/ 	(() => {
+/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 		var resolveQueue = (queue) => {
+/******/ 			if(queue && queue.d < 1) {
+/******/ 				queue.d = 1;
+/******/ 				queue.forEach((fn) => (fn.r--));
+/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 			}
+/******/ 		}
+/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 			if(dep !== null && typeof dep === "object") {
+/******/ 				if(dep[webpackQueues]) return dep;
+/******/ 				if(dep.then) {
+/******/ 					var queue = [];
+/******/ 					queue.d = 0;
+/******/ 					dep.then((r) => {
+/******/ 						obj[webpackExports] = r;
+/******/ 						resolveQueue(queue);
+/******/ 					}, (e) => {
+/******/ 						obj[webpackError] = e;
+/******/ 						resolveQueue(queue);
+/******/ 					});
+/******/ 					var obj = {};
+/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 					return obj;
+/******/ 				}
+/******/ 			}
+/******/ 			var ret = {};
+/******/ 			ret[webpackQueues] = x => {};
+/******/ 			ret[webpackExports] = dep;
+/******/ 			return ret;
+/******/ 		}));
+/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
+/******/ 			var queue;
+/******/ 			hasAwait && ((queue = []).d = -1);
+/******/ 			var depQueues = new Set();
+/******/ 			var exports = module.exports;
+/******/ 			var currentDeps;
+/******/ 			var outerResolve;
+/******/ 			var reject;
+/******/ 			var promise = new Promise((resolve, rej) => {
+/******/ 				reject = rej;
+/******/ 				outerResolve = resolve;
+/******/ 			});
+/******/ 			promise[webpackExports] = exports;
+/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 			module.exports = promise;
+/******/ 			body((deps) => {
+/******/ 				currentDeps = wrapDeps(deps);
+/******/ 				var fn;
+/******/ 				var getResult = () => (currentDeps.map((d) => {
+/******/ 					if(d[webpackError]) throw d[webpackError];
+/******/ 					return d[webpackExports];
+/******/ 				}))
+/******/ 				var promise = new Promise((resolve) => {
+/******/ 					fn = () => (resolve(getResult));
+/******/ 					fn.r = 0;
+/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 				});
+/******/ 				return fn.r ? promise : getResult();
+/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 			queue && queue.d < 0 && (queue.d = 0);
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -3415,26 +4712,12 @@ function vNode(name,attributes,...children) {
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-/*!*************************!*\
-  !*** ./src/js/index.js ***!
-  \*************************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _css_input_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/input.css */ "./src/css/input.css");
-/* harmony import */ var _ocdla_view__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ocdla/view */ "./node_modules/@ocdla/view/view.js");
-/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App */ "./src/js/App.jsx");
-
-/** @jsx vNode */
-/* eslint-disable no-unused-vars */
-
-
-/* eslint-enable */
-
-var $body = document.querySelector('body');
-var js_root = _ocdla_view__WEBPACK_IMPORTED_MODULE_1__.View.createRoot($body);
-// const root = View.createRoot('#root');
-
-js_root.render((0,_ocdla_view__WEBPACK_IMPORTED_MODULE_1__.vNode)(_App__WEBPACK_IMPORTED_MODULE_2__["default"], null)); // JSX Tests
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module used 'module' so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/js/index.js");
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=app.bundle.js.map
