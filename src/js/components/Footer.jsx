@@ -6,156 +6,97 @@ import Hyperlink from './Hyperlink';
 
 export default function Footer() {
     return (
-        <footer class='container mx-auto w-full p-4 pb-20'>
-            <hr />
-            <ul class='mt-4 flex flex-col gap-8 xl:flex-row'>
+        <footer class='container mx-auto flex flex-col gap-4 border border-b-0 p-4 pb-16 lg:flex-row lg:gap-0 lg:p-8 lg:pb-16'>
+            <ul class='flex h-max flex-col gap-8 lg:flex-row lg:gap-32'>
                 <li>
-                    <ul class='flex flex-col gap-8'>
-                        <li class='flex flex-col gap-2'>
-                            <strong>Stay Connected</strong>
-                            <p>
-                                Join thousands of people who receive monthly
-                                site updates.
-                            </p>
-                        </li>
-                        <li>
+                    <ul class='flex items-center gap-4'>
+                        <li class='flex'>
                             <Hyperlink
-                                extraClasses='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md'
-                                href='http://eepurl.com/dqx2dj'
-                                body='Subscribe'
+                                type='brand'
+                                href='https://oregon.public.law/'
+                                body={
+                                    <div class='flex items-center'>
+                                        <img
+                                            class='h-16'
+                                            src='https://www.ocdla.org/wp-content/uploads/2019/10/cropped-ocdla-logo.png'
+                                        />
+                                    </div>
+                                }
                             />
                         </li>
                         <li>
-                            <ul class='flex gap-2'>
+                            <ul class='flex flex-col'>
                                 <li>
-                                    <Hyperlink
-                                        extraClasses='opacity-50 hover:opacity-60'
-                                        href='https://instagram.com/law.is.code/'
-                                        body={
-                                            <img
-                                                class='size-12'
-                                                src='https://oregon.public.law/assets/social/instagram-logo-840401f66d7e41fb9696f8e077c49b550e669a1a613e2612a7ba18aa2c53776d.svg'
+                                    <ul class='flex gap-2'>
+                                        <li>
+                                            <Hyperlink
+                                                type='footer-social'
+                                                href='https://www.facebook.com/OregonCriminalDefenseLawyersAssociation/'
+                                                body={
+                                                    <img
+                                                        class='size-8'
+                                                        src='https://www.ocdla.org/wp-content/themes/wireframe/assets/images/default-facebook-icon.png'
+                                                    />
+                                                }
                                             />
-                                        }
-                                    />
-                                </li>
-                                <li>
-                                    <Hyperlink
-                                        extraClasses='opacity-50 hover:opacity-60'
-                                        href='https://facebook.com/PublicDotLaw'
-                                        body={
-                                            <img
-                                                class='size-12'
-                                                src='https://oregon.public.law/assets/social/facebook-logo-button-a44d2115afa1417c74235fd98657a42b6602af1b47332364fa6627a80e5a61ff.svg'
+                                        </li>
+                                        <li>
+                                            <Hyperlink
+                                                type='footer-social'
+                                                href='https://twitter.com/oregondefense?lang=en'
+                                                body={
+                                                    <img
+                                                        class='size-8'
+                                                        src='https://www.ocdla.org/wp-content/themes/wireframe/assets/images/default-twitter-icon.png'
+                                                    />
+                                                }
                                             />
-                                        }
-                                    />
-                                </li>
-                                <li>
-                                    <Hyperlink
-                                        extraClasses='opacity-50 hover:opacity-60'
-                                        href='https://twitter.com/law_is_code'
-                                        body={
-                                            <img
-                                                class='size-12'
-                                                src='https://oregon.public.law/assets/social/twitter-logo-button-39f7c16ed398ca50006cd9a20dc33da44f7110bc26dbe7ec8980cbd9fc44cdc6.svg'
-                                            />
-                                        }
-                                    />
-                                </li>
-                                <li>
-                                    <Hyperlink
-                                        extraClasses='opacity-50 hover:opacity-60'
-                                        href='https://github.com/public-law/'
-                                        body={
-                                            <img
-                                                class='size-12'
-                                                src='https://oregon.public.law/assets/social/github-logo-b4302181192a1d29bb4b020699926827cea1717d423541ad0ec8b318cda6ff97.svg'
-                                            />
-                                        }
-                                    />
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>
                     </ul>
-                </li>
-                <li>
-                    <ul class='flex flex-col gap-7'>
-                        <li class='flex flex-col gap-2'>
-                            <strong>Get Legal Help</strong>
-                            <p>
-                                The{' '}
-                                <Hyperlink
-                                    href='https://osbar.org/index.html'
-                                    body='Oregon State Bar ►'
-                                />{' '}
-                                runs a service for finding an attorney in good
-                                standing. Initial consultations are usually free
-                                or discounted:{' '}
-                                <Hyperlink
-                                    href='https://osbar.org/public/ris/'
-                                    body='Lawyer Referral Service ►'
-                                />
-                            </p>
+                    <ul class='text-xs font-thin'>
+                        <li>
+                            © 2024 Oregon Criminal Defense Lawyers Association
                         </li>
-                        <li class='flex flex-col gap-2'>
-                            <strong>Committed to Public Service</strong>
-                            <p>
-                                We will always provide free access to the
-                                current law. In addition,{' '}
-                                <Hyperlink
-                                    href='https://blog.public.law/2018/04/06/automatic-upgrade-for-non-profit-educational-and-govt-users/'
-                                    body='we provide special ►'
-                                />{' '}
-                                support for non-profit, educational, and
-                                government users. Through social
-                                entre­pre­neurship, we’re lowering the cost of
-                                legal services and increasing citizen access.
-                            </p>
+                        <li>
+                            Oregon Criminal Defense Lawyers Association is a
+                            501(c)(3) nonprofit educational association.
+                            Contributions to OCDLA may be tax deductible - check
+                            with your tax advisor. Electronic downloads are for
+                            the sole use of the purchasing member. Files may not
+                            be distributed to others.
                         </li>
                     </ul>
                 </li>
                 <li class='text-nowrap'>
                     <ul class='flex flex-col gap-2'>
                         <li>
-                            <strong>Navigate</strong>
+                            <strong>Services</strong>
                         </li>
                         <li>
                             <ul>
                                 <li>
                                     <Hyperlink
-                                        href='https://public.law/legal-help-services'
-                                        body='Find a Lawyer'
+                                        type='standard'
+                                        href='https://pubs.ocdla.org/directory/members'
+                                        body='Membership Directory'
                                     />
                                 </li>
                                 <li>
                                     <Hyperlink
-                                        href='https://blog.public.law/'
-                                        body='Blog'
+                                        type='standard'
+                                        href='https://pubs.ocdla.org/directory/experts'
+                                        body='Expert Directory'
                                     />
                                 </li>
                                 <li>
                                     <Hyperlink
-                                        href='https://public.law/about-us'
-                                        body='About Us'
-                                    />
-                                </li>
-                                <li>
-                                    <Hyperlink
-                                        href='https://public.law/contact-us'
-                                        body='Contact Us'
-                                    />
-                                </li>
-                                <li>
-                                    <Hyperlink
-                                        href='https://public.law/blog'
-                                        body='Reports'
-                                    />
-                                </li>
-                                <li>
-                                    <Hyperlink
-                                        href='https://public.law/sources'
-                                        body='Secondary Sources'
+                                        type='standard'
+                                        href='/'
+                                        body='Online store'
                                     />
                                 </li>
                             </ul>
@@ -164,64 +105,65 @@ export default function Footer() {
                 </li>
                 <li class='text-nowrap'>
                     <ul class='flex flex-col gap-2'>
-                        <li class='flex whitespace-pre'>
-                            <strong>California: </strong>
-                            <Hyperlink
-                                href='https://california.public.law/codes'
-                                body='Codes'
-                            />
+                        <li>
+                            <strong>Research</strong>
                         </li>
-                        <li class='flex whitespace-pre'>
-                            <strong>Colorado: </strong>
-                            <Hyperlink
-                                href='https://colorado.public.law/statutes'
-                                body='C.R.S.'
-                            />
+                        <li>
+                            <ul>
+                                <li>
+                                    <Hyperlink
+                                        type='standard'
+                                        href='https://pubs.ocdla.org/car/list'
+                                        body='Research Criminal Appellate Review'
+                                    />
+                                </li>
+                                <li>
+                                    <Hyperlink
+                                        type='standard'
+                                        href='https://lod.ocdla.org/'
+                                        body='Library of Defense'
+                                    />
+                                </li>
+                                <li>
+                                    <Hyperlink
+                                        type='standard'
+                                        href='https://lod.ocdla.org/Public:Subscriptions'
+                                        body='Books Online'
+                                    />
+                                </li>
+                            </ul>
                         </li>
-                        <li class='flex whitespace-pre'>
-                            <strong>Nevada: </strong>
-                            <Hyperlink
-                                href='https://nevada.public.law/statutes'
-                                body='NRS'
-                            />
+                    </ul>
+                </li>
+                <li class='text-nowrap'>
+                    <ul class='flex flex-col gap-2'>
+                        <li>
+                            <strong>Resources</strong>
                         </li>
-                        <li class='flex whitespace-pre'>
-                            <strong>New York: </strong>
-                            <Hyperlink
-                                href='https://newyork.public.law/laws'
-                                body='Laws'
-                            />
-                        </li>
-                        <li class='flex whitespace-pre'>
-                            <strong>Oregon: </strong>
-                            <Hyperlink
-                                href='https://oregon.public.law/rules'
-                                body='OAR'
-                            />
-                            ,{' '}
-                            <Hyperlink
-                                href='https://oregon.public.law/statutes'
-                                body='ORS'
-                            />
-                        </li>
-                        <li class='flex whitespace-pre'>
-                            <strong>Texas: </strong>
-                            <Hyperlink
-                                href='https://texas.public.law/statutes'
-                                body='Statues'
-                            />
-                        </li>
-                        <li class='flex whitespace-pre'>
-                            <strong>World: </strong>
-                            <Hyperlink
-                                href='https://public.law/world/rome_statute'
-                                body='Rome Statute'
-                            />
-                            ,{' '}
-                            <Hyperlink
-                                href='https://public.law/dictionary'
-                                body='International Dictionary'
-                            />
+                        <li>
+                            <ul>
+                                <li>
+                                    <Hyperlink
+                                        type='standard'
+                                        href='/'
+                                        body='CLEs'
+                                    />
+                                </li>
+                                <li>
+                                    <Hyperlink
+                                        type='standard'
+                                        href='/'
+                                        body='Videos'
+                                    />
+                                </li>
+                                <li>
+                                    <Hyperlink
+                                        type='standard'
+                                        href='/'
+                                        body='Seminars & Events'
+                                    />
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>

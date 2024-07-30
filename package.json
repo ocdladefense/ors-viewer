@@ -9,7 +9,7 @@
         "lint-fix": "eslint --fix src/**",
         "build": "webpack --config webpack.config.js",
         "git-reset": "git reset --soft HEAD~1",
-        "git-force": "git push origin +jsx --force"
+        "git-force": "git push origin +main --force"
     },
     "dependencies": {
         "autoprefixer": "^10.4.19",

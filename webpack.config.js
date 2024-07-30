@@ -16,7 +16,7 @@ module.exports = {
         app: path.resolve(__dirname, './src/js/index.js')
     },
     snapshot: {
-        managedPaths: [path.resolve(__dirname, 'node_modules')]
+        managedPaths: []
     },
     watchOptions: {
         followSymlinks: true
