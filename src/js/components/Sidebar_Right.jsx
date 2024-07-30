@@ -8,7 +8,7 @@ export default function Sidebar_Right({ type }) {
     return (
         <aside class='hidden h-[87.5vh] overflow-scroll border-x text-xs lg:block'>
             <ul class='p-4'>
-                {type === 'node-ors' ? (
+                {type === 'books-online' ? (
                     <abbr
                         class='flex flex-col gap-4'
                         // Blank **title** attribute is required.

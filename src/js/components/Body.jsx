@@ -30,7 +30,7 @@ export default function Body({ type }) {
 
     return (
         <main class='flex flex-col gap-4 p-4 lg:col-span-4 lg:col-start-2 lg:me-auto lg:p-8'>
-            {type === 'node-ors' ? (
+            {type === 'books-online' ? (
                 <div class='flex flex-col gap-4'>
                     <h1 class='text-3xl font-bold'>
                         Felony Sentencing in Oregon: Guidelines, Statutes, Cases{' '}

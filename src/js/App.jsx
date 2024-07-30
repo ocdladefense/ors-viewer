@@ -83,7 +83,8 @@ import Footer from './components/Footer';
 export default function App() {
     // const [bool, setBool] = React.useState(1);
     let typeBool = true;
-    let appType = typeBool ? 'node-ors' : 'ors-viewer';
+    // let appType = process.env.APP_TYPE || 'books-online';
+    let appType = typeBool ? 'books-online' : 'ors-viewer';
 
     return (
         <>

@@ -8,7 +8,7 @@ export default function Sidebar_Left({ type }) {
     return (
         <aside class='hidden h-[87.5vh] overflow-scroll border-x lg:block'>
             <ul>
-                {type === 'node-ors' ? (
+                {type === 'books-online' ? (
                     <>
                         <ItemPage
                             href='https://pubs.ocdla.org/fsm/foreword'

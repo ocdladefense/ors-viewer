@@ -8,7 +8,7 @@ export default function Breadcrumbs({ type }) {
     return (
         <section class='container mx-auto flex items-center whitespace-pre border border-t-0 p-4 text-black lg:h-16'>
             <div class='container mx-auto flex items-center'>
-                {type === 'node-ors' ? (
+                {type === 'books-online' ? (
                     // <div class='flex items-center gap-2'>
                     <>
                         <Hyperlink
