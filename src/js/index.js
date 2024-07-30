@@ -2,7 +2,7 @@ import '../css/input.css';
 /** @jsx vNode */
 /* eslint-disable no-unused-vars */
 import { vNode, View } from '@ocdla/view';
-import { OrsChapter } from '@ocdla/ors/src/OrsChapter';
+import OrsChapter from '@ocdla/ors/src/OrsChapter';
 import HttpClient from '@ocdla/lib-http/HttpClient';
 import Url from '@ocdla/lib-http/Url';
 import App from './App';
@@ -19,15 +19,18 @@ let client = new HttpClient();
 
 let resp = await client.send(req);
 
-let chapter = await OrsChapter.fromResponse(resp).then(chapter => {
-    chapter.parse();
-    chapter.injectAnchors();
-    return chapter;
-});
+let msword = await OrsChapter.fromResponse(resp);
+msword.chapterNum = 1;
 
-console.log(chapter);
+let xml = OrsChapter.toStructuredChapter(msword);
+// Inspect the available properties for use in building section outline (left nav) and content.
+// section outline (left nav) is listed in sectionTitles property.
+// xml.doc contains the entire document.
+// xml.toString() will return the entire document as an HTML string for use with innerHTML.
+console.log(xml);
+console.log(xml.doc);
 
-// let doc = await chapter.load(resp);
+let html = xml.toString();
 
 const root = View.createRoot($body);
 // const root = View.createRoot('#root');
