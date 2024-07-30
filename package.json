@@ -9,14 +9,17 @@
         "lint-fix": "eslint --fix src/**",
         "build": "webpack --config webpack.config.js",
         "git-reset": "git reset --soft HEAD~1",
-        "git-force": "git push origin +main --force"
+        "git-force": "git push origin +main --force",
+        "watch": "webpack serve --open"
     },
     "dependencies": {
         "autoprefixer": "^10.4.19",
         "dotenv": "^16.4.5",
         "globals": "^15.6.0",
         "postcss": "^8.4.39",
-        "tailwindcss": "^3.4.6"
+        "tailwindcss": "^3.4.6",
+        "@ocdla/ors": "file:./dev_modules/@ocdla/ors",
+        "@ocdla/lib-http": "file:./dev_modules/@ocdla/lib-http"
     },
     "devDependencies": {
         "@babel/cli": "^7.18.10",
