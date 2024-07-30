@@ -30,14 +30,96 @@ __webpack_require__.r(__webpack_exports__);
 
 /* eslint-enable */
 
+// const React = (function () {
+//     let hooks = [];
+//     let idx = 0;
+//     let root = null;
+
+//     function useState(initialValue) {
+//         const state = hooks[idx] || initialValue;
+
+//         const _idx = idx;
+//         const setState = newVal => {
+//             hooks[_idx] = newVal;
+//         };
+
+//         idx++;
+
+//         return [state, setState];
+//     }
+
+//     function useEffect(cb, deps) {
+//         let oldDeps = hooks[idx];
+//         let hasChanged = true;
+
+//         if (oldDeps) {
+//             hasChanged = deps.some((dep, i) => !Object.is(dep, oldDeps[i]));
+//         }
+
+//         if (hasChanged) cb();
+//         hooks[idx] = deps;
+//         idx++;
+//     }
+
+//     function workLoop() {
+//         idx = 0;
+//         root.update(<MyComponent />);
+//         setTimeout(workLoop, 300);
+//     }
+
+//     let renderIndex = 0;
+
+//     function render(Component, selector, oldHooks) {
+//         oldHooks = oldHooks || [];
+//         console.log(oldHooks, hooks);
+//         let vNode = Component();
+//         let hasChanged = hooks.some((dep, i) => !Object.is(dep, oldHooks[i]));
+//         idx = 0;
+//         // let root = document.querySelector(selector);
+
+//         if (renderIndex === 0) {
+//             root = View.createRoot(selector);
+//         }
+//         // root.innerHTML = "";
+//         // const c = Component();
+//         // c.render();
+
+//         // let node = View.createElement(vNode);
+//         // root.appendChild(node);
+//         if (renderIndex === 0) {
+//             root.render(vNode);
+//         } else if (renderIndex > 0 && hasChanged) {
+//             root.update(vNode);
+//         }
+
+//         renderIndex++;
+//         oldHooks = hooks;
+//         // return c;
+//         setTimeout(() => render(Component, selector, oldHooks), 750);
+//     }
+
+//     return { useState, useEffect, vNode, render };
+// })();
+
 function App() {
+  // const [bool, setBool] = React.useState(1);
+  var typeBool = true;
+  var appType = typeBool ? 'node-ors' : 'ors-viewer';
   return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("header", {
-    "class": "flex flex-col xl:h-32"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Navbar__WEBPACK_IMPORTED_MODULE_1__["default"], null), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Breadcrumbs__WEBPACK_IMPORTED_MODULE_2__["default"], null)), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
+    "class": "flex flex-col lg:h-32"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Navbar__WEBPACK_IMPORTED_MODULE_1__["default"], null), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Breadcrumbs__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    type: appType
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
     "class": "container mx-auto"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
-    "class": "xl:grid xl:grid-cols-6"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Sidebar_Left__WEBPACK_IMPORTED_MODULE_3__["default"], null), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Body__WEBPACK_IMPORTED_MODULE_4__["default"], null), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Sidebar_Right__WEBPACK_IMPORTED_MODULE_5__["default"], null))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Footer__WEBPACK_IMPORTED_MODULE_6__["default"], null));
+    "class": "lg:grid lg:grid-cols-6"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Sidebar_Left__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    type: appType
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Body__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    type: appType
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Sidebar_Right__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    type: appType
+  }))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_components_Footer__WEBPACK_IMPORTED_MODULE_6__["default"], null));
 }
 
 /***/ }),
@@ -54,28 +136,65 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _ocdla_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ocdla/view */ "./node_modules/@ocdla/view/view.js");
 /* harmony import */ var _Hyperlink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Hyperlink */ "./src/js/components/Hyperlink.jsx");
-/** @jsx vNode */
+/** @jsx vNode */ /** @jsxFrag "Fragment" */
 /* eslint-disable no-unused-vars */
 
 
 /* eslint-enable */
 
-function Body() {
+function Body(_ref) {
+  var type = _ref.type;
   var styleTabActive = 'tab-btn rounded-t-md border border-b-transparent p-4';
-  var styleTabInactive = 'tab-btn rounded-t-md border border-transparent border-b-inherit p-4 text-blue-400';
+  var styleTabInactive = 'tab-btn rounded-t-md border border-transparent border-b-inherit p-4 text-blue-400 hover:text-blue-500 hover:underline hover:underline-offset-2';
   var toggleTabs = function toggleTabs(tabBtnClicked) {
     var tabBtns = document.getElementsByClassName('tab-btn');
     var tabBodies = document.getElementsByClassName('tab-body');
     Array.from(tabBtns).forEach(function (tabBtn) {
-      return tabBtn.className = tabBtnClicked.target.parentElement === tabBtn ? styleTabActive : styleTabInactive;
+      return tabBtn.className = tabBtnClicked.target === tabBtn ? styleTabActive : styleTabInactive;
     });
     Array.from(tabBodies).forEach(function (tabBody) {
       return tabBtnClicked.target.id.split('-')[2] === tabBody.id.split('-')[2] ? tabBody.classList.remove('hidden') : tabBody.classList.add('hidden');
     });
   };
   return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("main", {
-    "class": "flex flex-col gap-4 p-4 xl:col-span-4 xl:col-start-2 xl:me-auto xl:p-8"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("h1", {
+    "class": "flex flex-col gap-4 p-4 lg:col-span-4 lg:col-start-2 lg:me-auto lg:p-8"
+  }, type === 'node-ors' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
+    "class": "flex flex-col gap-4"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("h1", {
+    "class": "text-3xl font-bold"
+  }, "Felony Sentencing in Oregon: Guidelines, Statutes, Cases", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("button", {
+    "class": "contrast-[200] saturate-0 hover:opacity-[67.5%]"
+  }, "\uD83D\uDD16")), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", {
+    "class": "font-thin"
+  }, "2019 edition \u2014 Includes June 2023 updates by Jennelle Meeks Barton"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("h1", {
+    "class": "text-3xl font-bold"
+  }, "Chapter 1 - Introduction"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", {
+    "class": "flex items-center gap-2"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "Jesse Wm. Barton \uD83D\uDD89"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
+    "class": "flex gap-4"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "body-button",
+    href: "/",
+    body: "\uD83D\uDCC1 Chapters"
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "body-button",
+    href: "/",
+    body: "\uD83D\uDCC1 References"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "In 1977, the Oregon Legislature adopted the state\u2019s indeterminate (parole matrix) sentencing system. Effective November 1, 1989, the legislature replaced that system with the Oregon Sentencing Guidelines, a determinate sentencing system. The differences between indeterminate and determinate sentencing systems are discussed later in this chapter. Under either system:", (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("blockquote", {
+    "class": "m-8 border-l-8 border-blue-400 p-4"
+  }, "ORS 138.005(5)(a)-(b) (5) \u201CSentence\u201D means all legal consequences established or imposed by the trial court after conviction of an offense, including but not limited to: (a) Forfeiture, imprisonment, cancellation of license, removal from office, monetary obligation, probation, conditions of probation, discharge, restitution and community service; and (b) Suspension of imposition or execution of any part of a sentence, extension of a period of probation, imposition of a new or modified condition of probation or of sentence suspension, and imposition or execution of a sentence upon revocation of probation or sentence suspension. [ORS 558.35; ORS 529.1]"), "See also State v. Trice, 146 Or App 15, 19, 933 P2d 345, rev den, 325 Or 280 (1997) (\u201C[t]he term \u2018sentence\u2019 is generally defined as \u2018the judgment passed by a court or judge on a person on trial as a criminal or offender\u2019 and as an \u2018order by which a court or judge imposes punishment or penalty upon a person found guilty\u2019\u201D; quoting Webster\u2019s Third New International Dictionary 2068[sic] (unabridged ed 1993)). Although the legislature and the Oregon electorate, subsequent to the adoption of the guidelines, approved additional felony sentencing systems, these additional systems supplement, rather than replace, the guidelines. Consequently, this manual primarily focuses on the guidelines. This chapter discusses the guidelines\u2019 stated principles and purposes, including \u201C[t]he centerpiece of the sentencing guidelines\u201D\u2014the \u201CSentencing Guidelines Grid.\u201D State v. Davis, 315 Or 484, 487, 847 P2d 834 (1993). The chapter then discusses the guidelines\u2019 historical development and the manner in which they may be amended. The chapter also provides a summary of the categories of crimes and defendants to which the guidelines apply. Following that are analyses of the guidelines\u2019 stated definitions and the various rules used in construing the guidelines. Finally, the chapter discusses certain questions regarding the guidelines\u2019 constitutionality and trial court authority to impose money judgments in guidelines cases."), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("h1", {
+    "class": "text-3xl font-bold"
+  }, "\xA7 1-1. OAR 213-002-0001 STATEMENT OF PURPOSES AND PRINCIPLES."), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("blockquote", {
+    "class": "mx-8 border-l-8 border-blue-400 p-4 font-thin"
+  }, "213-002-0001Statement of Purposes and Principles (1) The primary objectives of sentencing are to punish each offender appropriately, and to insure the security of the people in person and property, within the limits of correctional resources provided by the Legislative Assembly, local governments and the people. (2) Sentencing guidelines are intended to forward the objectives described in section (1) by defining presumptive punishments for felony convictions, subject to judicial discretion to deviate for substantial and compelling reasons; and presumptive punishments for post-prison or probation supervision violations, again subject to deviation. (3) The basic principles which underlie these guidelines are: (a) The response of the corrections system to crime, and to violation of post-prison and probation supervision, must reflect the resources available for that response. A corrections system that overruns its resources is a system that cannot deliver its threatened punishment or its rehabilitative impact. This undermines the system\u2019s credibility with the public and the offender, and vitiates the objectives of prevention of recidivism and reformation of the offender. A corrections system that overruns its resources can produce costly litigation and the threat of loss of system control to the federal judiciary. A corrections system that overruns its resources can increase the risk to life and property within the system and to the public. (b) Oregon\u2019s current sentencing system combines indeterminate sentences with a parole matrix. Although many citizens believe the indeterminate sentence sets the length of imprisonment, that sentence only sets an offender\u2019s maximum period of incarceration and the matrix controls actual length of stay. The frequent disparity between the indeterminate sentence length and time served under the matrix confuses and angers the public and damages the corrections system\u2019s credibility with the public. Sentences of imprisonment should represent the time an offender will actually serve, subject only to any reduction authorized by law. (c) Under sentencing guidelines the response to many crimes will be state imprisonment. Other crimes will be punished by local penalties and restrictions imposed as part of probation. All offenders released from prison will be under post-prison supervision for a period of time. The ability of the corrections system to enforce swiftly and sternly the conditions of both probation and post-prison supervision, including by imprisonment, is crucial. Use of state institutions as the initial punishment for crime must, therefore, leave enough institutional capacity to permit imprisonment, when appropriate, for violation of probation and post-prison supervision conditions. (d) Subject to the discretion of the sentencing judge to deviate and impose a different sentence in recognition of aggravating and mitigating circumstances, the appropriate punishment for a felony conviction should depend on the seriousness of the crime of conviction when compared to all other crimes and the offender\u2019s criminal history. (e) Subject to the sentencing judge\u2019s discretion to deviate in recognition of aggravating and mitigating circumstances, the corrections system should seek to respond in a consistent way to like crimes combined with like criminal histories; and in a consistent way to like violations of probation and post-prison supervision conditions."), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("h1", {
+    "class": "text-3xl font-bold"
+  }, "\xA7 1-1.1. Intent of Provision."), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "The commentary to this provision states: \u201CThe purposes of sentencing in Oregon and the principles that guide sentencing practices to achieve those purposes are legislative issues. This provision states the State Sentencing Guidelines Board\u2019s understanding of those purposes and principles as provided in the guidelines enabling legislation, Chapter 619, Oregon Laws 1987 (1987 legislation).\u201D Sentencing Guidelines Implementation Manual 6 (1989) (hereafter Implementation Manual). Regardless of what the legislature declared are the purposes and principles of sentencing, the Oregon Constitution states its own set of principles: \u201CLaws for the punishment of crime shall be founded on these principles: protection of society, personal responsibility, and accountability for one\u2019s actions and reformation.\u201D Or Const, Art I, \xA7 15. See also State v. Kinkel, 184 Or App 277, 287, 56 P3d 463, 469, rev den, 335 Or 142 (2002) (\u201C[t]o the extent that the four criteria [of Article I, section 15] can be applied on the level of individualized sentencing, their particular significance must vary depending on the circumstances of the crime or crimes being sentenced\u201D). It is noteworthy that although \u201Creformation\u201D is a constitutionally based sentencing principle, the legislative purposes and principles do not mention it. To the extent the principles set by legislature conflict with those set by the constitution, the constitutional principles control. See, e.g., State v. Baker, 328 Or 355, 364, 976 P2d 1132 (1999)."), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("blockquote", {
+    "class": "border-l-4 border-yellow-400 bg-blue-50 p-4"
+  }, "Practice Tip The terms \u201Creformation\u201D and \u201Crehabilitation\u201D are interchangeable. When relying on Article I, section 15\u2019s reformation principle, defense counsel should cite to Pope Francis\u2019s address to United States Congress. He said, \u201CA just and necessary punishment must never exclude the dimension of hope and the goal of rehabilitation.\u201D \u201CVisit to the Joint Session of the United States Congress: \u2018Address of the Holy Father,\u2019\u201D U.S. Capitol, Washington, D.C., Sept. 24, 2015.")) : type === 'ors-viewer' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("h1", {
     "class": "text-4xl font-bold"
   }, "ORS 1.001"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", {
     "class": "text-3xl font-thin"
@@ -83,15 +202,13 @@ function Body() {
     "class": "flex flex-col gap-4"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
     "class": "flex"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": styleTabActive
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("button", {
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("button", {
     id: "tab-btn-1",
+    "class": styleTabActive,
     onclick: toggleTabs
-  }, "Text")), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": styleTabInactive
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("button", {
+  }, "Text")), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("button", {
     id: "tab-btn-2",
+    "class": styleTabInactive,
     onclick: toggleTabs
   }, "Annotations")), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
     "class": "w-full border border-transparent border-b-inherit p-4"
@@ -99,12 +216,13 @@ function Body() {
     id: "tab-body-1",
     "class": "tab-body flex flex-col gap-4"
   }, "The Legislative Assembly hereby declares that, as a matter of statewide concern, it is in the best interests of the people of this state that the judicial branch of state government, including the appellate, tax and circuit courts, be funded and operated at the state level. The Legislative Assembly finds that state funding and operation of the judicial branch can provide for best statewide allocation of governmental resources according to the actual needs of the people and of the judicial branch by establishing an accountable, equitably funded and uniformly administered system of justice for all the people of this state. [1981 s.s. c.3 \xA71]", (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("hr", null), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("small", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("i", null, "Source: Section 1.001 \u2014 State policy for courts,", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
     href: "https://\xADoregonlegislature.\xADgov/bills_laws/ors/ors001.\xADhtml",
     body: "https://\xADoregonlegislature.\xADgov/bills_laws/ors/ors001.\xADhtml"
   })))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", {
     id: "tab-body-2",
     "class": "tab-body flex flex-col gap-4"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "Law Review Citations"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "50 WLR 291 (2014)")));
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "Law Review Citations"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "50 WLR 291 (2014)"))) : (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null));
 }
 
 /***/ }),
@@ -121,30 +239,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _ocdla_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ocdla/view */ "./node_modules/@ocdla/view/view.js");
 /* harmony import */ var _Hyperlink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Hyperlink */ "./src/js/components/Hyperlink.jsx");
-/** @jsx vNode */
+/** @jsx vNode */ /** @jsxFrag "Fragment" */
 /* eslint-disable no-unused-vars */
 
 
 /* eslint-enable */
 
-function Breadcrumbs() {
+function Breadcrumbs(_ref) {
+  var type = _ref.type;
   return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("section", {
-    "class": "flex items-center p-4 xl:h-16"
+    "class": "container mx-auto flex items-center whitespace-pre border border-t-0 p-4 text-black lg:h-16"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
-    "class": "container mx-auto"
-  }, "/", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    "class": "container mx-auto flex items-center"
+  }, type === 'node-ors' ?
+  // <div class='flex items-center gap-2'>
+  (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "Books Online"
+  }), ' ', "/", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "Felony Sentencing in Oregon")) : type === 'ors-viewer' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
     href: "https://oregon.public.law/statutes",
     body: "ORS"
   }), ' ', "/", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
     href: "https://oregon.public.law/statutes/ors_volume_1",
     body: " Vol. 1 "
   }), ' ', "/", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
     href: "https://oregon.public.law/statutes/ors_title_1",
     body: " Title 1 "
   }), ' ', "/", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
     href: "https://oregon.public.law/statutes/ors_chapter_1",
     body: " Chap. 1. Courts & Judicial Officers Generally "
-  }), ' ', "/ \xA7 1.001"));
+  }), ' ', "/ ", (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "\xA7 1.001")) : (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null)));
 }
 
 /***/ }),
@@ -169,130 +298,91 @@ __webpack_require__.r(__webpack_exports__);
 
 function Footer() {
   return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("footer", {
-    "class": "container mx-auto w-full p-4 pb-20"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("hr", null), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
-    "class": "mt-4 flex flex-col gap-8 xl:flex-row"
+    "class": "container mx-auto flex flex-col gap-4 border border-b-0 p-4 pb-16 lg:flex-row lg:gap-0 lg:p-8 lg:pb-16"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
+    "class": "flex h-max flex-col gap-8 lg:flex-row lg:gap-32"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
-    "class": "flex flex-col gap-8"
+    "class": "flex items-center gap-4"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": "flex flex-col gap-2"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "Stay Connected"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "Join thousands of people who receive monthly site updates.")), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    extraClasses: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md",
-    href: "http://eepurl.com/dqx2dj",
-    body: "Subscribe"
+    "class": "flex"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "brand",
+    href: "https://oregon.public.law/",
+    body: (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
+      "class": "flex items-center"
+    }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("img", {
+      "class": "h-16",
+      src: "https://www.ocdla.org/wp-content/uploads/2019/10/cropped-ocdla-logo.png"
+    }))
   })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
+    "class": "flex flex-col"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
     "class": "flex gap-2"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    extraClasses: "opacity-50 hover:opacity-60",
-    href: "https://instagram.com/law.is.code/",
+    type: "footer-social",
+    href: "https://www.facebook.com/OregonCriminalDefenseLawyersAssociation/",
     body: (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("img", {
-      "class": "size-12",
-      src: "https://oregon.public.law/assets/social/instagram-logo-840401f66d7e41fb9696f8e077c49b550e669a1a613e2612a7ba18aa2c53776d.svg"
+      "class": "size-8",
+      src: "https://www.ocdla.org/wp-content/themes/wireframe/assets/images/default-facebook-icon.png"
     })
   })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    extraClasses: "opacity-50 hover:opacity-60",
-    href: "https://facebook.com/PublicDotLaw",
+    type: "footer-social",
+    href: "https://twitter.com/oregondefense?lang=en",
     body: (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("img", {
-      "class": "size-12",
-      src: "https://oregon.public.law/assets/social/facebook-logo-button-a44d2115afa1417c74235fd98657a42b6602af1b47332364fa6627a80e5a61ff.svg"
+      "class": "size-8",
+      src: "https://www.ocdla.org/wp-content/themes/wireframe/assets/images/default-twitter-icon.png"
     })
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    extraClasses: "opacity-50 hover:opacity-60",
-    href: "https://twitter.com/law_is_code",
-    body: (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("img", {
-      "class": "size-12",
-      src: "https://oregon.public.law/assets/social/twitter-logo-button-39f7c16ed398ca50006cd9a20dc33da44f7110bc26dbe7ec8980cbd9fc44cdc6.svg"
-    })
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    extraClasses: "opacity-50 hover:opacity-60",
-    href: "https://github.com/public-law/",
-    body: (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("img", {
-      "class": "size-12",
-      src: "https://oregon.public.law/assets/social/github-logo-b4302181192a1d29bb4b020699926827cea1717d423541ad0ec8b318cda6ff97.svg"
-    })
-  })))))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
-    "class": "flex flex-col gap-7"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": "flex flex-col gap-2"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "Get Legal Help"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "The", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://osbar.org/index.html",
-    body: "Oregon State Bar \u25BA"
-  }), ' ', "runs a service for finding an attorney in good standing. Initial consultations are usually free or discounted:", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://osbar.org/public/ris/",
-    body: "Lawyer Referral Service \u25BA"
-  }))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": "flex flex-col gap-2"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "Committed to Public Service"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "We will always provide free access to the current law. In addition,", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://blog.public.law/2018/04/06/automatic-upgrade-for-non-profit-educational-and-govt-users/",
-    body: "we provide special \u25BA"
-  }), ' ', "support for non-profit, educational, and government users. Through social entre\xADpre\xADneurship, we\u2019re lowering the cost of legal services and increasing citizen access.")))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
+  }))))))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
+    "class": "text-xs font-thin"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, "\xA9 2024 Oregon Criminal Defense Lawyers Association"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, "Oregon Criminal Defense Lawyers Association is a 501(c)(3) nonprofit educational association. Contributions to OCDLA may be tax deductible - check with your tax advisor. Electronic downloads are for the sole use of the purchasing member. Files may not be distributed to others."))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
     "class": "text-nowrap"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
     "class": "flex flex-col gap-2"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "Navigate")), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://public.law/legal-help-services",
-    body: "Find a Lawyer"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "Services")), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "https://pubs.ocdla.org/directory/members",
+    body: "Membership Directory"
   })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://blog.public.law/",
-    body: "Blog"
+    type: "standard",
+    href: "https://pubs.ocdla.org/directory/experts",
+    body: "Expert Directory"
   })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://public.law/about-us",
-    body: "About Us"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://public.law/contact-us",
-    body: "Contact Us"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://public.law/blog",
-    body: "Reports"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://public.law/sources",
-    body: "Secondary Sources"
+    type: "standard",
+    href: "/",
+    body: "Online store"
   })))))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
     "class": "text-nowrap"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
     "class": "flex flex-col gap-2"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": "flex whitespace-pre"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "California: "), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://california.public.law/codes",
-    body: "Codes"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": "flex whitespace-pre"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "Colorado: "), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://colorado.public.law/statutes",
-    body: "C.R.S."
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": "flex whitespace-pre"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "Nevada: "), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://nevada.public.law/statutes",
-    body: "NRS"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": "flex whitespace-pre"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "New York: "), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://newyork.public.law/laws",
-    body: "Laws"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": "flex whitespace-pre"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "Oregon: "), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://oregon.public.law/rules",
-    body: "OAR"
-  }), ",", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://oregon.public.law/statutes",
-    body: "ORS"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": "flex whitespace-pre"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "Texas: "), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://texas.public.law/statutes",
-    body: "Statues"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": "flex whitespace-pre"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "World: "), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://public.law/world/rome_statute",
-    body: "Rome Statute"
-  }), ",", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "https://public.law/dictionary",
-    body: "International Dictionary"
-  }))))));
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "Research")), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "https://pubs.ocdla.org/car/list",
+    body: "Research Criminal Appellate Review"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "https://lod.ocdla.org/",
+    body: "Library of Defense"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "https://lod.ocdla.org/Public:Subscriptions",
+    body: "Books Online"
+  })))))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
+    "class": "text-nowrap"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
+    "class": "flex flex-col gap-2"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("strong", null, "Resources")), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "CLEs"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "Videos"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "Seminars & Events"
+  }))))))));
 }
 
 /***/ }),
@@ -312,11 +402,36 @@ __webpack_require__.r(__webpack_exports__);
 /* eslint-disable-next-line no-unused-vars */
 
 function Hyperlink(_ref) {
-  var extraClasses = _ref.extraClasses,
+  var type = _ref.type,
+    extraClasses = _ref.extraClasses,
     href = _ref.href,
     body = _ref.body;
+  var classes;
+  switch (type) {
+    case 'standard':
+      classes = 'hover:underline-blue-500 text-blue-400 hover:opacity-[67.5%] hover:underline hover:underline-offset-2';
+      break;
+    case 'navbar-link':
+      classes = 'text-nowrap text-neutral-500 hover:opacity-[67.5%] hover:underline hover:underline-offset-2 -ms-4 lg:m-0 px-4 py-8';
+      break;
+    case 'navbar-dropdown':
+      classes = 'border border-t-0 hover:border-neutral-200 bg-neutral-50 px-12 py-2 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-600';
+      break;
+    case 'navbar-brand':
+      classes = 'p-4 lg:py-8 -m-4';
+      break;
+    case 'navbar-button-feedback':
+      classes = 'bg-blue-600 hover:bg-blue-500 text-white border-blue-600 hover:border-blue-500 px-4 py-2 rounded-md';
+      break;
+    case 'body-button':
+      classes = 'border border-blue-600 hover:opacity-[67.5%] text-blue-600 px-4 py-2 rounded-md contrast-[0] saturate-0';
+      break;
+    case 'footer-social':
+      classes = 'hover:opacity-[67.5%]';
+      break;
+  }
   return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("a", {
-    "class": "".concat(extraClasses !== undefined ? extraClasses : 'hover:underline-blue-500 text-blue-400 hover:text-blue-500 hover:underline hover:underline-offset-2'),
+    "class": "".concat(classes).concat(extraClasses !== null && extraClasses !== void 0 ? extraClasses : ''),
     href: href
   }, body);
 }
@@ -334,7 +449,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ ItemPage)
 /* harmony export */ });
 /* harmony import */ var _ocdla_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ocdla/view */ "./node_modules/@ocdla/view/view.js");
-/** @jsx vNode */
+/** @jsx vNode */ /** @jsxFrag "Fragment" */
 /* eslint-disable-next-line no-unused-vars */
 
 function ItemPage(_ref) {
@@ -342,31 +457,30 @@ function ItemPage(_ref) {
     href = _ref.href,
     heading = _ref.heading,
     body = _ref.body;
-  var li;
+  var a;
   var h1;
   var p;
   switch (active) {
     case true:
-      li = 'border text-white border-black bg-black';
+      a = 'text-white border-black bg-black';
       h1 = '';
       p = 'text-white';
       break;
     case undefined:
     case false:
-      li = 'group hover:bg-[#c0b3a0] border-r';
-      h1 = 'text-blue-400 group-hover:text-black';
+      a = 'group hover:bg-neutral-100';
+      h1 = 'text-blue-400 group-hover:text-blue-500';
       p = '';
       break;
   }
-  return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
-    "class": "px-4 py-2 ".concat(li)
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("a", {
+  return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("a", {
+    "class": "flex border-b px-4 py-2 ".concat(a),
     href: href
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("small", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("h1", {
     "class": "text-xl font-bold ".concat(h1)
-  }, heading), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", {
+  }, heading), body ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", {
     "class": p
-  }, body))));
+  }, body) : (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null))));
 }
 
 /***/ }),
@@ -391,51 +505,53 @@ __webpack_require__.r(__webpack_exports__);
 
 function Navbar() {
   return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("nav", {
-    "class": "flex items-center text-nowrap bg-[#3f3250] p-4 text-white/75 xl:h-16 xl:p-0"
+    "class": "flex items-center lg:h-16 lg:p-0"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("menu", {
-    "class": "container mx-auto flex flex-col gap-4 xl:flex-row xl:items-center xl:gap-0"
+    "class": "container mx-auto flex flex-col gap-4 border border-t-0 p-4 pt-0 lg:h-16 lg:flex-row lg:items-center lg:gap-0 lg:py-0"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
-    "class": "flex flex-col gap-4 xl:me-auto xl:flex-row xl:items-center xl:gap-0"
+    "class": "flex flex-col items-center gap-4 lg:me-auto lg:flex-row lg:gap-0"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
     "class": "flex items-center font-black text-white"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    extraClasses: "px-2 py-4",
+    type: "navbar-brand",
     href: "https://oregon.public.law/",
     body: (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
-      "class": "flex items-center gap-2"
+      "class": "flex items-center"
     }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("img", {
-      "class": "size-8",
-      src: "https://oregon.public.law/assets/logo/logo-white-on-transparent-68px-8727330fcdef91e245320acd7eb218bf7c3fc280a9ac48873293e89c65f1557a.png"
-    }), "OregonLaws")
+      "class": "h-16",
+      src: "https://www.ocdla.org/wp-content/uploads/2019/10/cropped-ocdla-logo.png"
+    }))
   })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    extraClasses: "hover:text-white hover:underline hover:underline-offset-2 px-4 py-8",
+    type: "navbar-link",
     href: "https://oregon.public.law/rules",
     body: "Oregon Administrative Rules"
   })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
     "class": "font-bold"
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    extraClasses: "hover:text-white hover:underline hover:underline-offset-2 px-4 py-8",
+    type: "navbar-link",
     href: "https://oregon.public.law/statutes",
     body: "Oregon Revised Statutes"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    extraClasses: "hover:text-white hover:underline hover:underline-offset-2 px-4 py-8",
-    href: "https://oregon.public.law/rules-of-civil-procedure",
-    body: "ORCP"
-  }))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
-    "class": "flex flex-col gap-4 xl:flex-row xl:items-center xl:gap-0"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("search", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("input", {
-    "class": "w-full px-3 py-2 text-black xl:rounded-lg",
-    type: "search",
-    placeholder: "Search"
-  }))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    extraClasses: "hover:text-white hover:underline hover:underline-offset-2 px-4 py-8",
-    href: "https://public.law/pricing",
-    body: "Remove ads"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    extraClasses: "hover:text-white hover:underline hover:underline-offset-2 px-4 py-8",
+  }))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("hr", {
+    "class": "block lg:hidden"
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
+    "class": "flex flex-row-reverse items-center gap-2 lg:flex-row"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
+    "class": "group relative ms-auto lg:m-0"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("button", {
+    "class": "peer flex h-[34px] w-[34px] items-center justify-center rounded-full bg-[#516490] p-2 text-white hover:opacity-[67.5%] group-focus-within:opacity-[67.5%]"
+  }, "G"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
+    "class": "absolute left-[50%] top-full z-10 mt-[15px] hidden -translate-x-1/2 flex-col text-nowrap shadow group-focus-within:flex"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "navbar-dropdown",
     href: "https://oregon.public.law/users/sign_in",
     body: "Login"
-  })))));
+  }))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", {
+    "class": "hidden text-neutral-300 lg:block"
+  }, "|"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "navbar-button-feedback",
+    href: "/",
+    body: "Give Feedback"
+  }), ' '))));
 }
 
 /***/ }),
@@ -452,16 +568,66 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _ocdla_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ocdla/view */ "./node_modules/@ocdla/view/view.js");
 /* harmony import */ var _ItemPage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ItemPage */ "./src/js/components/ItemPage.jsx");
-/** @jsx vNode */
+/** @jsx vNode */ /** @jsxFrag "Fragment" */
 /* eslint-disable no-unused-vars */
 
 
 /* eslint-enable */
 
-function Sidebar_Left() {
+function Sidebar_Left(_ref) {
+  var type = _ref.type;
   return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("aside", {
-    "class": "hidden h-[75vh] overflow-y-auto xl:block"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    "class": "hidden h-[87.5vh] overflow-scroll border-x lg:block"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", null, type === 'node-ors' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    href: "https://pubs.ocdla.org/fsm/foreword",
+    heading: "Chapter 1",
+    body: ""
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    href: "https://pubs.ocdla.org/fsm/sentencing-outline",
+    heading: "Sentencing Outline",
+    body: ""
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    active: true,
+    href: "https://pubs.ocdla.org/fsm/1",
+    heading: "Chapter 1",
+    body: "Introduction"
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    href: "https://pubs.ocdla.org/fsm/2",
+    heading: "Chapter 2",
+    body: "Crime Seriousness Rankings"
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    href: "https://pubs.ocdla.org/fsm/3",
+    heading: "Chapter 3",
+    body: "Criminal History Scoring"
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    href: "https://pubs.ocdla.org/fsm/4",
+    heading: "Chapter 4",
+    body: "Prison Sentences and Post-Prison Supervision"
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    href: "https://pubs.ocdla.org/fsm/5",
+    heading: "Chapter 5",
+    body: "Probationary and Straight Jail Sentences"
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    href: "https://pubs.ocdla.org/fsm/6",
+    heading: "Chapter 6",
+    body: "Plea Agreements"
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    href: "https://pubs.ocdla.org/fsm/7",
+    heading: "Chapter 7",
+    body: "Departure Sentences"
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    href: "https://pubs.ocdla.org/fsm/8",
+    heading: "Chapter 8",
+    body: "Merger and Consecutive Sentences"
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    href: "https://pubs.ocdla.org/fsm/9",
+    heading: "Chapter 9",
+    body: "Appeals and Post-Sentencing/Resentencing Authority"
+  }), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    href: "https://pubs.ocdla.org/fsm/10",
+    heading: "Chapter 10",
+    body: "Sentencing Guidelines"
+  })) : type === 'ors-viewer' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_ItemPage__WEBPACK_IMPORTED_MODULE_1__["default"], {
     active: true,
     href: "https://oregon.public.law/statutes/ors_1.001",
     heading: "1.001",
@@ -854,7 +1020,7 @@ function Sidebar_Left() {
     href: "https://oregon.public.law/statutes/ors_1.860",
     heading: "1.860",
     body: "Reports relating to municipal courts and justice courts"
-  })));
+  })) : (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("Fragment", null)));
 }
 
 /***/ }),
@@ -877,25 +1043,182 @@ __webpack_require__.r(__webpack_exports__);
 
 /* eslint-enable */
 
-function Sidebar_Right() {
+function Sidebar_Right(_ref) {
+  var type = _ref.type;
   return (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("aside", {
-    "class": "flex flex-col text-nowrap"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("h1", {
-    "class": "border-b-zinc flex gap-8 text-nowrap border-b-4 bg-zinc-100 px-4 py-2"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "Up to date"), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("img", {
-    "class": "ms-auto size-6",
-    src: "https://oregon.public.law/assets/checked-dark-green-2857f87605b971587a477f5d9beafb3c3a76b47b8a4b5dcecbf01b27418206c1.svg"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("small", {
-    "class": "flex flex-col gap-4 p-4"
-  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("abbr", {
+    "class": "hidden h-[87.5vh] overflow-scroll border-x text-xs lg:block"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("ul", {
+    "class": "p-4"
+  }, type === 'node-ors' ? (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("abbr", {
+    "class": "flex flex-col gap-4"
+    // Blank **title** attribute is required.
+    ,
+    title: ""
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-1.1. Intent of Provision."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-1.2. Punishment and Public Safety."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-1.3. Presumptive Punishments."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-1.4. Basic Guidelines Principles."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-2.1. Intent of Provision."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-3.1. Guidelines Amendments."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "June 2023 Update"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-3.2. OAR 213-001-0000 Notice Rule for Rulemaking."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-3.3. OAR 213-001-0005 Rulemaking Procedure."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-4.1 Intent of Provision."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-4.2. Date of Felony Uncertain."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-4.3. OAR 213-009-0002 Defendants Found Guilty Except for Insanity."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-4.4. Juvenile Defendants."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "June 2023 Update"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-5.1. Intent of Provision."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-6.1. Effect of Guidelines\u2019 Commentary and Staff Advisories."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.1. General Attacks."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.2. Specific Attacks\u2014Jury Trial Rights."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "June 2023 Update"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.3. Specific Attacks\u2014Due Process."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "June 2023 Update"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.4. Specific Attacks\u2014Notice of Intent to Prove Enhancement Facts."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "June 2023 Update"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.5. Specific Attacks\u2014Right Against Self-Incrimination."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.6. Specific Attacks\u2014Double Counting."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.7. Specific Attacks\u2014Confrontation."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.8. Specific Attacks\u2014Record of Prior Convictions."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "June 2023 Update"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.9. Specific Attacks\u2014Separate Criminal Episode Findings."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "June 2023 Update"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.10. Ad Hoc Application of Sentencing Schemes."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.11. Specific Attacks\u2014Speedy Trial."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-7.12. Specific Attacks\u2014Special State Constitutional Provisions."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "June 2023 Update"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "June 2023 Update"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "\xA7 1-8.1. Limitations on Money Judgments."
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "June 2023 Update"
+  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
+    href: "/",
+    body: "June 2023 Update"
+  }))) : (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("div", {
+    "class": "flex flex-col gap-4"
+  }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("abbr", {
     title: ""
   }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
-    href: "javascript:void(0)",
+    type: "standard",
+    href: "/",
     body: "Current through early 202"
-  })), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("p", null, "\xA7 1.001\u2019s source at", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  }))), (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)("li", null, "\xA7 1.001\u2019s source at", ' ', (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_0__.vNode)(_Hyperlink__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    type: "standard",
     href: "https://oregonlegislature.gov/bills_laws/ors/ors001.html",
     body: "oregon\u200B.gov \u25BA"
-  }))));
+  })))));
 }
 
 /***/ }),
@@ -1455,15 +1778,52 @@ video {
     max-width: 1536px;
   }
 }
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.left-5 {
+  left: 1.25rem;
+}
+.left-\\[50\\%\\] {
+  left: 50%;
+}
+.top-5 {
+  top: 1.25rem;
+}
+.top-full {
+  top: 100%;
+}
+.z-10 {
+  z-index: 10;
+}
+.-m-4 {
+  margin: -1rem;
+}
+.m-8 {
+  margin: 2rem;
+}
+.mx-8 {
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
 }
+.-ms-4 {
+  margin-inline-start: -1rem;
+}
 .ms-auto {
   margin-inline-start: auto;
 }
-.mt-4 {
-  margin-top: 1rem;
+.mt-\\[15px\\] {
+  margin-top: 15px;
+}
+.block {
+  display: block;
 }
 .flex {
   display: flex;
@@ -1471,26 +1831,41 @@ video {
 .hidden {
   display: none;
 }
-.size-12 {
-  width: 3rem;
-  height: 3rem;
-}
-.size-6 {
-  width: 1.5rem;
-  height: 1.5rem;
-}
 .size-8 {
   width: 2rem;
   height: 2rem;
 }
-.h-\\[75vh\\] {
-  height: 75vh;
+.h-16 {
+  height: 4rem;
+}
+.h-\\[34px\\] {
+  height: 34px;
+}
+.h-\\[87\\.5vh\\] {
+  height: 87.5vh;
+}
+.h-full {
+  height: 100%;
+}
+.h-max {
+  height: -moz-max-content;
+  height: max-content;
 }
 .min-h-screen {
   min-height: 100vh;
 }
+.w-\\[34px\\] {
+  width: 34px;
+}
 .w-full {
   width: 100%;
+}
+.-translate-x-1\\/2 {
+  --tw-translate-x: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.flex-row-reverse {
+  flex-direction: row-reverse;
 }
 .flex-col {
   flex-direction: column;
@@ -1507,20 +1882,20 @@ video {
 .gap-4 {
   gap: 1rem;
 }
-.gap-7 {
-  gap: 1.75rem;
-}
 .gap-8 {
   gap: 2rem;
 }
-.overflow-y-auto {
-  overflow-y: auto;
+.overflow-scroll {
+  overflow: scroll;
 }
 .whitespace-pre {
   white-space: pre;
 }
 .text-nowrap {
   text-wrap: nowrap;
+}
+.rounded-full {
+  border-radius: 9999px;
 }
 .rounded-md {
   border-radius: 0.375rem;
@@ -1532,18 +1907,43 @@ video {
 .border {
   border-width: 1px;
 }
-.border-b-4 {
-  border-bottom-width: 4px;
-}
-.border-r {
+.border-x {
+  border-left-width: 1px;
   border-right-width: 1px;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.border-b-0 {
+  border-bottom-width: 0px;
+}
+.border-l-4 {
+  border-left-width: 4px;
+}
+.border-l-8 {
+  border-left-width: 8px;
+}
+.border-t-0 {
+  border-top-width: 0px;
 }
 .border-black {
   --tw-border-opacity: 1;
   border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
+.border-blue-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(96 165 250 / var(--tw-border-opacity));
+}
+.border-blue-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(37 99 235 / var(--tw-border-opacity));
+}
 .border-transparent {
   border-color: transparent;
+}
+.border-yellow-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(250 204 21 / var(--tw-border-opacity));
 }
 .border-b-inherit {
   border-bottom-color: inherit;
@@ -1551,21 +1951,25 @@ video {
 .border-b-transparent {
   border-bottom-color: transparent;
 }
-.bg-\\[\\#3f3250\\] {
+.bg-\\[\\#516490\\] {
   --tw-bg-opacity: 1;
-  background-color: rgb(63 50 80 / var(--tw-bg-opacity));
+  background-color: rgb(81 100 144 / var(--tw-bg-opacity));
 }
 .bg-black {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
+.bg-blue-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 246 255 / var(--tw-bg-opacity));
+}
 .bg-blue-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
-.bg-zinc-100 {
+.bg-neutral-50 {
   --tw-bg-opacity: 1;
-  background-color: rgb(244 244 245 / var(--tw-bg-opacity));
+  background-color: rgb(250 250 250 / var(--tw-bg-opacity));
 }
 .bg-gradient-to-br {
   background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
@@ -1595,12 +1999,15 @@ video {
 .bg-no-repeat {
   background-repeat: no-repeat;
 }
+.p-2 {
+  padding: 0.5rem;
+}
 .p-4 {
   padding: 1rem;
 }
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+.px-12 {
+  padding-left: 3rem;
+  padding-right: 3rem;
 }
 .px-3 {
   padding-left: 0.75rem;
@@ -1614,16 +2021,15 @@ video {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
-.py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
-.pb-20 {
-  padding-bottom: 5rem;
+.pb-16 {
+  padding-bottom: 4rem;
+}
+.pt-0 {
+  padding-top: 0px;
 }
 .text-3xl {
   font-size: 1.875rem;
@@ -1636,6 +2042,10 @@ video {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 .font-black {
   font-weight: 900;
@@ -1654,35 +2064,66 @@ video {
   --tw-text-opacity: 1;
   color: rgb(96 165 250 / var(--tw-text-opacity));
 }
+.text-blue-600 {
+  --tw-text-opacity: 1;
+  color: rgb(37 99 235 / var(--tw-text-opacity));
+}
+.text-neutral-300 {
+  --tw-text-opacity: 1;
+  color: rgb(212 212 212 / var(--tw-text-opacity));
+}
+.text-neutral-500 {
+  --tw-text-opacity: 1;
+  color: rgb(115 115 115 / var(--tw-text-opacity));
+}
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-.text-white\\/75 {
-  color: rgb(255 255 255 / 0.75);
 }
 .antialiased {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.opacity-50 {
-  opacity: 0.5;
+.shadow {
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-.hover\\:bg-\\[\\#c0b3a0\\]:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(192 179 160 / var(--tw-bg-opacity));
+.contrast-\\[0\\] {
+  --tw-contrast: contrast(0);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
-.hover\\:bg-blue-700:hover {
+.contrast-\\[200\\] {
+  --tw-contrast: contrast(200);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.saturate-0 {
+  --tw-saturate: saturate(0);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.hover\\:border-blue-500:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+.hover\\:border-neutral-200:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(229 229 229 / var(--tw-border-opacity));
+}
+.hover\\:bg-blue-500:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+.hover\\:bg-neutral-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(245 245 245 / var(--tw-bg-opacity));
 }
 .hover\\:text-blue-500:hover {
   --tw-text-opacity: 1;
   color: rgb(59 130 246 / var(--tw-text-opacity));
 }
-.hover\\:text-white:hover {
+.hover\\:text-neutral-600:hover {
   --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: rgb(82 82 82 / var(--tw-text-opacity));
 }
 .hover\\:underline:hover {
   text-decoration-line: underline;
@@ -1690,72 +2131,108 @@ video {
 .hover\\:underline-offset-2:hover {
   text-underline-offset: 2px;
 }
-.hover\\:opacity-60:hover {
-  opacity: 0.6;
+.hover\\:opacity-\\[67\\.5\\%\\]:hover {
+  opacity: 67.5%;
 }
-.group:hover .group-hover\\:text-black {
+.group:focus-within .group-focus-within\\:flex {
+  display: flex;
+}
+.group:focus-within .group-focus-within\\:opacity-\\[67\\.5\\%\\] {
+  opacity: 67.5%;
+}
+.group:hover .group-hover\\:text-blue-500 {
   --tw-text-opacity: 1;
-  color: rgb(0 0 0 / var(--tw-text-opacity));
+  color: rgb(59 130 246 / var(--tw-text-opacity));
 }
-@media (min-width: 1280px) {
+@media (min-width: 1024px) {
 
-  .xl\\:col-span-4 {
+  .lg\\:col-span-4 {
     grid-column: span 4 / span 4;
   }
 
-  .xl\\:col-start-2 {
+  .lg\\:col-start-2 {
     grid-column-start: 2;
   }
 
-  .xl\\:me-auto {
+  .lg\\:m-0 {
+    margin: 0px;
+  }
+
+  .lg\\:me-auto {
     margin-inline-end: auto;
   }
 
-  .xl\\:block {
+  .lg\\:block {
     display: block;
   }
 
-  .xl\\:grid {
+  .lg\\:flex {
+    display: flex;
+  }
+
+  .lg\\:grid {
     display: grid;
   }
 
-  .xl\\:h-16 {
+  .lg\\:hidden {
+    display: none;
+  }
+
+  .lg\\:h-16 {
     height: 4rem;
   }
 
-  .xl\\:h-32 {
+  .lg\\:h-32 {
     height: 8rem;
   }
 
-  .xl\\:grid-cols-6 {
+  .lg\\:grid-cols-6 {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
-  .xl\\:flex-row {
+  .lg\\:flex-row {
     flex-direction: row;
   }
 
-  .xl\\:items-center {
+  .lg\\:items-center {
     align-items: center;
   }
 
-  .xl\\:gap-0 {
+  .lg\\:gap-0 {
     gap: 0px;
   }
 
-  .xl\\:rounded-lg {
+  .lg\\:gap-32 {
+    gap: 8rem;
+  }
+
+  .lg\\:rounded-lg {
     border-radius: 0.5rem;
   }
 
-  .xl\\:p-0 {
+  .lg\\:p-0 {
     padding: 0px;
   }
 
-  .xl\\:p-8 {
+  .lg\\:p-8 {
     padding: 2rem;
   }
+
+  .lg\\:py-0 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+
+  .lg\\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .lg\\:pb-16 {
+    padding-bottom: 4rem;
+  }
 }
-`, "",{"version":3,"sources":["webpack://./src/css/input.css"],"names":[],"mappings":"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","sourcesContent":["@tailwind base;\n@tailwind components;\n@tailwind utilities;\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/css/input.css"],"names":[],"mappings":"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","sourcesContent":["@tailwind base;\n@tailwind components;\n@tailwind utilities;\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
