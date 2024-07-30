@@ -13,6 +13,9 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v4
 
+            - name: Install submodules
+              uses: git submodule update --init --recursive
+
             - name: Setup NodeJS
               uses: actions/setup-node@v4
               with:
@@ -20,12 +23,12 @@ jobs:
                   cache: 'npm'
 
             - name: Install dependencies
-              run: npm install --legacy-peer-deps
+              run: npm update --legacy-peer-deps
 
-            - name: Run NPM build
+            - name: Build application
               run: npm run build
 
-            - name: Deploy website
+            - name: Deploy application
               uses: peaceiris/actions-gh-pages@v4
               with:
                   github_token: ${{ secrets.MY_TOKEN }}
