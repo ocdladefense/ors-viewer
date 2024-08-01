@@ -13,7 +13,7 @@ const copyPlugin = require('copy-webpack-plugin');
 module.exports = {
     mode: 'development',
     entry: {
-        app: path.resolve(__dirname, './src/js/index.js')
+        app: path.resolve(__dirname, 'src/js/index.js')
     },
     snapshot: {
         managedPaths: []
@@ -33,9 +33,9 @@ module.exports = {
     },
     target: 'web',
     devServer: {
-        static: path.resolve(__dirname, './src'),
+        static: path.resolve(__dirname, 'src'),
         port: 80,
-        open: true,
+        open: false,
         hot: true,
         compress: true,
         historyApiFallback: true
@@ -45,7 +45,10 @@ module.exports = {
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                exclude: /(node_modules|dev_modules)/,
+                exclude: [
+                    /node_modules\/(?!@ocdla\/global-components)/,
+                    /dev_modules\/(?!@ocdla\/global-components)/
+                ],
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -55,14 +58,26 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
+                exclude: [
+                    /node_modules\/(?!@ocdla\/global-components)/,
+                    /dev_modules\/(?!@ocdla\/global-components)/
+                ],
                 use: ['style-loader', 'css-loader', 'postcss-loader']
             },
             {
                 test: /\.(svg|eot|ttf|woff|woff2)$/i,
+                exclude: [
+                    /node_modules\/(?!@ocdla\/global-components)/,
+                    /dev_modules\/(?!@ocdla\/global-components)/
+                ],
                 type: 'asset/resource'
             },
             {
                 test: /\.(png|jpg|gif)$/i,
+                exclude: [
+                    /node_modules\/(?!@ocdla\/global-components)/,
+                    /dev_modules\/(?!@ocdla\/global-components)/
+                ],
                 type: 'asset/resource'
             }
         ]
@@ -76,7 +91,7 @@ module.exports = {
         // }),
         // new webpack.DefinePlugin(envKeys),
         new htmlWebpackPlugin({
-            template: path.resolve(__dirname, './src/index.html'),
+            template: path.resolve(__dirname, 'src/index.html'),
             chunks: ['app'],
             inject: 'body',
             filename: 'index.html'

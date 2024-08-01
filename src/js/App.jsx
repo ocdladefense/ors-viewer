@@ -1,114 +1,101 @@
 /** @jsx vNode */ /** @jsxFrag "Fragment" */
 /* eslint-disable no-unused-vars */
 import { vNode } from '@ocdla/view';
-import Navbar from './components/Navbar';
-import Breadcrumbs from './components/Breadcrumbs';
-import Sidebar_Left from './components/Sidebar_Left';
-import Body from './components/Body';
-import Sidebar_Right from './components/Sidebar_Right';
-import Footer from './components/Footer';
+import Navbar from '@ocdla/global-components/src/components/Navbar';
+import Breadcrumbs from '@ocdla/global-components/src/components/Breadcrumbs';
+import Sidebar from '@ocdla/global-components/src/components/Sidebar';
+import Sidebar_Left_Item from '@ocdla/global-components/src/components/Sidebar_Left_Item';
+import Sidebar_Right_Item from '@ocdla/global-components/src/components/Sidebar_Right_Item';
+import Body from '@ocdla/global-components/src/components/Body';
+import Footer from '@ocdla/global-components/src/components/Footer';
 /* eslint-enable */
+import Books_Online_Breadcrumbs_Items from '@ocdla/global-components/src/data/books-online/breadcrumbs/items.json';
+import Ors_Viewer_Breadcrumbs_Items from '@ocdla/global-components/src/data/ors-viewer/breadcrumbs/items.json';
+import Books_Online_Sidebar_Left_Items from '@ocdla/global-components/src/data/books-online/sidebar_left/items.json';
+import Ors_Viewer_Sidebar_Left_Items from '@ocdla/global-components/src/data/ors-viewer/sidebar_left/items.json';
+import Books_Online_Sidebar_Right_Items from '@ocdla/global-components/src/data/books-online/sidebar_right/items.json';
+import Ors_Viewer_Sidebar_Right_Items from '@ocdla/global-components/src/data/ors-viewer/sidebar_right/items.json';
 
-// const React = (function () {
-//     let hooks = [];
-//     let idx = 0;
-//     let root = null;
-
-//     function useState(initialValue) {
-//         const state = hooks[idx] || initialValue;
-
-//         const _idx = idx;
-//         const setState = newVal => {
-//             hooks[_idx] = newVal;
-//         };
-
-//         idx++;
-
-//         return [state, setState];
-//     }
-
-//     function useEffect(cb, deps) {
-//         let oldDeps = hooks[idx];
-//         let hasChanged = true;
-
-//         if (oldDeps) {
-//             hasChanged = deps.some((dep, i) => !Object.is(dep, oldDeps[i]));
-//         }
-
-//         if (hasChanged) cb();
-//         hooks[idx] = deps;
-//         idx++;
-//     }
-
-//     function workLoop() {
-//         idx = 0;
-//         root.update(<MyComponent />);
-//         setTimeout(workLoop, 300);
-//     }
-
-//     let renderIndex = 0;
-
-//     function render(Component, selector, oldHooks) {
-//         oldHooks = oldHooks || [];
-//         console.log(oldHooks, hooks);
-//         let vNode = Component();
-//         let hasChanged = hooks.some((dep, i) => !Object.is(dep, oldHooks[i]));
-//         idx = 0;
-//         // let root = document.querySelector(selector);
-
-//         if (renderIndex === 0) {
-//             root = View.createRoot(selector);
-//         }
-//         // root.innerHTML = "";
-//         // const c = Component();
-//         // c.render();
-
-//         // let node = View.createElement(vNode);
-//         // root.appendChild(node);
-//         if (renderIndex === 0) {
-//             root.render(vNode);
-//         } else if (renderIndex > 0 && hasChanged) {
-//             root.update(vNode);
-//         }
-
-//         renderIndex++;
-//         oldHooks = hooks;
-//         // return c;
-//         setTimeout(() => render(Component, selector, oldHooks), 750);
-//     }
-
-//     return { useState, useEffect, vNode, render };
-// })();
-
-export default function App() {
-    // const [bool, setBool] = React.useState(1);
-    let typeBool = true;
-    // let appType = process.env.APP_TYPE || 'books-online';
-    let appType = typeBool ? 'books-online' : 'ors-viewer';
+export default function App({ view, appTypeCurrent }) {
+    const appTypeIndicators = appTypeCurrent ? '📚' : '🔍';
+    const appTypeString = appTypeCurrent ? 'books-online' : 'ors-viewer';
 
     return (
         <>
-            {/* <div class='absolute left-5 top-5'>
-                <input
+            {/* <div class='absolute flex translate-x-[-25%] translate-y-[300%] -rotate-90 gap-2'> */}
+            <div class='group absolute right-0 m-4 flex gap-2 lg:left-0 lg:m-2'>
+                {/* <input
+                    id='testToggle'
                     type='checkbox'
-                    checked={typeBool}
-                    onclick={() => {
-                        typeBool = !typeBool;
-                        console.log(typeBool);
+                    checked={appTypeCurrent}
+                    onchange={() => {
+                        appTypeCurrent = !appTypeCurrent;
+
+                        view.update(
+                            <App
+                                view={view}
+                                appTypeCurrent={appTypeCurrent}
+                            />
+                        );
                     }}
                 />
-                <p>Toggle {appType}</p>
-            </div> */}
+                <label
+                    class='select-none whitespace-pre font-bold'
+                    for='testToggle'>
+                    {appTypeString}
+                </label> */}
+                <button
+                    class='select-none whitespace-pre font-bold'
+                    onclick={() => {
+                        appTypeCurrent = !appTypeCurrent;
+
+                        view.render(
+                            <App
+                                view={view}
+                                appTypeCurrent={appTypeCurrent}
+                            />
+                        );
+                    }}>
+                    {appTypeIndicators} | {appTypeString}
+                </button>
+            </div>
             <header class='flex flex-col lg:h-32'>
                 <Navbar />
-                <Breadcrumbs type={appType} />
+                <Breadcrumbs
+                    items={
+                        appTypeCurrent === true
+                            ? Books_Online_Breadcrumbs_Items
+                            : appTypeCurrent === false
+                              ? Ors_Viewer_Breadcrumbs_Items
+                              : []
+                    }
+                />
             </header>
-            <div class='container mx-auto'>
+            {/* <div class='container mx-auto border-x border-red-600'> */}
+            <div class='container mx-auto border-x'>
                 {/* <div class='flex flex-col lg:flex-row'> */}
                 <div class='lg:grid lg:grid-cols-6'>
-                    <Sidebar_Left type={appType} />
-                    <Body type={appType} />
-                    <Sidebar_Right type={appType} />
+                    <Sidebar
+                        component={Sidebar_Left_Item}
+                        items={
+                            appTypeCurrent === true
+                                ? Books_Online_Sidebar_Left_Items
+                                : appTypeCurrent === false
+                                  ? Ors_Viewer_Sidebar_Left_Items
+                                  : []
+                        }
+                    />
+                    <Body type={appTypeString} />
+                    <Sidebar
+                        component={Sidebar_Right_Item}
+                        items={
+                            appTypeCurrent === true
+                                ? Books_Online_Sidebar_Right_Items
+                                : appTypeCurrent === false
+                                  ? Ors_Viewer_Sidebar_Right_Items
+                                  : []
+                        }
+                    />
                 </div>
             </div>
             <Footer />

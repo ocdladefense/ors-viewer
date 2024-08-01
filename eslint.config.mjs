@@ -2,6 +2,20 @@ import globals from 'globals';
 import pluginJs from '@eslint/js';
 
 export default [
+    // {
+    //     ignores: [
+    //         'node_modules/',
+    //         '!node_modules/@ocdla/global-components/',
+    //         'dev_modules/',
+    //         '!dev_modules/@ocdla/global-components/'
+    //     ],
+    //     files: [
+    //         'node_modules/@ocdla/global-components/*.js',
+    //         'node_modules/@ocdla/global-components/*.jsx',
+    //         'dev_modules/@ocdla/global-components/*.js',
+    //         'dev_modules/@ocdla/global-components/*.jsx'
+    //     ]
+    // },
     {
         languageOptions: {
             globals: globals.browser,
