@@ -21,7 +21,7 @@
         "@ocdla/global-components": "file:./dev_modules/@ocdla/global-components",
         "@ocdla/lib-http": "file:./dev_modules/@ocdla/lib-http",
         "@ocdla/ors": "file:./dev_modules/@ocdla/ors",
-        "@ocdla/view": "^2.3.14"
+        "@ocdla/view": "file:./dev_modules/@ocdla/view"
     },
     "devDependencies": {
         "@babel/cli": "^7.18.10",
