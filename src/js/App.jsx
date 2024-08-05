@@ -18,16 +18,20 @@ import Ors_Viewer_Sidebar_Right_Items from '../data/ors-viewer/sidebar_right/ite
 
 import { fetch_sidebar_left_ors_viewer } from './functions/fetch_data';
 
-export default function App({ view, appTypeCurrent }) {
+export default async function App({ view, appTypeCurrent }) {
     const appTypeIndicators = appTypeCurrent ? '📚' : '🔍';
     const appTypeString = appTypeCurrent ? 'books-online' : 'ors-viewer';
 
     // Test 1
-    console.log(fetch_sidebar_left_ors_viewer());
+    // console.log(fetch_sidebar_left_ors_viewer());
 
     // Test 2
     // const abc = async () => await fetch_sidebar_left_ors_viewer();
-    // console.log(abc());
+    // console.log(abc);
+
+    // Test 3
+    const abc = await fetch_sidebar_left_ors_viewer();
+    console.log(abc);
 
     return (
         <>
