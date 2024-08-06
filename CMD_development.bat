@@ -1,7 +1,7 @@
 @ECHO OFF
 
 ECHO ----------------
-ECHO 1 - [ development - npm run start ]
+ECHO 1 - [ development - npm run watch ]
 ECHO 2 - [ development - npm run lint ]
 ECHO 3 - [ development - npm run lint-fix ]
 ECHO 8 - [ development - depcheck ]
@@ -13,7 +13,7 @@ ECHO ----------------
 SET /P input="ENTER: "
 
 IF %input% == 1 (
-    CALL npm run start
+    CALL npm run watch
 )
 
 IF %input% == 2 (

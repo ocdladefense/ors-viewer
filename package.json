@@ -4,13 +4,12 @@
     "description": "",
     "main": "index.html",
     "scripts": {
-        "start": "webpack serve",
+        "watch": "webpack serve",
         "lint": "eslint -c eslint.config.mjs",
         "lint-fix": "eslint -c eslint.config.mjs --fix",
         "build": "webpack --config webpack.config.js",
         "git-reset": "git reset --soft HEAD~1",
-        "git-force": "git push origin +main --force",
-        "watch": "webpack serve --open"
+        "git-force": "git push origin +main --force"
     },
     "dependencies": {
         "autoprefixer": "^10.4.19",
