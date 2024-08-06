@@ -10,28 +10,27 @@ import Body from '@ocdla/global-components/src/Body';
 import Footer from '@ocdla/global-components/src/Footer';
 /* eslint-enable */
 import Books_Online_Breadcrumbs_Items from '../data/books-online/breadcrumbs/items.json';
-import Ors_Viewer_Breadcrumbs_Items from '../data/ors-viewer/breadcrumbs/items.json';
+// import Ors_Viewer_Breadcrumbs_Items from '../data/ors-viewer/breadcrumbs/items.json';
 import Books_Online_Sidebar_Left_Items from '../data/books-online/sidebar_left/items.json';
-import Ors_Viewer_Sidebar_Left_Items from '../data/ors-viewer/sidebar_left/items.json';
+// import Ors_Viewer_Sidebar_Left_Items from '../data/ors-viewer/sidebar_left/items.json';
 import Books_Online_Sidebar_Right_Items from '../data/books-online/sidebar_right/items.json';
-import Ors_Viewer_Sidebar_Right_Items from '../data/ors-viewer/sidebar_right/items.json';
+// import Ors_Viewer_Sidebar_Right_Items from '../data/ors-viewer/sidebar_right/items.json';
 
-import { fetch_sidebar_left_ors_viewer } from './functions/fetch_data';
-
-export default async function App({ view, appTypeCurrent }) {
+export default function App({
+    view,
+    appTypeCurrent,
+    currentVolume,
+    currentTitle,
+    currentChapter,
+    currentSection,
+    items_breadcrumbs_ors_viewer,
+    items_sidebar_left_ors_viewer,
+    items_sidebar_right_ors_viewer
+}) {
     const appTypeIndicators = appTypeCurrent ? '📚' : '🔍';
     const appTypeString = appTypeCurrent ? 'books-online' : 'ors-viewer';
 
-    // Test 1
-    // console.log(fetch_sidebar_left_ors_viewer());
-
-    // Test 2
-    // const abc = async () => await fetch_sidebar_left_ors_viewer();
-    // console.log(abc);
-
-    // Test 3
-    const abc = await fetch_sidebar_left_ors_viewer();
-    console.log(abc);
+    // console.log(items_sidebar_left_ors_viewer);
 
     return (
         <>
@@ -66,6 +65,19 @@ export default async function App({ view, appTypeCurrent }) {
                             <App
                                 view={view}
                                 appTypeCurrent={appTypeCurrent}
+                                currentVolume={currentVolume}
+                                currentTitle={currentTitle}
+                                currentChapter={currentChapter}
+                                currentSection={currentSection}
+                                items_breadcrumbs_ors_viewer={
+                                    items_breadcrumbs_ors_viewer
+                                }
+                                items_sidebar_left_ors_viewer={
+                                    items_sidebar_left_ors_viewer
+                                }
+                                items_sidebar_right_ors_viewer={
+                                    items_sidebar_right_ors_viewer
+                                }
                             />
                         );
                     }}>
@@ -79,7 +91,7 @@ export default async function App({ view, appTypeCurrent }) {
                         appTypeCurrent === true
                             ? Books_Online_Breadcrumbs_Items
                             : appTypeCurrent === false
-                              ? Ors_Viewer_Breadcrumbs_Items
+                              ? items_breadcrumbs_ors_viewer
                               : []
                     }
                 />
@@ -94,7 +106,7 @@ export default async function App({ view, appTypeCurrent }) {
                             appTypeCurrent === true
                                 ? Books_Online_Sidebar_Left_Items
                                 : appTypeCurrent === false
-                                  ? Ors_Viewer_Sidebar_Left_Items
+                                  ? items_sidebar_left_ors_viewer
                                   : []
                         }
                     />
@@ -105,7 +117,7 @@ export default async function App({ view, appTypeCurrent }) {
                             appTypeCurrent === true
                                 ? Books_Online_Sidebar_Right_Items
                                 : appTypeCurrent === false
-                                  ? Ors_Viewer_Sidebar_Right_Items
+                                  ? items_sidebar_right_ors_viewer
                                   : []
                         }
                     />

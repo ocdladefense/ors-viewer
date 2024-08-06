@@ -11,7 +11,11 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['"Open Sans"', ...defaultTheme.fontFamily.sans]
+                sans: [
+                    '"Open Sans"',
+                    'Verdana',
+                    ...defaultTheme.fontFamily.sans
+                ]
             }
         }
     },
