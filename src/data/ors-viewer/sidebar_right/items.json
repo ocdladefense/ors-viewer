@@ -1,12 +1,7 @@
 [
     {
         "type": "sidebar_right",
-        "href": "/",
-        "body": "Current through early 2024"
-    },
-    {
-        "type": "sidebar_right",
         "href": "https://oregonlegislature.gov/bills_laws/ors/ors001.html",
-        "body": "§ 1.001’s source a oregon​.gov"
+        "label": "§ 1.001’s source a oregon​.gov"
     }
 ]

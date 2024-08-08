@@ -7,11 +7,14 @@ import App from './App';
 import {
     fetch_breadcrumbs_ors_viewer,
     fetch_sidebar_left_ors_viewer,
+    fetch_body_ors_viewer,
     fetch_sidebar_right_ors_viewer
 } from './functions/fetch_data';
 
 const $body = document.querySelector('body');
 const root = View.createRoot($body);
+// Available Positions: '' (static) || 'sticky'
+const navbarPosition = 'sticky';
 const currentVolume = 1;
 const currentTitle = 1;
 // Use string to workaround to prevent Prettier rounding decimals for now.
@@ -26,6 +29,7 @@ const items_breadcrumbs_ors_viewer = await fetch_breadcrumbs_ors_viewer(
 );
 const items_sidebar_left_ors_viewer =
     await fetch_sidebar_left_ors_viewer(currentChapter);
+const html_body_ors_viewer = await fetch_body_ors_viewer(currentChapter);
 const items_sidebar_right_ors_viewer =
     await fetch_sidebar_right_ors_viewer(currentChapter);
 
@@ -33,12 +37,14 @@ root.render(
     <App
         view={root}
         appTypeCurrent={false}
+        navbarPosition={navbarPosition}
         currentVolume={currentVolume}
         currentTitle={currentTitle}
         currentChapter={currentChapter}
         currentSection={currentSection}
         items_breadcrumbs_ors_viewer={items_breadcrumbs_ors_viewer}
         items_sidebar_left_ors_viewer={items_sidebar_left_ors_viewer}
+        html_body_ors_viewer={html_body_ors_viewer}
         items_sidebar_right_ors_viewer={items_sidebar_right_ors_viewer}
     />
 );

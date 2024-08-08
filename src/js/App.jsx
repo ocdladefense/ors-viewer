@@ -19,12 +19,14 @@ import Books_Online_Sidebar_Right_Items from '../data/books-online/sidebar_right
 export default function App({
     view,
     appTypeCurrent,
+    navbarPosition,
     currentVolume,
     currentTitle,
     currentChapter,
     currentSection,
     items_breadcrumbs_ors_viewer,
     items_sidebar_left_ors_viewer,
+    html_body_ors_viewer,
     items_sidebar_right_ors_viewer
 }) {
     const appTypeIndicators = appTypeCurrent ? '📚' : '🔍';
@@ -35,7 +37,10 @@ export default function App({
     return (
         <>
             {/* <div class='absolute right-0 flex w-max translate-x-[28.75%] translate-y-[100%] -rotate-90 gap-2 bg-white p-4 lg:left-0 lg:translate-x-[-25%] lg:translate-y-[200%] lg:p-2'> */}
-            <div class='absolute right-0 flex w-max gap-2 bg-white p-4 lg:left-0 lg:p-2'>
+            <div
+                // Preserve whitespace at end of top-0
+                // prettier-ignore
+                class={`${navbarPosition === 'sticky' ? 'sticky top-0 ' : ''}absolute right-0 z-10 flex w-max gap-2 bg-white p-4 lg:left-0 lg:p-2`}>
                 {/* <input
                     id='testToggle'
                     type='checkbox'
@@ -65,6 +70,7 @@ export default function App({
                             <App
                                 view={view}
                                 appTypeCurrent={appTypeCurrent}
+                                navbarPosition={navbarPosition}
                                 currentVolume={currentVolume}
                                 currentTitle={currentTitle}
                                 currentChapter={currentChapter}
@@ -75,6 +81,7 @@ export default function App({
                                 items_sidebar_left_ors_viewer={
                                     items_sidebar_left_ors_viewer
                                 }
+                                html_body_ors_viewer={html_body_ors_viewer}
                                 items_sidebar_right_ors_viewer={
                                     items_sidebar_right_ors_viewer
                                 }
@@ -84,7 +91,10 @@ export default function App({
                     {appTypeIndicators} | {appTypeString}
                 </button>
             </div>
-            <header class='flex flex-col lg:h-32'>
+            <header
+                // Preserve whitespace at end of top-0
+                // prettier-ignore
+                class={`${navbarPosition === 'sticky' ? 'sticky top-0 ' : ''}container mx-auto flex w-full flex-col bg-white lg:h-32`}>
                 <Navbar />
                 <Breadcrumbs
                     items={
@@ -110,7 +120,11 @@ export default function App({
                                   : []
                         }
                     />
-                    <Body type={appTypeString} />
+                    <Body
+                        view={view}
+                        type={appTypeString}
+                        html_body_ors_viewer={html_body_ors_viewer}
+                    />
                     <Sidebar
                         component={Sidebar_Right_Item}
                         items={
@@ -126,7 +140,7 @@ export default function App({
             <Footer
                 showFacebook={true}
                 showTwitter={true}
-                useIFrame={true}
+                useGoogleMapsIFrame={true}
             />
         </>
     );

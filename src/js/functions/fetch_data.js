@@ -12,36 +12,31 @@ export const fetch_breadcrumbs_ors_viewer = async (
     return [
         {
             type: 'standard',
-            href: 'https://oregon.public.law/statutes',
-            body: 'ORS'
+            href: '/statutes',
+            label: 'ORS'
         },
         {
             type: 'standard',
-            href:
-                'https://oregon.public.law/statutes/ors_volume_' +
-                currentVolume,
-            body: 'Vol. ' + currentVolume
+            href: '/statutes/ors_volume_' + currentVolume,
+            label: 'Vol. ' + currentVolume
         },
         {
             type: 'standard',
-            href:
-                'https://oregon.public.law/statutes/ors_title_' + currentTitle,
-            body: 'Title ' + currentTitle
+            href: '/statutes/ors_title_' + currentTitle,
+            label: 'Title ' + currentTitle
         },
         {
             type: 'standard',
-            href:
-                'https://oregon.public.law/statutes/ors_chapter_' +
-                currentChapter,
-            body:
+            href: '/statutes/ors_chapter_' + currentChapter,
+            label:
                 'Chap. ' +
                 currentChapter +
                 '. Courts & Judicial Officers Generally'
         },
         {
             type: 'standard',
-            href: 'https://oregon.public.law/statutes/ors_' + currentSection,
-            body: '§ ' + currentSection
+            href: '/statutes/ors_' + currentSection,
+            label: '§ ' + currentSection
         }
     ];
 };
@@ -60,38 +55,66 @@ export const fetch_sidebar_left_ors_viewer = async currentChapter => {
 
     msword.chapterNum = currentChapter;
 
-    console.log(msword);
+    // let html = msword.toString();
+
+    // console.log(msword);
+
+    // console.log(html);
 
     const xml = OrsChapter.toStructuredChapter(msword);
-    const jsonArray = xml.sectionTitles.map((body, i) => {
+    const jsonArray = xml.sectionTitles.map((label, i) => {
         const chapterString =
             xml.chapterNum + '.' + i.toString().padStart(3, '0');
 
         return {
             active: i === currentChapter ? true : undefined,
-            href: 'https://oregon.public.law/statutes/ors_' + chapterString,
+            href: '/statutes/ors_' + chapterString,
             heading: chapterString,
-            body: body
+            label: label
         };
     });
 
     return jsonArray;
 };
 
+export const fetch_body_ors_viewer = async currentChapter => {
+    const url = new Url('https://appdev.ocdla.org/books-online/index.php');
+
+    // url.buildQuery('chapter', '1');
+    // url.buildQuery('chapter', '2');
+    url.buildQuery('chapter', currentChapter.toString());
+
+    const req = new Request(url.toString());
+    const client = new HttpClient();
+    const resp = await client.send(req);
+    const msword = await OrsChapter.fromResponse(resp);
+
+    msword.chapterNum = currentChapter;
+
+    let html = msword.toString();
+
+    // return html;
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    return doc.body.innerText;
+};
+
 export const fetch_sidebar_right_ors_viewer = async currentChapter => {
     return [
-        {
-            type: 'sidebar_right',
-            href: '/',
-            body: 'Current through early 2024'
-        },
+        // {
+        //     type: 'sidebar_right',
+        //     href: '/',
+        //     label: 'Current through early 2024'
+        // },
         {
             type: 'sidebar_right',
             href:
                 'https://oregonlegislature.gov/bills_laws/ors/ors' +
                 currentChapter.toString().padStart(3, '0') +
                 '.html',
-            body: '§ ' + currentChapter + '.001’s source a oregon​.gov'
+            label: '§ ' + currentChapter + '.001’s source a oregon​.gov'
         }
     ];
 };
@@ -108,7 +131,7 @@ export const fetch_sidebar_right_ors_viewer = async currentChapter => {
 //     href: item.href,
 //     // heading: item.heading,
 //     heading: i,
-//     body: xml.sectionTitles.filter(title => title !== null)[i]
+//     label: xml.sectionTitles.filter(title => title !== null)[i]
 // }));
 
 // console.log(xml.sectionTitles.filter(title => title !== null).length);
