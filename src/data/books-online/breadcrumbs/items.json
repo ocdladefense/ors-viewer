@@ -1,11 +1,9 @@
 [
     {
-        "type": "standard",
         "href": "/",
         "label": "Books Online"
     },
     {
-        "type": "standard",
         "href": "/",
         "label": "Felony Sentencing in Oregon"
     }

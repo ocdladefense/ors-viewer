@@ -4,8 +4,6 @@ import { vNode } from '@ocdla/view';
 import Navbar from '@ocdla/global-components/src/Navbar';
 import Breadcrumbs from '@ocdla/global-components/src/Breadcrumbs';
 import Sidebar from '@ocdla/global-components/src/Sidebar';
-import Sidebar_Left_Item from '@ocdla/global-components/src/Sidebar_Left_Item';
-import Sidebar_Right_Item from '@ocdla/global-components/src/Sidebar_Right_Item';
 import Body from '@ocdla/global-components/src/Body';
 import Footer from '@ocdla/global-components/src/Footer';
 /* eslint-enable */
@@ -19,7 +17,7 @@ import Books_Online_Sidebar_Right_Items from '../data/books-online/sidebar_right
 export default function App({
     view,
     appTypeCurrent,
-    navbarPosition,
+    headerPinned,
     currentVolume,
     currentTitle,
     currentChapter,
@@ -40,7 +38,7 @@ export default function App({
             <div
                 // Preserve whitespace at end of top-0
                 // prettier-ignore
-                class={`${navbarPosition === 'sticky' ? 'sticky top-0 ' : ''}absolute right-0 z-10 flex w-max gap-2 bg-white p-4 lg:left-0 lg:p-2`}>
+                class={`${headerPinned === 'pinned' ? 'fixed ' : 'absolute '}right-0 z-10 flex w-max gap-2 bg-white p-4 lg:left-0 lg:p-2`}>
                 {/* <input
                     id='testToggle'
                     type='checkbox'
@@ -70,7 +68,7 @@ export default function App({
                             <App
                                 view={view}
                                 appTypeCurrent={appTypeCurrent}
-                                navbarPosition={navbarPosition}
+                                headerPinned={headerPinned}
                                 currentVolume={currentVolume}
                                 currentTitle={currentTitle}
                                 currentChapter={currentChapter}
@@ -94,7 +92,7 @@ export default function App({
             <header
                 // Preserve whitespace at end of top-0
                 // prettier-ignore
-                class={`${navbarPosition === 'sticky' ? 'sticky top-0 ' : ''}container mx-auto flex w-full flex-col bg-white lg:h-32`}>
+                class={`${headerPinned === 'pinned' ? 'sticky top-0 ' : ''}container mx-auto flex w-full flex-col bg-white lg:h-32`}>
                 <Navbar />
                 <Breadcrumbs
                     items={
@@ -111,7 +109,7 @@ export default function App({
                 <div class='lg:grid lg:grid-cols-6'>
                     {/* ? Ors_Viewer_Sidebar_Left_Items */}
                     <Sidebar
-                        component={Sidebar_Left_Item}
+                        sidebarType='left'
                         items={
                             appTypeCurrent === true
                                 ? Books_Online_Sidebar_Left_Items
@@ -126,7 +124,7 @@ export default function App({
                         html_body_ors_viewer={html_body_ors_viewer}
                     />
                     <Sidebar
-                        component={Sidebar_Right_Item}
+                        sidebarType='right'
                         items={
                             appTypeCurrent === true
                                 ? Books_Online_Sidebar_Right_Items

@@ -14,5 +14,8 @@
     "html.validate.scripts": true,
     "html.validate.styles": true,
     // "javascript.format.insertSpaceBeforeFunctionParenthesis": false,
-    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false
+    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+    "[xml]": {
+        "editor.defaultFormatter": "DotJoshJohnson.xml"
+    }
 }

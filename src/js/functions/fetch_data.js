@@ -11,22 +11,18 @@ export const fetch_breadcrumbs_ors_viewer = async (
 ) => {
     return [
         {
-            type: 'standard',
             href: '/statutes',
             label: 'ORS'
         },
         {
-            type: 'standard',
             href: '/statutes/ors_volume_' + currentVolume,
             label: 'Vol. ' + currentVolume
         },
         {
-            type: 'standard',
             href: '/statutes/ors_title_' + currentTitle,
             label: 'Title ' + currentTitle
         },
         {
-            type: 'standard',
             href: '/statutes/ors_chapter_' + currentChapter,
             label:
                 'Chap. ' +
@@ -34,7 +30,6 @@ export const fetch_breadcrumbs_ors_viewer = async (
                 '. Courts & Judicial Officers Generally'
         },
         {
-            type: 'standard',
             href: '/statutes/ors_' + currentSection,
             label: '§ ' + currentSection
         }
@@ -104,12 +99,10 @@ export const fetch_body_ors_viewer = async currentChapter => {
 export const fetch_sidebar_right_ors_viewer = async currentChapter => {
     return [
         // {
-        //     type: 'sidebar_right',
         //     href: '/',
         //     label: 'Current through early 2024'
         // },
         {
-            type: 'sidebar_right',
             href:
                 'https://oregonlegislature.gov/bills_laws/ors/ors' +
                 currentChapter.toString().padStart(3, '0') +

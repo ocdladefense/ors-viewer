@@ -13,8 +13,9 @@ import {
 
 const $body = document.querySelector('body');
 const root = View.createRoot($body);
-// Available Positions: '' (static) || 'sticky'
-const navbarPosition = 'sticky';
+const appTypeCurrent = false;
+// Available Positions: '' (absolute / static) || 'pinned' (fixed / sticky)
+const headerPinned = 'pinned';
 const currentVolume = 1;
 const currentTitle = 1;
 // Use string to workaround to prevent Prettier rounding decimals for now.
@@ -36,8 +37,8 @@ const items_sidebar_right_ors_viewer =
 root.render(
     <App
         view={root}
-        appTypeCurrent={false}
-        navbarPosition={navbarPosition}
+        appTypeCurrent={appTypeCurrent}
+        headerPinned={headerPinned}
         currentVolume={currentVolume}
         currentTitle={currentTitle}
         currentChapter={currentChapter}
@@ -48,3 +49,5 @@ root.render(
         items_sidebar_right_ors_viewer={items_sidebar_right_ors_viewer}
     />
 );
+
+// document.getElementById('body').innerHTML = html_body_ors_viewer;
