@@ -13,6 +13,7 @@ import {
 
 const $body = document.querySelector('body');
 const root = View.createRoot($body);
+// Switch boolean data type to string data type later on perhaps
 const appTypeCurrent = false;
 // Available Positions: '' (absolute / static) || 'pinned' (fixed / sticky)
 const headerPinned = 'pinned';
@@ -50,4 +51,4 @@ root.render(
     />
 );
 
-// document.getElementById('body').innerHTML = html_body_ors_viewer;
+document.getElementById('body').innerHTML = html_body_ors_viewer;

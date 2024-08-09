@@ -4,6 +4,8 @@ import { vNode } from '@ocdla/view';
 import Navbar from '@ocdla/global-components/src/Navbar';
 import Breadcrumbs from '@ocdla/global-components/src/Breadcrumbs';
 import Sidebar from '@ocdla/global-components/src/Sidebar';
+import ORS_Section_Link from './components/ORS_Section_Link';
+import Sidebar_Item from '@ocdla/global-components/src/Sidebar_Item';
 import Body from '@ocdla/global-components/src/Body';
 import Footer from '@ocdla/global-components/src/Footer';
 /* eslint-enable */
@@ -104,35 +106,26 @@ export default function App({
                     }
                 />
             </header>
+            {/* <Main cols='3' /> */}
             <div class='container mx-auto border-x'>
                 {/* <div class='flex flex-col lg:flex-row'> */}
                 <div class='lg:grid lg:grid-cols-6'>
                     {/* ? Ors_Viewer_Sidebar_Left_Items */}
-                    <Sidebar
-                        sidebarType='left'
-                        items={
-                            appTypeCurrent === true
-                                ? Books_Online_Sidebar_Left_Items
-                                : appTypeCurrent === false
-                                  ? items_sidebar_left_ors_viewer
-                                  : []
-                        }
-                    />
+                    <Sidebar>
+                        {items_sidebar_left_ors_viewer.map(item => (
+                            <ORS_Section_Link {...item} />
+                        ))}
+                    </Sidebar>
                     <Body
                         view={view}
                         type={appTypeString}
                         html_body_ors_viewer={html_body_ors_viewer}
                     />
-                    <Sidebar
-                        sidebarType='right'
-                        items={
-                            appTypeCurrent === true
-                                ? Books_Online_Sidebar_Right_Items
-                                : appTypeCurrent === false
-                                  ? items_sidebar_right_ors_viewer
-                                  : []
-                        }
-                    />
+                    <Sidebar>
+                        {items_sidebar_right_ors_viewer.map(item => (
+                            <Sidebar_Item {...item} />
+                        ))}
+                    </Sidebar>
                 </div>
             </div>
             <Footer

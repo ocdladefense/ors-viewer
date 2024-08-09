@@ -57,13 +57,16 @@ export const fetch_sidebar_left_ors_viewer = async currentChapter => {
     // console.log(html);
 
     const xml = OrsChapter.toStructuredChapter(msword);
-    const jsonArray = xml.sectionTitles.map((label, i) => {
+    const jsonArray = xml.sectionTitles.map((label, section) => {
+        // const sectionString = section.toString().padStart(3, '0');
         const chapterString =
-            xml.chapterNum + '.' + i.toString().padStart(3, '0');
+            xml.chapterNum + '.' + section.toString().padStart(3, '0');
 
         return {
-            active: i === currentChapter ? true : undefined,
-            href: '/statutes/ors_' + chapterString,
+            active: section === currentChapter ? true : undefined,
+            // href: '/statutes/ors_' + chapterString,
+            // href: `?chapter={chapterNum}#section-{sectionNum}`,
+            href: '#section-' + section,
             heading: chapterString,
             label: label
         };
@@ -86,14 +89,16 @@ export const fetch_body_ors_viewer = async currentChapter => {
 
     msword.chapterNum = currentChapter;
 
-    let html = msword.toString();
+    // let html = msword.toString();
 
-    // return html;
+    const xml = OrsChapter.toStructuredChapter(msword);
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
+    return xml.toString();
 
-    return doc.body.innerText;
+    // const parser = new DOMParser();
+    // const doc = parser.parseFromString(html, 'text/html');
+
+    // return doc.body.innerText;
 };
 
 export const fetch_sidebar_right_ors_viewer = async currentChapter => {
