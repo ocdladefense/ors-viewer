@@ -9,12 +9,12 @@ import Sidebar_Item from '@ocdla/global-components/src/Sidebar_Item';
 import Body from '@ocdla/global-components/src/Body';
 import Footer from '@ocdla/global-components/src/Footer';
 /* eslint-enable */
-import Books_Online_Breadcrumbs_Items from '../data/books-online/breadcrumbs/items.json';
-// import Ors_Viewer_Breadcrumbs_Items from '../data/ors-viewer/breadcrumbs/items.json';
-import Books_Online_Sidebar_Left_Items from '../data/books-online/sidebar_left/items.json';
-// import Ors_Viewer_Sidebar_Left_Items from '../data/ors-viewer/sidebar_left/items.json';
-import Books_Online_Sidebar_Right_Items from '../data/books-online/sidebar_right/items.json';
-// import Ors_Viewer_Sidebar_Right_Items from '../data/ors-viewer/sidebar_right/items.json';
+import Books_Online_Breadcrumbs_Items from '../data/json/books-online/breadcrumbs/items.json';
+// import Ors_Viewer_Breadcrumbs_Items from '../data/json/ors-viewer/breadcrumbs/items.json';
+import Books_Online_Sidebar_Left_Items from '../data/json/books-online/sidebar_left/items.json';
+// import Ors_Viewer_Sidebar_Left_Items from '../data/json/ors-viewer/sidebar_left/items.json';
+import Books_Online_Sidebar_Right_Items from '../data/json/books-online/sidebar_right/items.json';
+// import Ors_Viewer_Sidebar_Right_Items from '../data/json/ors-viewer/sidebar_right/items.json';
 
 export default function App({
     view,
