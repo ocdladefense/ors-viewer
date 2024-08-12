@@ -14,9 +14,9 @@ import {
 const $body = document.querySelector('body');
 const root = View.createRoot($body);
 // Switch boolean data type to string data type later on perhaps
-const appTypeCurrent = false;
+const currentAppType = false;
 // Available Positions: '' (absolute / static) || 'pinned' (fixed / sticky)
-const headerPinned = 'pinned';
+const headerPinned = '';
 const currentVolume = 1;
 const currentTitle = 1;
 // Use string to workaround to prevent Prettier rounding decimals for now.
@@ -38,7 +38,7 @@ const items_sidebar_right_ors_viewer =
 root.render(
     <App
         view={root}
-        appTypeCurrent={appTypeCurrent}
+        currentAppType={currentAppType}
         headerPinned={headerPinned}
         currentVolume={currentVolume}
         currentTitle={currentTitle}
@@ -51,4 +51,5 @@ root.render(
     />
 );
 
-document.getElementById('body').innerHTML = html_body_ors_viewer;
+// document.title = 'Test';
+// document.getElementById('body').innerHTML = html_body_ors_viewer;

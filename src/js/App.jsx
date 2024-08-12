@@ -18,7 +18,7 @@ import Books_Online_Sidebar_Right_Items from '../data/books-online/sidebar_right
 
 export default function App({
     view,
-    appTypeCurrent,
+    currentAppType,
     headerPinned,
     currentVolume,
     currentTitle,
@@ -29,8 +29,8 @@ export default function App({
     html_body_ors_viewer,
     items_sidebar_right_ors_viewer
 }) {
-    const appTypeIndicators = appTypeCurrent ? '📚' : '🔍';
-    const appTypeString = appTypeCurrent ? 'books-online' : 'ors-viewer';
+    const appTypeIndicators = currentAppType ? '📚' : '🔍';
+    const appTypeString = currentAppType ? 'books-online' : 'ors-viewer';
 
     // console.log(items_sidebar_left_ors_viewer);
 
@@ -44,14 +44,14 @@ export default function App({
                 {/* <input
                     id='testToggle'
                     type='checkbox'
-                    checked={appTypeCurrent}
+                    checked={currentAppType}
                     onchange={() => {
-                        appTypeCurrent = !appTypeCurrent;
+                        currentAppType = !currentAppType;
 
                         view.update(
                             <App
                                 view={view}
-                                appTypeCurrent={appTypeCurrent}
+                                currentAppType={currentAppType}
                             />
                         );
                     }}
@@ -64,12 +64,12 @@ export default function App({
                 <button
                     class='select-none font-bold'
                     onclick={() => {
-                        appTypeCurrent = !appTypeCurrent;
+                        currentAppType = !currentAppType;
 
                         view.render(
                             <App
                                 view={view}
-                                appTypeCurrent={appTypeCurrent}
+                                currentAppType={currentAppType}
                                 headerPinned={headerPinned}
                                 currentVolume={currentVolume}
                                 currentTitle={currentTitle}
@@ -98,9 +98,9 @@ export default function App({
                 <Navbar />
                 <Breadcrumbs
                     items={
-                        appTypeCurrent === true
+                        currentAppType
                             ? Books_Online_Breadcrumbs_Items
-                            : appTypeCurrent === false
+                            : currentAppType === false
                               ? items_breadcrumbs_ors_viewer
                               : []
                     }
@@ -112,9 +112,15 @@ export default function App({
                 <div class='lg:grid lg:grid-cols-6'>
                     {/* ? Ors_Viewer_Sidebar_Left_Items */}
                     <Sidebar>
-                        {items_sidebar_left_ors_viewer.map(item => (
-                            <ORS_Section_Link {...item} />
-                        ))}
+                        {/* eslint-disable indent */}
+                        {currentAppType
+                            ? Books_Online_Sidebar_Left_Items.map(item => (
+                                  <ORS_Section_Link {...item} />
+                              ))
+                            : items_sidebar_left_ors_viewer.map(item => (
+                                  <ORS_Section_Link {...item} />
+                              ))}
+                        {/* eslint-enable */}
                     </Sidebar>
                     <Body
                         view={view}
@@ -122,9 +128,15 @@ export default function App({
                         html_body_ors_viewer={html_body_ors_viewer}
                     />
                     <Sidebar>
-                        {items_sidebar_right_ors_viewer.map(item => (
-                            <Sidebar_Item {...item} />
-                        ))}
+                        {/* eslint-disable indent */}
+                        {currentAppType
+                            ? Books_Online_Sidebar_Right_Items.map(item => (
+                                  <Sidebar_Item {...item} />
+                              ))
+                            : items_sidebar_right_ors_viewer.map(item => (
+                                  <Sidebar_Item {...item} />
+                              ))}
+                        {/* eslint-enable */}
                     </Sidebar>
                 </div>
             </div>

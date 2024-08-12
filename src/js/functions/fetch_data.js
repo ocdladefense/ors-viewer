@@ -50,15 +50,8 @@ export const fetch_sidebar_left_ors_viewer = async currentChapter => {
 
     msword.chapterNum = currentChapter;
 
-    // let html = msword.toString();
-
-    // console.log(msword);
-
-    // console.log(html);
-
     const xml = OrsChapter.toStructuredChapter(msword);
     const jsonArray = xml.sectionTitles.map((label, section) => {
-        // const sectionString = section.toString().padStart(3, '0');
         const chapterString =
             xml.chapterNum + '.' + section.toString().padStart(3, '0');
 
@@ -66,7 +59,8 @@ export const fetch_sidebar_left_ors_viewer = async currentChapter => {
             active: section === currentChapter ? true : undefined,
             // href: '/statutes/ors_' + chapterString,
             // href: `?chapter={chapterNum}#section-{sectionNum}`,
-            href: '#section-' + section,
+            // href: '#section-' + section,
+            href: '?chapter=' + xml.chapterNum + '#section-' + section,
             heading: chapterString,
             label: label
         };
@@ -89,16 +83,9 @@ export const fetch_body_ors_viewer = async currentChapter => {
 
     msword.chapterNum = currentChapter;
 
-    // let html = msword.toString();
-
     const xml = OrsChapter.toStructuredChapter(msword);
 
     return xml.toString();
-
-    // const parser = new DOMParser();
-    // const doc = parser.parseFromString(html, 'text/html');
-
-    // return doc.body.innerText;
 };
 
 export const fetch_sidebar_right_ors_viewer = async currentChapter => {
@@ -116,39 +103,3 @@ export const fetch_sidebar_right_ors_viewer = async currentChapter => {
         }
     ];
 };
-
-/*
-    Inspect the available properties for use in building section outline (left nav) and content.
-    section outline (left nav) is listed in sectionTitles property.
-    xml.doc contains the entire document.
-    xml.toString() will return the entire document as an HTML string for use with innerHTML.
-*/
-
-// return Ors_Viewer_Sidebar_Left_Items.map((item, i) => ({
-//     active: item.active,
-//     href: item.href,
-//     // heading: item.heading,
-//     heading: i,
-//     label: xml.sectionTitles.filter(title => title !== null)[i]
-// }));
-
-// console.log(xml.sectionTitles.filter(title => title !== null).length);
-
-// console.log(xml);
-// console.log(xml.doc);
-
-// for (let x in xml.sectionTitles) {
-//     console.log(x);
-// }
-
-// xml.sectionTitles.forEach(e => console.log(e));
-
-// console.log(Ors_Viewer_Sidebar_Left_Items.length);
-
-// let html = xml.toString();
-
-// console.log(html);
-
-// const ref = document.getElementById('ref');
-
-// ref.innerHTML = html;
