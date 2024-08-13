@@ -69,6 +69,32 @@ export const fetch_sidebar_left_ors_viewer = async currentChapter => {
     return jsonArray;
 };
 
+export const fetch_sidebar_left_books_online = async currentChapter => {
+    // const url = new Url('https://pubs.ocdla.org');
+    const url = new Url('https://pubs.ocdla.org/index');
+    // const url = new Url('https://pubs.ocdla.org/index.php');
+    // const url = new Url('https://pubs.ocdla.org/fsm/1');
+    const req = new Request(url.toString());
+    const client = new HttpClient();
+    // const resp = await client.send(req);
+    // const xml = await resp.text();
+    // const parser = new DOMParser();
+
+    // return parser.parseFromString(xml, 'application/xml');
+
+    // console.log(resp);
+
+    // let client = new HttpClient();
+
+    // let resp = await client.send(new Request('https://pubs.ocdla.org/index'));
+
+    // let xml = await resp.text();
+
+    // const parser = new DOMParser();
+
+    // return parser.parseFromString(xml, 'application/xml');
+};
+
 export const fetch_body_ors_viewer = async currentChapter => {
     const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 

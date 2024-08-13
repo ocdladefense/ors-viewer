@@ -26,13 +26,14 @@ export default function App({
     currentSection,
     items_breadcrumbs_ors_viewer,
     items_sidebar_left_ors_viewer,
+    items_sidebar_left_books_online,
     html_body_ors_viewer,
     items_sidebar_right_ors_viewer
 }) {
     const appTypeIndicators = currentAppType ? '📚' : '🔍';
     const appTypeString = currentAppType ? 'books-online' : 'ors-viewer';
 
-    // console.log(items_sidebar_left_ors_viewer);
+    // console.log(items_sidebar_left_books_online);
 
     return (
         <>
@@ -80,6 +81,9 @@ export default function App({
                                 }
                                 items_sidebar_left_ors_viewer={
                                     items_sidebar_left_ors_viewer
+                                }
+                                items_sidebar_left_books_online={
+                                    items_sidebar_left_books_online
                                 }
                                 html_body_ors_viewer={html_body_ors_viewer}
                                 items_sidebar_right_ors_viewer={

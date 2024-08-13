@@ -79,6 +79,14 @@ module.exports = {
                     /dev_modules\/(?!@ocdla\/global-components)/
                 ],
                 type: 'asset/resource'
+            },
+            {
+                test: /\.xml$/i,
+                exclude: [
+                    /node_modules\/(?!@ocdla\/global-components)/,
+                    /dev_modules\/(?!@ocdla\/global-components)/
+                ],
+                type: 'asset/source'
             }
         ]
     },

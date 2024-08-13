@@ -7,6 +7,7 @@ import App from './App';
 import {
     fetch_breadcrumbs_ors_viewer,
     fetch_sidebar_left_ors_viewer,
+    fetch_sidebar_left_books_online,
     fetch_body_ors_viewer,
     fetch_sidebar_right_ors_viewer
 } from './functions/fetch_data';
@@ -14,7 +15,7 @@ import {
 const $body = document.querySelector('body');
 const root = View.createRoot($body);
 // Switch boolean data type to string data type later on perhaps
-const currentAppType = false;
+const currentAppType = true;
 // Available Positions: '' (absolute / static) || 'pinned' (fixed / sticky)
 const headerPinned = '';
 const currentVolume = 1;
@@ -31,6 +32,8 @@ const items_breadcrumbs_ors_viewer = await fetch_breadcrumbs_ors_viewer(
 );
 const items_sidebar_left_ors_viewer =
     await fetch_sidebar_left_ors_viewer(currentChapter);
+const items_sidebar_left_books_online =
+    await fetch_sidebar_left_books_online(currentChapter);
 const html_body_ors_viewer = await fetch_body_ors_viewer(currentChapter);
 const items_sidebar_right_ors_viewer =
     await fetch_sidebar_right_ors_viewer(currentChapter);
@@ -46,6 +49,7 @@ root.render(
         currentSection={currentSection}
         items_breadcrumbs_ors_viewer={items_breadcrumbs_ors_viewer}
         items_sidebar_left_ors_viewer={items_sidebar_left_ors_viewer}
+        items_sidebar_left_books_online={items_sidebar_left_books_online}
         html_body_ors_viewer={html_body_ors_viewer}
         items_sidebar_right_ors_viewer={items_sidebar_right_ors_viewer}
     />
