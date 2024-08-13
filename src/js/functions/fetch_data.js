@@ -43,8 +43,8 @@ export const fetch_sidebar_left_ors_viewer = async currentChapter => {
     // url.buildQuery('chapter', '2');
     url.buildQuery('chapter', currentChapter.toString());
 
-    const req = new Request(url.toString());
     const client = new HttpClient();
+    const req = new Request(url.toString());
     const resp = await client.send(req);
     const msword = await OrsChapter.fromResponse(resp);
 
@@ -71,28 +71,26 @@ export const fetch_sidebar_left_ors_viewer = async currentChapter => {
 
 export const fetch_sidebar_left_books_online = async currentChapter => {
     // const url = new Url('https://pubs.ocdla.org');
-    const url = new Url('https://pubs.ocdla.org/index');
+    // const url = new Url('https://pubs.ocdla.org/index');
     // const url = new Url('https://pubs.ocdla.org/index.php');
     // const url = new Url('https://pubs.ocdla.org/fsm/1');
-    const req = new Request(url.toString());
-    const client = new HttpClient();
+    // const url = new Url('../../data/xml/volumes.xml');
+    // const req = new Request(url.toString());
+    // const client = new HttpClient();
     // const resp = await client.send(req);
     // const xml = await resp.text();
     // const parser = new DOMParser();
-
     // return parser.parseFromString(xml, 'application/xml');
-
     // console.log(resp);
-
-    // let client = new HttpClient();
-
-    // let resp = await client.send(new Request('https://pubs.ocdla.org/index'));
-
-    // let xml = await resp.text();
-
-    // const parser = new DOMParser();
-
-    // return parser.parseFromString(xml, 'application/xml');
+    const client = new HttpClient();
+    const req = new Request('../../data/xml/volumes.xml');
+    const resp = await client.send(req);
+    const xml = await resp.text();
+    const parser = new DOMParser();
+    return parser.parseFromString(xml, 'application/xml');
+    // console.log(USE_MOCK);
+    // console.log(APP_TYPE);
+    // console.log(process.env.USEMOCK);
 };
 
 export const fetch_body_ors_viewer = async currentChapter => {
@@ -102,8 +100,8 @@ export const fetch_body_ors_viewer = async currentChapter => {
     // url.buildQuery('chapter', '2');
     url.buildQuery('chapter', currentChapter.toString());
 
-    const req = new Request(url.toString());
     const client = new HttpClient();
+    const req = new Request(url.toString());
     const resp = await client.send(req);
     const msword = await OrsChapter.fromResponse(resp);
 

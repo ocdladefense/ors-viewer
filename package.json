@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.html",
     "scripts": {
-        "watch": "webpack serve",
+        "watch": "webpack serve --env USE_MOCK APP_TYPE",
         "lint": "eslint -c eslint.config.mjs",
         "lint-fix": "eslint -c eslint.config.mjs --fix",
         "build": "webpack --config webpack.config.js",
