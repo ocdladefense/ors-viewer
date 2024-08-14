@@ -15,7 +15,7 @@ import {
 const $body = document.querySelector('body');
 const root = View.createRoot($body);
 // Switch boolean data type to string data type later on perhaps
-const currentAppType = true;
+const currentAppType = false;
 // Available Positions: '' (absolute / static) || 'pinned' (fixed / sticky)
 const headerPinned = '';
 const currentVolume = 1;
