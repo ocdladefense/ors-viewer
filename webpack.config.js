@@ -1,14 +1,7 @@
-// const dotenv = require('dotenv');
 const path = require('path');
 const webpack = require('webpack');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const copyPlugin = require('copy-webpack-plugin');
-
-// const env = dotenv.config().parsed;
-// const envKeys = Object.keys(env).reduce((prev, next) => {
-//     prev['process.env.' + next] = JSON.stringify(env[next]);
-//     return prev;
-// }, {});
 
 module.exports = env => {
     return {
@@ -61,6 +54,14 @@ module.exports = env => {
                     }
                 },
                 {
+                    test: /\.html$/i,
+                    exclude: [
+                        /node_modules\/(?!@ocdla\/global-components)/,
+                        /dev_modules\/(?!@ocdla\/global-components)/
+                    ],
+                    use: ['html-loader']
+                },
+                {
                     test: /\.css$/i,
                     exclude: [
                         /node_modules\/(?!@ocdla\/global-components)/,
@@ -98,19 +99,7 @@ module.exports = env => {
             new webpack.DefinePlugin({
                 USE_MOCK: JSON.stringify(env.USE_MOCK || false),
                 APP_TYPE: JSON.stringify(env.APP_TYPE || false)
-
-                // 'USEMOCK': JSON.parse(JSON.stringify(env.USEMOCK || false))
-                // USEMOCK: JSON.stringify(env.USEMOCK || false)
-                // USEMOCK: JSON.stringify(process.env.USEMOCK || false)
-                // prettier-ignore
-                // 'USEMOCK': JSON.stringify(process.env.USEMOCK || false)
-                // APP_TYPE: JSON.stringify(process.env.APP_TYPE)
-                // "process.env.USEMOCK": JSON.stringify(env.USEMOCK)
             }),
-            // new dotenvWebpack({
-            //     path: './.env'
-            // }),
-            // new webpack.DefinePlugin(envKeys),
             new htmlWebpackPlugin({
                 template: path.resolve(__dirname, 'src/index.html'),
                 chunks: ['app'],

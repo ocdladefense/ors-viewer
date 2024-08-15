@@ -4,7 +4,10 @@
     "description": "",
     "main": "index.html",
     "scripts": {
-        "watch": "webpack serve --env USE_MOCK",
+        "watch-development-books-online": "webpack serve --env USE_MOCK APP_TYPE",
+        "watch-development-ors-viewer": "webpack serve --env USE_MOCK",
+        "watch-production-books-online": "webpack serve --env APP_TYPE",
+        "watch-production-ors-viewer": "webpack serve",
         "lint": "eslint -c eslint.config.mjs",
         "lint-fix": "eslint -c eslint.config.mjs --fix",
         "build": "webpack --config webpack.config.js",
@@ -12,15 +15,15 @@
         "git-force": "git push origin +main --force"
     },
     "dependencies": {
+        "@ocdla/global-components": "file:./dev_modules/@ocdla/global-components",
+        "@ocdla/lib-http": "file:./dev_modules/@ocdla/lib-http",
+        "@ocdla/ors": "file:./dev_modules/@ocdla/ors",
+        "@ocdla/view": "^2.3.14",
         "autoprefixer": "^10.4.19",
         "dotenv": "^16.4.5",
         "globals": "^15.6.0",
         "postcss": "^8.4.39",
-        "tailwindcss": "^3.4.6",
-        "@ocdla/global-components": "file:./dev_modules/@ocdla/global-components",
-        "@ocdla/lib-http": "file:./dev_modules/@ocdla/lib-http",
-        "@ocdla/ors": "file:./dev_modules/@ocdla/ors",
-        "@ocdla/view": "^2.3.14"
+        "tailwindcss": "^3.4.6"
     },
     "devDependencies": {
         "@babel/cli": "^7.18.10",
@@ -33,6 +36,7 @@
         "css-loader": "^6.11.0",
         "dotenv-webpack": "^8.1.0",
         "eslint": "^9.7.0",
+        "html-loader": "^5.1.0",
         "html-webpack-plugin": "^5.5.4",
         "postcss-loader": "^8.1.1",
         "prettier": "^3.3.3",
