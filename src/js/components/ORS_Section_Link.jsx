@@ -2,7 +2,7 @@
 /* eslint-disable-next-line no-unused-vars */
 import { vNode } from '@ocdla/view';
 
-export default function ORS_Section_Link({ active, href, heading, label }) {
+export default function Ors_Section_Link({ active, href, heading, label }) {
     let a = 'group hover:bg-neutral-100';
     let h = 'text-blue-400 group-hover:text-blue-500 ';
     let p = '';

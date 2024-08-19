@@ -5,7 +5,7 @@
 [submodule "dev_modules/@ocdla/lib-http"]
 	path = dev_modules/@ocdla/lib-http
 	url = https://git@github.com/ocdladefense/node-lib-http
-    branch = LocalStorageDev
+    branch = development
 [submodule "dev_modules/@ocdla/global-components"]
 	path = dev_modules/@ocdla/global-components
 	url = https://github.com/ocdladefense/global-components

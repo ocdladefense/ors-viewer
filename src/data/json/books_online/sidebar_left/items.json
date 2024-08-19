@@ -67,5 +67,20 @@
         "href": "https://pubs.ocdla.org/fsm/10",
         "heading": "Chapter 10",
         "label": "Sentencing Guidelines"
+    },
+    {
+        "href": "https://pubs.ocdla.org/fsm/appendix-a",
+        "heading": "Appendix A",
+        "label": ""
+    },
+    {
+        "href": "https://pubs.ocdla.org/fsm/appendix-b",
+        "heading": "Appendix B",
+        "label": ""
+    },
+    {
+        "href": "https://pubs.ocdla.org/fsm/appendix-c",
+        "heading": "Appendix C",
+        "label": ""
     }
 ]

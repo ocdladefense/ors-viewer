@@ -43,7 +43,8 @@ export default [
                 4,
                 {
                     SwitchCase: 1,
-                    ignoredNodes: ['ConditionalExpression']
+                    ignoredNodes: ['ConditionalExpression'],
+                    FunctionDeclaration: 1
                 }
             ],
             quotes: ['warn', 'single'],
