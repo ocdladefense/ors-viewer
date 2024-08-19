@@ -11,7 +11,7 @@ import Items_Sidebar_Right_Ors_Viewer from '../../data/json/ors_viewer/sidebar_r
 
 export const fetch_items_statutes_volumes = async () => {
     const client = new HttpClient();
-    const req = new Request('../../data/xml/ors_viewer/statutes.xml');
+    const req = new Request('https://ors.ocdla.org/index.xml');
     // const req = new Request(
     //     'https://raw.githubusercontent.com/ocdladefense/ors-viewer/toc/src/data/xml/ors_viewer/statutes.xml'
     // );

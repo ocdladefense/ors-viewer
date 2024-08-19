@@ -5,8 +5,9 @@ import { vNode, View } from '@ocdla/view';
 import Not_Found from '@ocdla/global-components/src/Not_Found';
 import App from './App';
 /* eslint-enable */
-// import HttpClient from '@ocdla/lib-http/HttpClient';
-// import OrsMock from './mock/OrsMock';
+import HttpClient from '@ocdla/lib-http/HttpClient';
+import OrsMock from './mock/OrsMock';
+
 import {
     fetch_items_statutes_volumes,
     fetch_items_statutes_volume_titles,
@@ -21,7 +22,10 @@ import {
     fetch_sidebar_right_ors_viewer
 } from './functions/fetch_data';
 
-// if (USE_MOCK) HttpClient.register('https://ors.ocdla.org', new OrsMock());
+const USE_LOCAL_STATUTES_XML = true;
+if (USE_LOCAL_STATUTES_XML || true) {
+    HttpClient.register('https://ors.ocdla.org', new OrsMock());
+}
 
 const currentAppType = APP_TYPE;
 /*

@@ -219,13 +219,7 @@ export default function App({
                                     switch (route) {
                                         // Home.
                                         case '/':
-                                            return (
-                                                <Ors_Search
-                                                    volumes={
-                                                        items_statutes_volumes
-                                                    }
-                                                />
-                                            );
+                                            return <Ors_Search />;
                                         // All volumes.
                                         case '/statutes':
                                             return (

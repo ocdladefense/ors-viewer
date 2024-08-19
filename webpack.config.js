@@ -29,7 +29,7 @@ module.exports = env => {
         target: 'web',
         devServer: {
             static: path.resolve(__dirname, 'src'),
-            port: 80,
+            port: 8080,
             open: false,
             hot: true,
             compress: true,
