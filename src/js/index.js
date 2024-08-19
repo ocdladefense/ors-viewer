@@ -9,6 +9,7 @@ import HttpClient from '@ocdla/lib-http/HttpClient';
 import OrsMock from './mock/OrsMock';
 import ORS_Section_Link from './components/Ors_Section_Link';
 import Sidebar_Item from '@ocdla/global-components/src/Sidebar_Item';
+import Statutes from './components/Statutes';
 // import Router from '@ocdla/routing/Router';
 
 /*
@@ -56,11 +57,10 @@ const currentChapter = parseInt(currentSection.split('.')[0]);
 let volumes, titles, chapters, sections;
 
 if (currentAppType === 'ors') {
-    volumes = await myModule.fetch_items_statutes_volumes();
-    titles = await myModule.fetch_items_statutes_volume_titles(currentVolume);
-    chapters = await myModule.fetch_items_statutes_title_chapters(currentTitle);
-    sections =
-        await myModule.fetch_items_statutes_chapter_sections(currentChapter);
+    volumes = await myModule.getVolumes();
+    titles = await myModule.getTitles(currentVolume);
+    chapters = await myModule.getChapters(currentTitle);
+    sections = await myModule.getSections(currentChapter);
 }
 
 const breadcrumbs = await myModule.getBreadcrumbs(
@@ -74,34 +74,33 @@ const sidebarFirstItems = await myModule.getSidebarFirstItems(currentChapter);
 const sidebarSecondItems = await myModule.getSidebarSecondItems(currentChapter);
 const body = await myModule.getBody(currentChapter);
 
-/*
-const items_sidebar_left_books_online =
-    await fetch_sidebar_left_books_online(currentChapter);
-const items_sidebar_right_books_online =
-    await fetch_sidebar_right_books_online(currentChapter);
-
-*/
-
-/*
-let sidebarFirstItems =
-    currentAppType === 'bon'
-        ? items_sidebar_left_books_online.map(item => (
-              <ORS_Section_Link {...item} />
-          ))
-*/
-
-/*
-let sidebarSecondItems =
-    currentAppType === 'bon'
-        ? items_sidebar_right_books_online.map(item => (
-              <Sidebar_Item {...item} />
-          ))
-*/
-
 const error = false; // For now, assume we don't have a 404.
 
 const $root = document.getElementById('root');
 const root = View.createRoot($root);
+
+<Routes>
+    <Route
+        path='/'
+        element={<Home />}
+    />
+    <Route
+        path='about'
+        element={<About />}
+    />
+    <Route
+        path='dashboard'
+        element={<Dashboard />}
+    />
+</Routes>;
+
+let router = new Router(basePath);
+router.addRoute('statutes', <Statutes />);
+router.addRoute('volume/(\d+)', Statute, "volume");
+
+let [Component, props] = router.match(window.location.href);
+
+
 
 /*
         currentVolume={currentVolume}
@@ -125,5 +124,8 @@ root.render(
         sidebarFirstItems={sidebarFirstItems}
         sidebarSecondItems={sidebarSecondItems}
         body={body}
-    />
+        layout='2-cols'>
+        {notFoundError ? <Not_Found /> : ''}
+        <Component ...props />
+    </App>
 );

@@ -20,6 +20,7 @@ export default function App({
     view,
     currentAppType,
     headerPinned,
+    children,
     error,
     currentVolume,
     currentTitle,

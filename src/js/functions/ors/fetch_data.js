@@ -1,24 +1,22 @@
 import Url from '@ocdla/lib-http/Url';
 import HttpClient from '@ocdla/lib-http/HttpClient';
 import OrsChapter from '@ocdla/ors/src/OrsChapter';
+import Items_Breadcrumbs_Ors_Viewer from '../../../data/json/ors_viewer/breadcrumbs/items.json';
+import Items_Sidebar_Left_Ors_Viewer from '../../../data/json/ors_viewer/sidebar_left/items.json';
+import Items_Sidebar_Right_Ors_Viewer from '../../../data/json/ors_viewer/sidebar_right/items.json';
 // import Outline from '@ocdla/ors/src/Outline';
 
-import Items_Breadcrumbs_Ors_Viewer from '../../../data/json/ors_viewer/breadcrumbs/items.json';
+const client = new HttpClient();
+const req = new Request('https://ors.ocdla.org/index.xml');
+// const req = new Request(
+//     'https://raw.githubusercontent.com/ocdladefense/ors-viewer/toc/src/data/xml/ors_viewer/statutes.xml'
+// );
+const resp = await client.send(req);
+const xml = await resp.text();
+const parser = new DOMParser();
+const parsedXML = parser.parseFromString(xml, 'application/xml');
 
-import Items_Sidebar_Left_Ors_Viewer from '../../../data/json/ors_viewer/sidebar_left/items.json';
-
-import Items_Sidebar_Right_Ors_Viewer from '../../../data/json/ors_viewer/sidebar_right/items.json';
-
-export const fetch_items_statutes_volumes = async () => {
-    const client = new HttpClient();
-    const req = new Request('https://ors.ocdla.org/index.xml');
-    // const req = new Request(
-    //     'https://raw.githubusercontent.com/ocdladefense/ors-viewer/toc/src/data/xml/ors_viewer/statutes.xml'
-    // );
-    const resp = await client.send(req);
-    const xml = await resp.text();
-    const parser = new DOMParser();
-    const parsedXML = parser.parseFromString(xml, 'application/xml');
+export const getVolumes = async () => {
     const xmlVolumes = parsedXML.getElementsByTagName('volume');
     const baseUrl = '/statutes';
     let jsonArray = [];
@@ -49,16 +47,7 @@ export const fetch_items_statutes_volumes = async () => {
     return jsonArray;
 };
 
-export const fetch_items_statutes_volume_titles = async currentVolume => {
-    const client = new HttpClient();
-    const req = new Request('../../data/xml/ors_viewer/statutes.xml');
-    // const req = new Request(
-    //     'https://raw.githubusercontent.com/ocdladefense/ors-viewer/toc/src/data/xml/ors_viewer/statutes.xml'
-    // );
-    const resp = await client.send(req);
-    const xml = await resp.text();
-    const parser = new DOMParser();
-    const parsedXML = parser.parseFromString(xml, 'application/xml');
+export const getTitles = async volume => {
     const xmlVolumes = parsedXML.getElementsByTagName('volume');
     const baseUrl = '/statutes';
     let jsonArray = [];
@@ -88,16 +77,7 @@ export const fetch_items_statutes_volume_titles = async currentVolume => {
     return jsonArray;
 };
 
-export const fetch_items_statutes_title_chapters = async currentTitle => {
-    const client = new HttpClient();
-    const req = new Request('../../data/xml/ors_viewer/statutes.xml');
-    // const req = new Request(
-    //     'https://raw.githubusercontent.com/ocdladefense/ors-viewer/toc/src/data/xml/ors_viewer/statutes.xml'
-    // );
-    const resp = await client.send(req);
-    const xml = await resp.text();
-    const parser = new DOMParser();
-    const parsedXML = parser.parseFromString(xml, 'application/xml');
+export const getChapters = async title => {
     const xmlTitles = parsedXML.getElementsByTagName('title');
     const baseUrl = '/statutes';
     let jsonArray = [];
@@ -124,42 +104,33 @@ export const fetch_items_statutes_title_chapters = async currentTitle => {
     return jsonArray;
 };
 
-export const fetch_items_statutes_chapter_sections = async currentChapter => {
-    switch (USE_MOCK) {
-        // Development
-        case true:
-            return Items_Sidebar_Left_Ors_Viewer;
-        // Production
-        default:
-            // const url = new Url('https://ors.ocdla.org/index.xml');
-            const url = new Url(
-                'https://appdev.ocdla.org/books-online/index.php'
-            );
+export const getSections = async currentChapter => {
+    // const url = new Url('https://ors.ocdla.org/index.xml');
+    const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 
-            url.buildQuery('chapter', currentChapter.toString());
+    url.buildQuery('chapter', currentChapter.toString());
 
-            const client = new HttpClient();
-            const req = new Request(url.toString());
-            const resp = await client.send(req);
-            const msword = await OrsChapter.fromResponse(resp);
+    const client = new HttpClient();
+    const req = new Request(url.toString());
+    const resp = await client.send(req);
+    const msword = await OrsChapter.fromResponse(resp);
 
-            msword.chapterNum = currentChapter;
+    msword.chapterNum = currentChapter;
 
-            const xml = OrsChapter.toStructuredChapter(msword);
-            const jsonArray = xml.sectionTitles.map((section, i) => {
-                const chapterString =
-                    xml.chapterNum + '.' + i.toString().padStart(3, '0');
+    const xml = OrsChapter.toStructuredChapter(msword);
+    const jsonArray = xml.sectionTitles.map((section, i) => {
+        const chapterString =
+            xml.chapterNum + '.' + i.toString().padStart(3, '0');
 
-                return {
-                    id: chapterString,
-                    active: i === currentChapter ? true : undefined,
-                    href: '?chapter=' + xml.chapterNum + '#section-' + i,
-                    label: section
-                };
-            });
+        return {
+            id: chapterString,
+            active: i === currentChapter ? true : undefined,
+            href: '?chapter=' + xml.chapterNum + '#section-' + i,
+            label: section
+        };
+    });
 
-            return jsonArray;
-    }
+    return jsonArray;
 };
 
 export const getBreadcrumbs = async (

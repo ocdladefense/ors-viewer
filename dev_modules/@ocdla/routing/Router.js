@@ -25,6 +25,42 @@ switch (currentAppType) {
         break;
 }
 
+const routes = {};
+
+// route: "volume/(\d+)"
+// component: Statute
+// props: "id"
+function registerRoute(route, component, props) {
+    // Insert our class code here eventually (if we need to).
+}
+
+<Routes>
+    <Route
+        path='/'
+        element={<Home />}
+    />
+    <Route
+        path='about'
+        element={<About />}
+    />
+    <Route
+        path='dashboard'
+        element={<Dashboard />}
+    />
+</Routes>;
+
+let router = new Router(basePath);
+router.addRoute('statutes', <Statutes />);
+router.addRoute('volume/(d+)', Statute, 'volume');
+
+let [Component, props] = router.match(window.location.href);
+
+function match(href) {
+    // Determine which route (if any) matches the given href.
+
+    return [component, props];
+}
+
 // Insert our class code here eventually (if we need to).
 
 export default class Router {}
