@@ -60,6 +60,7 @@ export const getTitles = async volume => {
     Array.from(xmlVolumes).forEach($volume => {
         const volumeId = $volume.getAttribute('id').split('-')[1];
         const volumeTitles = $volume.getElementsByTagName('title');
+        const volumeName = $volume.getAttribute('name');
 
         if (parseInt(volumeId) === volume) {
             Array.from(volumeTitles).forEach($title => {
@@ -70,6 +71,7 @@ export const getTitles = async volume => {
                     'Chapters ' + $title.getAttribute('range');
 
                 jsonArray.push({
+                    volumeName: volumeName,
                     href: titleHref,
                     id: titleId,
                     heading: titleName,
@@ -90,6 +92,7 @@ export const getChapters = async title => {
     Array.from(xmlTitles).forEach($title => {
         const titleId = $title.getAttribute('id').split('-')[1];
         const titleChapters = $title.getElementsByTagName('chapter');
+        const titleName = $title.getAttribute('name');
 
         if (parseInt(titleId) === title) {
             Array.from(titleChapters).forEach($chapter => {
@@ -98,6 +101,7 @@ export const getChapters = async title => {
                 const chapterName = $chapter.getAttribute('name');
 
                 jsonArray.push({
+                    titleName: titleName,
                     href: chapterHref,
                     id: chapterId,
                     label: chapterName
@@ -124,10 +128,14 @@ export const getSections = async chapter => {
 
     const xml = OrsChapter.toStructuredChapter(msword);
     const jsonArray = xml.sectionTitles.map(($section, sectionIndex) => {
+        const chapterName = parsedXML
+            .getElementById('ch-' + chapter)
+            .getAttribute('name');
         const chapterString =
             xml.chapterNum + '.' + sectionIndex.toString().padStart(3, '0');
 
         return {
+            chapterName: chapterName,
             id: chapterString,
             active: sectionIndex === chapter ? true : undefined,
             href: '?chapter=' + xml.chapterNum + '#$section-' + sectionIndex,

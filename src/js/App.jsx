@@ -74,40 +74,39 @@ export default function App({
                                 case orsRoutes[1]:
                                     return (
                                         <TableOfContents
-                                            statutesTitle='OREGON REVISED STATUTES'
-                                            statuteTitle='Volumes'
-                                            statuteItems={volumes}
+                                            division='Volumes'
+                                            title='OREGON REVISED STATUTES'
+                                            entries={volumes}
                                         />
                                     );
                                 case orsRoutes[2]:
                                     return (
                                         <TableOfContents
-                                            statutesTitle={
-                                                'VOLUME ' + titles[0].id
-                                            }
-                                            statuteTitle='Titles'
-                                            statuteItems={titles}
+                                            division='Titles'
+                                            title={'VOLUME ' + titles[0].id}
+                                            subtitle={titles[0].volumeName}
+                                            entries={titles}
                                         />
                                     );
                                 case orsRoutes[3]:
                                     return (
                                         <TableOfContents
-                                            statutesTitle={
-                                                'TITLE ' + chapters[0].id
-                                            }
-                                            statuteTitle='Chapters'
-                                            statuteItems={chapters}
+                                            division='Chapters'
+                                            title={'TITLE ' + chapters[0].id}
+                                            subtitle={chapters[0].titleName}
+                                            entries={chapters}
                                         />
                                     );
                                 case orsRoutes[4]:
                                     return (
                                         <TableOfContents
-                                            statutesTitle={
+                                            division='Sections'
+                                            title={
                                                 'CHAPTER ' +
                                                 sections[1].id.split('.')[0]
                                             }
-                                            statuteTitle='Sections'
-                                            statuteItems={sections}
+                                            subtitle={sections[1].chapterName}
+                                            entries={sections}
                                         />
                                     );
                                 case orsRoutes[5]:

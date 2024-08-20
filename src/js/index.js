@@ -51,7 +51,7 @@ const orsRoutes = [
     '/chapter/1', // 4
     '/section#1.001' // 5
 ];
-const orsBaseRoute = orsRoutes[5];
+const orsBaseRoute = orsRoutes[3];
 const orsFetchDynamicHtml = false;
 const body = await myModule.getBody(currentChapter, orsFetchDynamicHtml);
 const error = false; // For now, assume we don't have a 404.
@@ -105,9 +105,10 @@ root.render(
         orsRoutes={orsRoutes}
         orsBaseRoute={orsBaseRoute}
         // layout='2-cols'
-    >
-        <Component {...props} />
-    </App>
+    />
+    // >
+    //     <Component {...props} />
+    // </App>
 );
 /* <App>
  {notFoundError ? <Not_Found /> : ''}

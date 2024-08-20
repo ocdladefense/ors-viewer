@@ -4,7 +4,7 @@ import { vNode } from '@ocdla/view';
 
 export default function Ors_Search() {
     return (
-        <div class='flex flex-col items-center gap-4 p-16 text-center lg:p-32'>
+        <div class='flex flex-col items-center gap-8 p-16 text-center lg:p-32'>
             <h3 class='text-5xl font-black tracking-tighter'>
                 SEARCH THROUGH THE ORS
             </h3>

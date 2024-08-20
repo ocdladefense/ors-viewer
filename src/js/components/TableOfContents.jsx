@@ -13,9 +13,9 @@ export default function TableOfContents({
 }) {
     return (
         <div class='flex flex-col gap-8'>
-            <div class='flex flex-col gap-2 p-4'>
+            <div class='flex flex-col gap-2 p-8 text-center'>
                 {title ? (
-                    <h3 class='p-4 text-center text-5xl font-black tracking-tighter'>
+                    <h3 class='text-5xl font-black tracking-tighter'>
                         {title}
                     </h3>
                 ) : (
