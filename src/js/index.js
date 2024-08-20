@@ -23,9 +23,9 @@ import {
 } from './functions/fetch_data';
 
 const USE_LOCAL_STATUTES_XML = true;
-if (USE_LOCAL_STATUTES_XML || true) {
+
+if (USE_LOCAL_STATUTES_XML || true)
     HttpClient.register('https://ors.ocdla.org', new OrsMock());
-}
 
 const currentAppType = APP_TYPE;
 /*
@@ -129,8 +129,7 @@ root.render(
 // document.title = 'Test';
 // document.getElementById('body').innerHTML = html_body_ors_viewer;
 
-// document.addEventListener('load', () => {
-//     // document.addEventListener('popstate', () => {
+// window.addEventListener('popstate', () => {
 //     console.log('a');
 // });
 

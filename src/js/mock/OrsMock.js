@@ -1,6 +1,6 @@
 import HttpMock from '@ocdla/lib-http/HttpMock';
 import Url from '@ocdla/lib-http/Url';
-import statutes from '../../data/xml/ors_viewer/statutes.xml';
+import Volumes from '../../data/xml/ors_viewer/statutes.xml';
 
 export default class OrsMock extends HttpMock {
     constructor() {
