@@ -4,7 +4,7 @@ import Volumes from '../../data/xml/ors_viewer/statutes.xml';
 
 export default class OrsMock extends HttpMock {
     constructor() {
-        console.log(statutes);
+        console.log(Volumes);
 
         super();
     }

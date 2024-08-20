@@ -99,7 +99,8 @@ module.exports = env => {
         plugins: [
             new webpack.DefinePlugin({
                 USE_MOCK: JSON.stringify(env.USE_MOCK || false),
-                APP_TYPE: JSON.stringify(env.APP_TYPE || false)
+                APP_TYPE: JSON.stringify(env.APP_TYPE || false),
+                APP_NAME: JSON.stringify(env.APP_NAME)
             }),
             new htmlWebpackPlugin({
                 template: path.resolve(__dirname, 'src/index.html'),
