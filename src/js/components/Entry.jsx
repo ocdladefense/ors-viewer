@@ -4,7 +4,7 @@ import { vNode } from '@ocdla/view';
 import Link from '@ocdla/global-components/src/Defaults';
 /* eslint-enable */
 
-export default function Statute_Item({ href, id, heading, label }) {
+export default function Entry({ href, id, heading, label }) {
     return (
         <li class='size-full'>
             <a

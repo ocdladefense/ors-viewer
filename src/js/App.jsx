@@ -25,7 +25,8 @@ export default function App({
     sidebarSecondItems,
     body,
     orsRoutes,
-    orsBaseRoute
+    orsBaseRoute,
+    children
     // layout
 }) {
     // There is a component that can be used to render a nice 404 error.
@@ -40,6 +41,7 @@ export default function App({
             </header>
             {/* <Main cols='3' /> */}
             <main class='container mx-auto border-x'>
+                {children}
                 {(() => {
                     switch (currentAppType) {
                         // Books Online
