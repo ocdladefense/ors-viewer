@@ -1,17 +1,12 @@
 /** @jsx vNode */ /** @jsxFrag "Fragment" */
 /* eslint-disable no-unused-vars */
 import { vNode } from '@ocdla/view';
-import Link from '@ocdla/global-components/src/Defaults';
 import Navbar from '@ocdla/global-components/src/Navbar';
 import Breadcrumbs from '@ocdla/global-components/src/Breadcrumbs';
-import Not_Found from '@ocdla/global-components/src/Not_Found';
+// import Not_Found from '@ocdla/global-components/src/Not_Found';
 import Ors_Search from './components/Ors_Search';
-import Statutes from './components/Statutes';
-import Statute from './components/Statute';
-import Statute_Item from './components/Statute_Item';
+import TableOfContents from './components/TableOfContents';
 import Sidebar from '@ocdla/global-components/src/Sidebar';
-
-import Sidebar_Item from '@ocdla/global-components/src/Sidebar_Item';
 import Body from '@ocdla/global-components/src/Body';
 import Footer from '@ocdla/global-components/src/Footer';
 /* eslint-enable */
@@ -20,28 +15,21 @@ export default function App({
     view,
     currentAppType,
     headerPinned,
-    children,
-    error,
-    currentVolume,
-    currentTitle,
-    currentChapter,
-    currentSection,
+    // error,
     volumes,
-    items_statutes_volume_titles,
-    items_statutes_title_chapters,
-    items_statutes_chapter_sections,
+    titles,
+    chapters,
+    sections,
     breadcrumbs,
-    html_body_ors_viewer,
     sidebarFirstItems,
-    sidebarSecondItems
+    sidebarSecondItems,
+    body,
+    orsRoutes,
+    orsBaseRoute
+    // layout
 }) {
-    const appTypeIndicators = currentAppType === 'bon' ? '📚' : '🔍';
-    const appTypeString =
-        currentAppType === 'bon' ? 'books_online' : 'ors_viewer';
-
-    // console.log(items_statutes_volumes);
     // There is a component that can be used to render a nice 404 error.
-    //  return <Not_Found />;
+    // return <Not_Found />;
     return (
         <>
             <header
@@ -51,38 +39,95 @@ export default function App({
                 <Breadcrumbs crumbs={breadcrumbs} />
             </header>
             {/* <Main cols='3' /> */}
-            <main
-                id='body'
-                class='container mx-auto border-x'>
+            <main class='container mx-auto border-x'>
                 {(() => {
                     switch (currentAppType) {
-                        // ORS Viewer
-                        case 'ors':
-                            return (
-                                <div class='lg:grid lg:grid-cols-1'>
-                                    <Statutes
-                                        statutesTitle='OREGON REVISED STATUTES'
-                                        statuteTitle='Volumes'
-                                        statuteItems={volumes}
-                                    />
-                                </div>
-                            );
-
                         // Books Online
-                        default:
+                        case 'bon':
                             return (
                                 <div class='lg:grid lg:grid-cols-6'>
-                                    <Sidebar items={sidebarFirstItems} />
+                                    <Sidebar
+                                        type='left'
+                                        items={sidebarFirstItems}
+                                    />
                                     <Body
                                         view={view}
-                                        type={appTypeString}
-                                        html_body_ors_viewer={
-                                            html_body_ors_viewer
-                                        }
+                                        currentAppType={currentAppType}
+                                        body={body}
                                     />
-                                    <Sidebar items={sidebarSecondItems} />
+                                    <Sidebar
+                                        type='right'
+                                        items={sidebarSecondItems}
+                                    />
                                 </div>
                             );
+                        // ORS Viewer
+                        case 'ors': {
+                            // Move this later to routing.
+                            history.pushState({}, '', orsBaseRoute);
+
+                            switch (orsBaseRoute) {
+                                case orsRoutes[0]:
+                                    return <Ors_Search />;
+                                case orsRoutes[1]:
+                                    return (
+                                        <TableOfContents
+                                            statutesTitle='OREGON REVISED STATUTES'
+                                            statuteTitle='Volumes'
+                                            statuteItems={volumes}
+                                        />
+                                    );
+                                case orsRoutes[2]:
+                                    return (
+                                        <TableOfContents
+                                            statutesTitle={
+                                                'VOLUME ' + titles[0].id
+                                            }
+                                            statuteTitle='Titles'
+                                            statuteItems={titles}
+                                        />
+                                    );
+                                case orsRoutes[3]:
+                                    return (
+                                        <TableOfContents
+                                            statutesTitle={
+                                                'TITLE ' + chapters[0].id
+                                            }
+                                            statuteTitle='Chapters'
+                                            statuteItems={chapters}
+                                        />
+                                    );
+                                case orsRoutes[4]:
+                                    return (
+                                        <TableOfContents
+                                            statutesTitle={
+                                                'CHAPTER ' +
+                                                sections[1].id.split('.')[0]
+                                            }
+                                            statuteTitle='Sections'
+                                            statuteItems={sections}
+                                        />
+                                    );
+                                case orsRoutes[5]:
+                                    return (
+                                        <div class='lg:grid lg:grid-cols-6'>
+                                            <Sidebar
+                                                type='left'
+                                                items={sidebarFirstItems}
+                                            />
+                                            <Body
+                                                view={view}
+                                                currentAppType={currentAppType}
+                                                body={body}
+                                            />
+                                            <Sidebar
+                                                type='right'
+                                                items={sidebarSecondItems}
+                                            />
+                                        </div>
+                                    );
+                            }
+                        }
                     }
                 })()}
             </main>

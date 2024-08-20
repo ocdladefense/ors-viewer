@@ -30,7 +30,7 @@ module.exports = env => {
         devServer: {
             static: path.resolve(__dirname, 'src'),
             port: 8080,
-            open: false,
+            open: true,
             hot: true,
             compress: true,
             historyApiFallback: true
@@ -99,6 +99,9 @@ module.exports = env => {
         plugins: [
             new webpack.DefinePlugin({
                 USE_MOCK: JSON.stringify(env.USE_MOCK || false),
+                USE_LOCAL_STATUTES_XML: JSON.stringify(
+                    env.USE_LOCAL_STATUTES_XML || true
+                ),
                 APP_NAME: JSON.stringify(env.APP_NAME)
             }),
             new htmlWebpackPlugin({

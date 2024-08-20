@@ -50,7 +50,7 @@
 // </Routes>;
 
 // let router = new Router(basePath);
-// router.addRoute('statutes', <Statutes />);
+// router.addRoute('statutes', <TableOfContents />);
 // router.addRoute('volume/(d+)', Statute, 'volume');
 
 // let [Component, props] = router.match(window.location.href);
@@ -90,11 +90,11 @@
 
 /*
     import Router from './Router';
-    import Statutes from '../components/Statutes';
+    import TableOfContents from '../components/TableOfContents';
 
     const router = new Router();
 
-    router.registerRoute('/statutes', <Statutes />);
+    router.registerRoute('/statutes', <TableOfContents />);
     router.registerRoute(/^\/ors-volume\/(\d+)$/);
     router.registerRoute(/^\/ors-title\/(\d+)$/);
     router.registerRoute(/^\/ors-chapter\/(\d+)$/);
@@ -124,7 +124,7 @@ export default class Router {
             case '/':
                 return <Ors_Search />;
             case '/statutes':
-                return <Statutes />;
+                return <TableOfContents />;
             case /^\/ors-volume\/(\d+)$/:
                 return <Statute id={id} />;
             case /^\/ors-title\/(\d+)$/:

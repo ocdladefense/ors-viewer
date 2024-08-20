@@ -5,7 +5,7 @@ import Statute from './Statute';
 import Statute_Item from './Statute_Item';
 /* eslint-enable */
 
-export default function Statutes({
+export default function TableOfContents({
     statutesTitle,
     subTitle,
     statuteTitle,
