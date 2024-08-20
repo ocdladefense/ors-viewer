@@ -1,10 +1,10 @@
 import HttpMock from '@ocdla/lib-http/HttpMock';
 import Url from '@ocdla/lib-http/Url';
-import Volumes from '../../data/xml/ors_viewer/statutes.xml';
+import volumes from '../../data/xml/ors_viewer/statutes.xml';
 
 export default class OrsMock extends HttpMock {
     constructor() {
-        console.log(Volumes);
+        console.log(volumes);
 
         super();
     }
@@ -15,7 +15,7 @@ export default class OrsMock extends HttpMock {
 
         // Synesthetic responses.
         return id.includes('index')
-            ? new Response(statutes, {
+            ? new Response(volumes, {
                   headers: { 'Content-Type': 'application/xml' }
               })
             : new Response(this.imports[id]);

@@ -21,11 +21,11 @@ export const getVolumes = async () => {
     const baseUrl = '/statutes';
     let jsonArray = [];
 
-    Array.from(xmlVolumes).forEach(volume => {
-        const volumeId = volume.getAttribute('id').split('-')[1];
+    Array.from(xmlVolumes).forEach($volume => {
+        const volumeId = $volume.getAttribute('id').split('-')[1];
         const volumeHref = baseUrl + '/ors_volume_' + volumeId;
-        const volumeName = volume.getAttribute('name');
-        const volumeVolumes = volume.getElementsByTagName('title');
+        const volumeName = $volume.getAttribute('name');
+        const volumeVolumes = $volume.getElementsByTagName('title');
         const volumeFirstChild = volumeVolumes[0];
         const volumeLastChild =
             volumeVolumes[Object.keys(volumeVolumes).at(-1)];
@@ -52,17 +52,17 @@ export const getTitles = async volume => {
     const baseUrl = '/statutes';
     let jsonArray = [];
 
-    Array.from(xmlVolumes).forEach(volume => {
-        const volumeId = volume.getAttribute('id').split('-')[1];
-        const volumeTitles = volume.getElementsByTagName('title');
+    Array.from(xmlVolumes).forEach($volume => {
+        const volumeId = $volume.getAttribute('id').split('-')[1];
+        const volumeTitles = $volume.getElementsByTagName('title');
 
-        if (parseInt(volumeId) === currentVolume) {
-            Array.from(volumeTitles).forEach(title => {
-                const titleId = title.getAttribute('id').split('-')[1];
+        if (parseInt(volumeId) === volume) {
+            Array.from(volumeTitles).forEach($title => {
+                const titleId = $title.getAttribute('id').split('-')[1];
                 const titleHref = baseUrl + '/ors_title_' + titleId;
-                const titleName = title.getAttribute('name');
+                const titleName = $title.getAttribute('name');
                 const titleChapterRange =
-                    'Chapters ' + title.getAttribute('range');
+                    'Chapters ' + $title.getAttribute('range');
 
                 jsonArray.push({
                     href: titleHref,
@@ -82,15 +82,15 @@ export const getChapters = async title => {
     const baseUrl = '/statutes';
     let jsonArray = [];
 
-    Array.from(xmlTitles).forEach(title => {
-        const titleId = title.getAttribute('id').split('-')[1];
-        const titleChapters = title.getElementsByTagName('chapter');
+    Array.from(xmlTitles).forEach($title => {
+        const titleId = $title.getAttribute('id').split('-')[1];
+        const titleChapters = $title.getElementsByTagName('chapter');
 
-        if (parseInt(titleId) === currentTitle) {
-            Array.from(titleChapters).forEach(chapter => {
-                const chapterId = chapter.getAttribute('id').split('-')[1];
+        if (parseInt(titleId) === title) {
+            Array.from(titleChapters).forEach($chapter => {
+                const chapterId = $chapter.getAttribute('id').split('-')[1];
                 const chapterHref = baseUrl + '/ors_chapter_' + chapterId;
-                const chapterName = chapter.getAttribute('name');
+                const chapterName = $chapter.getAttribute('name');
 
                 jsonArray.push({
                     href: chapterHref,
@@ -104,29 +104,29 @@ export const getChapters = async title => {
     return jsonArray;
 };
 
-export const getSections = async currentChapter => {
+export const getSections = async chapter => {
     // const url = new Url('https://ors.ocdla.org/index.xml');
     const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 
-    url.buildQuery('chapter', currentChapter.toString());
+    url.buildQuery('chapter', chapter.toString());
 
     const client = new HttpClient();
     const req = new Request(url.toString());
     const resp = await client.send(req);
     const msword = await OrsChapter.fromResponse(resp);
 
-    msword.chapterNum = currentChapter;
+    msword.chapterNum = chapter;
 
     const xml = OrsChapter.toStructuredChapter(msword);
-    const jsonArray = xml.sectionTitles.map((section, i) => {
+    const jsonArray = xml.sectionTitles.map(($section, sectionIndex) => {
         const chapterString =
-            xml.chapterNum + '.' + i.toString().padStart(3, '0');
+            xml.chapterNum + '.' + sectionIndex.toString().padStart(3, '0');
 
         return {
             id: chapterString,
-            active: i === currentChapter ? true : undefined,
-            href: '?chapter=' + xml.chapterNum + '#section-' + i,
-            label: section
+            active: sectionIndex === chapter ? true : undefined,
+            href: '?chapter=' + xml.chapterNum + '#$section-' + sectionIndex,
+            label: $section
         };
     });
 

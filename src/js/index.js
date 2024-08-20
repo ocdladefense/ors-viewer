@@ -79,7 +79,8 @@ const error = false; // For now, assume we don't have a 404.
 const $root = document.getElementById('root');
 const root = View.createRoot($root);
 
-<Routes>
+{
+    /* <Routes>
     <Route
         path='/'
         element={<Home />}
@@ -92,15 +93,14 @@ const root = View.createRoot($root);
         path='dashboard'
         element={<Dashboard />}
     />
-</Routes>;
+</Routes>; */
+}
 
-let router = new Router(basePath);
-router.addRoute('statutes', <Statutes />);
-router.addRoute('volume/(\d+)', Statute, "volume");
+// let router = new Router(basePath);
+// router.addRoute('statutes', <Statutes />);
+// router.addRoute('volume/(d+)', Statute, 'volume');
 
-let [Component, props] = router.match(window.location.href);
-
-
+// let [Component, props] = router.match(window.location.href);
 
 /*
         currentVolume={currentVolume}
@@ -125,8 +125,8 @@ root.render(
         sidebarSecondItems={sidebarSecondItems}
         body={body}
         layout='2-cols'>
-        {notFoundError ? <Not_Found /> : ''}
-        <Component ...props />
+        {/* {notFoundError ? <Not_Found /> : ''} */}
+        {/* <Component ...props /> */}
     </App>
 );
 
