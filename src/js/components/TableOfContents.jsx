@@ -9,7 +9,7 @@ export default function TableOfContents({
     division,
     title,
     subtitle,
-    entries = []
+    entries
 }) {
     return (
         <div class='flex flex-col gap-8'>

@@ -1,11 +1,13 @@
 import '../css/input.css';
-/** @jsx vNode */
+/** @jsx vNode */ /** @jsxFrag "Fragment" */
 /* eslint-disable no-unused-vars */
 import { vNode, View } from '@ocdla/view';
 import App from './App';
 // import Not_Found from '@ocdla/global-components/src/Not_Found';
 // import ORS_Section_Link from './components/Ors_Section_Link';
 // import Sidebar_Item from '@ocdla/global-components/src/Sidebar_Item';
+// import Sidebar from '@ocdla/global-components/src/Sidebar';
+// import Body from '@ocdla/global-components/src/Body';
 import Ors_Search from './components/Ors_Search';
 import TableOfContents from './components/TableOfContents';
 /* eslint-enable */
@@ -40,12 +42,19 @@ const router = new Router();
 // router.addRoute('/chapter', 1);
 // router.addRoute('/section', 1);
 
-router.addRoute('/', false, Ors_Search);
-router.addRoute('/toc', false, TableOfContents);
-router.addRoute('/toc/volume', true, TableOfContents);
-router.addRoute('/toc/title', true, TableOfContents);
-router.addRoute('/toc/chapter', true, TableOfContents);
-router.addRoute('/toc/section', true, TableOfContents);
+switch (currentAppType) {
+    case 'bon':
+        router.addRoute('/', false, 'xyz');
+        break;
+    case 'ors':
+        router.addRoute('/', false, Ors_Search);
+        router.addRoute('/toc', false, TableOfContents);
+        router.addRoute('/toc/volume', true, TableOfContents);
+        router.addRoute('/toc/title', true, TableOfContents);
+        router.addRoute('/toc/chapter', true, TableOfContents);
+        router.addRoute('/toc/section', true, 'a');
+        break;
+}
 
 // router.addRoute('/', null, Ors_Search);
 // router.addRoute('/toc', null, TableOfContents, {
@@ -134,16 +143,20 @@ if (currentAppType === 'ors') {
         case router.routes[4].route:
             chapters = await myModule.getChapters(false, id);
             sections = await myModule.getSections(true, id);
-            // console.log(chapters);
-            // console.log(sections);
             props = {
-                division: 'Chapters',
+                division: 'Sections',
                 title: 'CHAPTER ' + id,
                 subtitle: chapters.find(v => parseInt(v.id) === id).label,
                 entries: sections
             };
             break;
         /* /section/* */
+        case router.routes[5].route:
+            console.log('a');
+            props = {
+                body: 'abc'
+            };
+            break;
     }
 }
 

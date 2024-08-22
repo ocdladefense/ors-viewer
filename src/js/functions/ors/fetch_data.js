@@ -82,38 +82,15 @@ export const getTitles = async (isVolume, paramId) => {
 };
 
 export const getChapters = async (isTitle, paramId) => {
-    // const xmlTitles = parsedXML.getElementsByTagName('title');
     const xmlChapters = parsedXML.getElementsByTagName('chapter');
     let jsonArray = [];
-
-    // Array.from(xmlTitles).forEach($title => {
-    //     const titleId = $title.getAttribute('id').split('-')[1];
-    //     const titleChapters = $title.getElementsByTagName('chapter');
-    //     const titleName = $title.getAttribute('name');
-
-    //     if (parseInt(titleId) === title) {
-    //         Array.from(titleChapters).forEach($chapter => {
-    //             const chapterId = $chapter.getAttribute('id').split('-')[1];
-    //             const chapterHref = baseUrl + '/chapter/' + chapterId;
-    //             const chapterName = $chapter.getAttribute('name');
-
-    //             jsonArray.push({
-    //                 titleName: titleName,
-    //                 href: chapterHref,
-    //                 id: chapterId,
-    //                 label: chapterName
-    //             });
-    //         });
-    //     }
-    // });
 
     Array.from(xmlChapters).forEach($chapter => {
         const titleId = $chapter.parentElement.getAttribute('id').split('-')[1];
         const chapterId = $chapter.getAttribute('id').split('-')[1];
         const chapterHref = baseUrl + '/chapter/' + chapterId;
         const chapterName = $chapter.getAttribute('name');
-
-        const returnTitle = () => {
+        const returnChapter = () => {
             jsonArray.push({
                 // titleName: titleName,
                 href: chapterHref,
@@ -126,40 +103,49 @@ export const getChapters = async (isTitle, paramId) => {
             (isTitle && parseInt(titleId) === paramId) ||
             (!isTitle && parseInt(chapterId) === paramId)
         )
-            returnTitle();
+            returnChapter();
     });
 
     return jsonArray;
 };
 
-export const getSections = async (isChapter, chapter) => {
+export const getSections = async (isChapter, paramId) => {
     // const url = new Url('https://ors.ocdla.org/index.xml');
     const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 
-    url.buildQuery('chapter', chapter.toString());
+    url.buildQuery('chapter', paramId.toString());
 
     const client = new HttpClient();
     const req = new Request(url.toString());
     const resp = await client.send(req);
     const msword = await OrsChapter.fromResponse(resp);
 
-    msword.chapterNum = chapter;
+    // msword.chapterNum = paramId;
 
     const xml = OrsChapter.toStructuredChapter(msword);
-    const jsonArray = xml.sectionTitles.map(($section, sectionIndex) => {
+    let jsonArray = [];
+
+    xml.sectionTitles.map(($section, sectionIndex) => {
         const chapterName = parsedXML
-            .getElementById('ch-' + chapter)
+            .getElementById('ch-' + paramId)
             .getAttribute('name');
         const chapterString =
-            xml.chapterNum + '.' + sectionIndex.toString().padStart(3, '0');
-
-        return {
-            chapterName: chapterName,
-            id: chapterString,
-            active: sectionIndex === chapter ? true : undefined,
-            href: '?chapter=' + xml.chapterNum + '#$section-' + sectionIndex,
-            label: $section
+            paramId + '.' + sectionIndex.toString().padStart(3, '0');
+        const returnSection = () => {
+            jsonArray.push({
+                chapterName: chapterName,
+                id: chapterString,
+                active: sectionIndex === paramId ? true : undefined,
+                href: baseUrl + '/section#' + chapterString,
+                label: $section
+            });
         };
+
+        if (
+            (isChapter && parseInt(chapterString) === paramId) ||
+            (!isChapter && parseInt(chapterString) === paramId)
+        )
+            returnSection();
     });
 
     return jsonArray;
@@ -240,10 +226,6 @@ export const getSidebarFirstItems = async currentChapter => {
             });
 
             return jsonArray;
-
-        //     : items_sidebar_left_ors_viewer.map(item => (
-        //<ORS_Section_Link {...item} />
-        //));
     }
 };
 
@@ -381,10 +363,5 @@ export const getSidebarSecondItems = async currentChapter => {
                     label: '§ ' + currentChapter + '.001’s source a oregon​.gov'
                 }
             ];
-
-        // map here...
-        //: items_sidebar_right_ors_viewer.map(item => (
-        //    <Sidebar_Item {...item} />
-        //));
     }
 };
