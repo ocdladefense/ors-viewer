@@ -42,7 +42,7 @@ export default function App({
             {/* <Main cols='3' /> */}
             <main class='container mx-auto border-x'>
                 {children}
-                {(() => {
+                {/* {(() => {
                     switch (currentAppType) {
                         // Books Online
                         case 'bon':
@@ -66,7 +66,7 @@ export default function App({
                         // ORS Viewer
                         case 'ors': {
                             // Move this later to routing.
-                            history.pushState({}, '', orsBaseRoute);
+                            // history.pushState({}, '', orsBaseRoute);
 
                             switch (orsBaseRoute) {
                                 case orsRoutes[0]:
@@ -130,7 +130,7 @@ export default function App({
                             }
                         }
                     }
-                })()}
+                })()} */}
             </main>
             <Footer
                 showFacebook={true}

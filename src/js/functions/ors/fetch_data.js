@@ -11,6 +11,7 @@ import Items_Sidebar_Left_Ors_Viewer from '../../../data/json/ors_viewer/sidebar
 import Items_Sidebar_Right_Ors_Viewer from '../../../data/json/ors_viewer/sidebar_right/items.json';
 // import Outline from '@ocdla/ors/src/Outline';
 
+const baseUrl = '/toc';
 const client = new HttpClient();
 const req = new Request('https://ors.ocdla.org/index.xml');
 // const req = new Request(
@@ -23,12 +24,11 @@ const parsedXML = parser.parseFromString(xml, 'application/xml');
 
 export const getVolumes = async () => {
     const xmlVolumes = parsedXML.getElementsByTagName('volume');
-    const baseUrl = '/statutes';
     let jsonArray = [];
 
     Array.from(xmlVolumes).forEach($volume => {
         const volumeId = $volume.getAttribute('id').split('-')[1];
-        const volumeHref = baseUrl + '/ors_volume_' + volumeId;
+        const volumeHref = baseUrl + '/volume/' + volumeId;
         const volumeName = $volume.getAttribute('name');
         const volumeVolumes = $volume.getElementsByTagName('title');
         const volumeFirstChild = volumeVolumes[0];
@@ -52,68 +52,87 @@ export const getVolumes = async () => {
     return jsonArray;
 };
 
-export const getTitles = async volume => {
-    const xmlVolumes = parsedXML.getElementsByTagName('volume');
-    const baseUrl = '/statutes';
-    let jsonArray = [];
-
-    Array.from(xmlVolumes).forEach($volume => {
-        const volumeId = $volume.getAttribute('id').split('-')[1];
-        const volumeTitles = $volume.getElementsByTagName('title');
-        const volumeName = $volume.getAttribute('name');
-
-        if (parseInt(volumeId) === volume) {
-            Array.from(volumeTitles).forEach($title => {
-                const titleId = $title.getAttribute('id').split('-')[1];
-                const titleHref = baseUrl + '/ors_title_' + titleId;
-                const titleName = $title.getAttribute('name');
-                const titleChapterRange =
-                    'Chapters ' + $title.getAttribute('range');
-
-                jsonArray.push({
-                    volumeName: volumeName,
-                    href: titleHref,
-                    id: titleId,
-                    heading: titleName,
-                    label: titleChapterRange
-                });
-            });
-        }
-    });
-
-    return jsonArray;
-};
-
-export const getChapters = async title => {
+export const getTitles = async (isVolume, paramId) => {
     const xmlTitles = parsedXML.getElementsByTagName('title');
-    const baseUrl = '/statutes';
     let jsonArray = [];
 
     Array.from(xmlTitles).forEach($title => {
         const titleId = $title.getAttribute('id').split('-')[1];
-        const titleChapters = $title.getElementsByTagName('chapter');
+        const titleHref = baseUrl + '/title/' + titleId;
         const titleName = $title.getAttribute('name');
-
-        if (parseInt(titleId) === title) {
-            Array.from(titleChapters).forEach($chapter => {
-                const chapterId = $chapter.getAttribute('id').split('-')[1];
-                const chapterHref = baseUrl + '/ors_chapter_' + chapterId;
-                const chapterName = $chapter.getAttribute('name');
-
-                jsonArray.push({
-                    titleName: titleName,
-                    href: chapterHref,
-                    id: chapterId,
-                    label: chapterName
-                });
+        const titleChapterRange = 'Chapters ' + $title.getAttribute('range');
+        const volumeId = $title.parentElement.getAttribute('id').split('-')[1];
+        const returnTitle = () => {
+            jsonArray.push({
+                href: titleHref,
+                id: titleId,
+                heading: titleName,
+                label: titleChapterRange
             });
-        }
+        };
+
+        if (
+            (isVolume && parseInt(volumeId) === paramId) ||
+            (!isVolume && parseInt(titleId) === paramId)
+        )
+            returnTitle();
     });
 
     return jsonArray;
 };
 
-export const getSections = async chapter => {
+export const getChapters = async (isTitle, paramId) => {
+    // const xmlTitles = parsedXML.getElementsByTagName('title');
+    const xmlChapters = parsedXML.getElementsByTagName('chapter');
+    let jsonArray = [];
+
+    // Array.from(xmlTitles).forEach($title => {
+    //     const titleId = $title.getAttribute('id').split('-')[1];
+    //     const titleChapters = $title.getElementsByTagName('chapter');
+    //     const titleName = $title.getAttribute('name');
+
+    //     if (parseInt(titleId) === title) {
+    //         Array.from(titleChapters).forEach($chapter => {
+    //             const chapterId = $chapter.getAttribute('id').split('-')[1];
+    //             const chapterHref = baseUrl + '/chapter/' + chapterId;
+    //             const chapterName = $chapter.getAttribute('name');
+
+    //             jsonArray.push({
+    //                 titleName: titleName,
+    //                 href: chapterHref,
+    //                 id: chapterId,
+    //                 label: chapterName
+    //             });
+    //         });
+    //     }
+    // });
+
+    Array.from(xmlChapters).forEach($chapter => {
+        const titleId = $chapter.parentElement.getAttribute('id').split('-')[1];
+        const chapterId = $chapter.getAttribute('id').split('-')[1];
+        const chapterHref = baseUrl + '/chapter/' + chapterId;
+        const chapterName = $chapter.getAttribute('name');
+
+        const returnTitle = () => {
+            jsonArray.push({
+                // titleName: titleName,
+                href: chapterHref,
+                id: chapterId,
+                label: chapterName
+            });
+        };
+
+        if (
+            (isTitle && parseInt(titleId) === paramId) ||
+            (!isTitle && parseInt(chapterId) === paramId)
+        )
+            returnTitle();
+    });
+
+    return jsonArray;
+};
+
+export const getSections = async (isChapter, chapter) => {
     // const url = new Url('https://ors.ocdla.org/index.xml');
     const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 
@@ -158,23 +177,21 @@ export const getBreadcrumbs = async (
             return Items_Breadcrumbs_Ors_Viewer;
         // Production
         default:
-            const baseUrl = '/statutes';
-
             return [
                 {
                     href: baseUrl,
                     label: 'Ors'
                 },
                 {
-                    href: baseUrl + '/ors_volume_' + currentVolume,
+                    href: baseUrl + '/volume/' + currentVolume,
                     label: 'Vol. ' + currentVolume
                 },
                 {
-                    href: baseUrl + '/ors_title_' + currentTitle,
+                    href: baseUrl + '/title/' + currentTitle,
                     label: 'Title ' + currentTitle
                 },
                 {
-                    href: baseUrl + '/ors_chapter_' + currentChapter,
+                    href: baseUrl + '/chapter/' + currentChapter,
                     label:
                         'Chap. ' +
                         currentChapter +

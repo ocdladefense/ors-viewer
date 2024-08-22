@@ -30,7 +30,7 @@
 // // route: "volume/(\d+)"
 // // component: Statute
 // // props: "id"
-// function registerRoute(route, component, props) {
+// function addRoute(route, component, props) {
 //     // Insert our class code here eventually (if we need to).
 // }
 
@@ -94,54 +94,107 @@
 
     const router = new Router();
 
-    router.registerRoute('/statutes', <TableOfContents />);
-    router.registerRoute(/^\/ors-volume\/(\d+)$/);
-    router.registerRoute(/^\/ors-title\/(\d+)$/);
-    router.registerRoute(/^\/ors-chapter\/(\d+)$/);
+    router.addRoute('/statutes', <TableOfContents />);
+    router.addRoute(/^\/ors-volume\/(\d+)$/);
+    router.addRoute(/^\/ors-title\/(\d+)$/);
+    router.addRoute(/^\/ors-chapter\/(\d+)$/);
 
     const currentRoute = window.location.pathname;
 */
 
-import Not_Found from '@ocdla/global-components/src/Not_Found';
-import Ors_Search from '../components/Ors_Search';
-import Statute from '../components/Statute';
+/** @jsx vNode */
+/* eslint-disable no-unused-vars */
+// These imports require defining of extension type.
+import { vNode } from '@ocdla/view';
+import Not_Found from '@ocdla/global-components/src/Not_Found.jsx';
+import Ors_Search from '../../../src/js/components/Ors_Search.jsx';
+import TableOfContents from '../../../src/js/components/TableOfContents.jsx';
+/* eslint-enable */
 
 export default class Router {
-    constructor(basePath = '/') {
-        this.basePath = basePath;
-        this.routes;
-        this.registerRoute(basePath);
+    // constructor(route, component) {
+    constructor() {
+        // this.basePath = route;
+        this.routes = [];
+        // this.addRoute(route, component);
 
-        window.location.pathname = basePath;
+        // console.log(basePath);
+        // if (this.routes.length !== 0) {
+        //     if (!sessionStorage.getItem('init')) {
+        //         history.pushState({}, '', route);
+
+        //         sessionStorage.setItem('init', 'false');
+        //     }
+        // }
     }
 
-    registerRoute(route, component, id) {
-        this.routes.push(route, component, id);
+    // getComponent(route) {
+    //     console.log(route);
+    //     switch (route) {
+    //         case '/':
+    //             return Ors_Search;
+    //         case '/toc':
+    //             return TableOfContents;
+    //         case this.routes[0]:
+    //             return <Statute id={id} />;
+    //         case this.routes[0]:
+    //             return <Statute id={id} />;
+    //         case this.routes[0]:
+    //             return <Statute id={id} />;
+    //         case this.routes[0]:
+    //             return <Statute id={id} />;
+    //     }
+    // }
+
+    // addRoute(route, id = null, component = Not_Found, props = {}) {
+    addRoute(path, id, component = Not_Found) {
+        // addRoute(route, id = null) {
+        const routeExists = this.routes.find(r => r.route === path);
+
+        if (routeExists) {
+            routeExists.id = id;
+            routeExists.component = component;
+            // routeExists.props = props;
+            // } else this.routes.push({ route, id, component, props });
+        } else this.routes.push({ route: path, id, component });
+        // } else this.routes.push({ route, id });
     }
 
-    getComponentFor(route, id) {
-        switch (route) {
-            case '/':
-                return <Ors_Search />;
-            case '/statutes':
-                return <TableOfContents />;
-            case /^\/ors-volume\/(\d+)$/:
-                return <Statute id={id} />;
-            case /^\/ors-title\/(\d+)$/:
-                return <Statute id={id} />;
-            case /^\/ors-chapter\/(\d+)$/:
-                return <Statute id={id} />;
-            default:
-                return <Not_Found />;
+    match(route) {
+        const normalizedRoute = route.replace(/\/+$/, '') || '/';
+
+        for (const r in this.routes) {
+            // const [rRoute, rId, rComponent, rProps] = Object.values(
+            const [rRoute, rId, rComponent] = Object.values(this.routes[r]);
+            // let matchFound;
+            // console.log(route.match('^/volume/(\\d+)$'));
+            // const [rRoute, rId] = Object.values(this.routes[r]);
+            // console.log('^' + rRoute + '/(\\d+)$');
+            const matchFound = rId
+                ? route.match('^' + rRoute + '/(\\d+)$') ||
+                  route.match('^' + rRoute + '#(\\d+)$')
+                : normalizedRoute === rRoute;
+            // const matchFound = normalizedRoute.test(rRoute);
+            // const matchFound = rId
+            //     ? new RegExp('^/volume/(\\d+)$').test(normalizedRoute)
+            //     : normalizedRoute === rRoute;
+            // const matchFound = normalizedRoute.test(rRoute);
+
+            // if (rId) console.log(rRoute + rId);
+            // console.log(new RegExp(normalizedRoute));
+            // if (rId) {
+            //     console.log(rRoute);
+            //     console.log(normalizedRoute);
+            //     console.log(new RegExp(rRoute).test(normalizedRoute));
+            // }
+            if (matchFound) {
+                // console.log('a');
+                // return [rRoute, rId, this.getComponent(route)];
+                // return [rRoute, rId, rComponent, rProps];
+                return [rRoute, parseInt(matchFound[1]), rComponent];
+            }
         }
-    }
 
-    match(path) {
-        for (let r in this.routes) {
-            const [route, component] = this.routes[r];
-            const match = route.match(path);
-
-            if (match === true) return component;
-        }
+        return [Not_Found, {}];
     }
 }

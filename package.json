@@ -18,6 +18,7 @@
         "@ocdla/global-components": "file:./dev_modules/@ocdla/global-components",
         "@ocdla/lib-http": "file:./dev_modules/@ocdla/lib-http",
         "@ocdla/ors": "file:./dev_modules/@ocdla/ors",
+        "@ocdla/routing": "file:./dev_modules/@ocdla/routing",
         "@ocdla/view": "^2.3.14",
         "autoprefixer": "^10.4.19",
         "dotenv": "^16.4.5",

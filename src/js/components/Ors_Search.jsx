@@ -13,8 +13,7 @@ export default function Ors_Search() {
                 onsubmit={e => {
                     e.preventDefault();
 
-                    window.location.pathname = '/statutes';
-                    // history.pushState({}, '', '/statutes');
+                    window.location.pathname = '/toc';
                 }}>
                 <input
                     class='w-full rounded-l-md border border-neutral-300 p-4 lg:w-1/2'
