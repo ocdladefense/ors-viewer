@@ -9,7 +9,7 @@
     "arrowParens": "avoid",
     "arrowFunctionParentheses": "avoid",
     "bracketSpacing": true,
-    "jsxBracketSameLine": true,
+    "bracketSameLine": true,
     "proseWrap": "preserve",
     "plugins": ["prettier-plugin-tailwindcss"]
 }
