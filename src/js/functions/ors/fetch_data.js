@@ -3,6 +3,7 @@
 import { vNode } from '@ocdla/view';
 import Link from '@ocdla/global-components/src/Defaults';
 /* eslint-enable */
+import OrsMock from '../../mock/OrsMock';
 import Url from '@ocdla/lib-http/Url';
 import HttpClient from '@ocdla/lib-http/HttpClient';
 import OrsChapter from '@ocdla/ors/src/OrsChapter';
@@ -10,6 +11,9 @@ import Items_Breadcrumbs_Ors_Viewer from '../../../data/json/ors_viewer/breadcru
 import Items_Sidebar_Left_Ors_Viewer from '../../../data/json/ors_viewer/sidebar_left/items.json';
 import Items_Sidebar_Right_Ors_Viewer from '../../../data/json/ors_viewer/sidebar_right/items.json';
 // import Outline from '@ocdla/ors/src/Outline';
+
+if (USE_LOCAL_STATUTES_XML)
+    HttpClient.register('https://ors.ocdla.org', new OrsMock());
 
 const baseUrl = '/toc';
 const client = new HttpClient();
@@ -22,7 +26,15 @@ const xml = await resp.text();
 const parser = new DOMParser();
 const parsedXML = parser.parseFromString(xml, 'application/xml');
 
-export const getVolumes = async () => {
+export const getVolume = volumeNumber => {
+    return parsedXML.getElementById('vol-' + volumeNumber);
+};
+
+export const getTitle = titleNumber => {
+    return parsedXML.getElementById('title-' + titleNumber);
+};
+
+export const getVolumes = () => {
     const xmlVolumes = parsedXML.getElementsByTagName('volume');
     let jsonArray = [];
 
@@ -52,7 +64,7 @@ export const getVolumes = async () => {
     return jsonArray;
 };
 
-export const getTitles = async (isVolume, paramId) => {
+export const getTitles = paramId => {
     const xmlTitles = parsedXML.getElementsByTagName('title');
     let jsonArray = [];
 
@@ -62,26 +74,21 @@ export const getTitles = async (isVolume, paramId) => {
         const titleName = $title.getAttribute('name');
         const titleChapterRange = 'Chapters ' + $title.getAttribute('range');
         const volumeId = $title.parentElement.getAttribute('id').split('-')[1];
-        const returnTitle = () => {
+
+        if (paramId === volumeId) {
             jsonArray.push({
                 href: titleHref,
                 id: titleId,
                 heading: titleName,
                 label: titleChapterRange
             });
-        };
-
-        if (
-            (isVolume && parseInt(volumeId) === paramId) ||
-            (!isVolume && parseInt(titleId) === paramId)
-        )
-            returnTitle();
+        }
     });
 
     return jsonArray;
 };
 
-export const getChapters = async (isTitle, paramId) => {
+export const getChapters = paramId => {
     const xmlChapters = parsedXML.getElementsByTagName('chapter');
     let jsonArray = [];
 
@@ -90,20 +97,15 @@ export const getChapters = async (isTitle, paramId) => {
         const chapterId = $chapter.getAttribute('id').split('-')[1];
         const chapterHref = baseUrl + '/chapter/' + chapterId;
         const chapterName = $chapter.getAttribute('name');
-        const returnChapter = () => {
+
+        if (paramId === titleId) {
             jsonArray.push({
                 // titleName: titleName,
                 href: chapterHref,
                 id: chapterId,
                 label: chapterName
             });
-        };
-
-        if (
-            (isTitle && parseInt(titleId) === paramId) ||
-            (!isTitle && parseInt(chapterId) === paramId)
-        )
-            returnChapter();
+        }
     });
 
     return jsonArray;

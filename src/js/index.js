@@ -10,6 +10,9 @@ import App from './App';
 // import Body from '@ocdla/global-components/src/Body';
 import Ors_Search from './components/Ors_Search';
 import TableOfContents from './components/TableOfContents';
+import VolumesToc from './components/VolumesToc';
+import TitlesToc from './components/TitlesToc';
+import ChaptersToc from './components/ChaptersToc';
 /* eslint-enable */
 import HttpClient from '@ocdla/lib-http/HttpClient';
 import OrsMock from './mock/OrsMock';
@@ -44,15 +47,20 @@ const router = new Router();
 
 switch (currentAppType) {
     case 'bon':
-        router.addRoute('/', false, 'xyz');
+        router.addRoute('/', 'xyz');
         break;
     case 'ors':
-        router.addRoute('/', false, Ors_Search);
-        router.addRoute('/toc', false, TableOfContents);
-        router.addRoute('/toc/volume', true, TableOfContents);
-        router.addRoute('/toc/title', true, TableOfContents);
-        router.addRoute('/toc/chapter', true, TableOfContents);
-        router.addRoute('/toc/section', true, 'a');
+        // prettier-ignore
+        router.addRoute('/', Ors_Search);
+        // prettier-ignore
+        router.addRoute('/toc', VolumesToc, { division: 'Volumes', title: 'OREGON REVISED STATUTES'});
+        // prettier-ignore
+        router.addRoute('/toc/volume/(\\w+)', TitlesToc);
+        // prettier-ignore
+        router.addRoute('/toc/title/(\\w+)', ChaptersToc);
+        // prettier-ignore
+        // router.addRoute('/chapter/(\w+)', TableOfContents);
+        // router.addRoute('/toc/section', true, 'a');
         break;
 }
 
@@ -84,10 +92,10 @@ switch (currentAppType) {
 
 const routeData = router.match(window.location.pathname);
 // const [route, id, Component, props] = routeData;
-const [route, id, Component] = routeData;
+const [Component, props] = routeData;
 // const [Component, props] = ['abc', {}];
 
-let volumes, titles, chapters, sections, props;
+let volumes, titles, chapters, sections;
 
 // console.log(id);
 // console.log(router.routes[0].route);
@@ -102,45 +110,40 @@ const currentChapter = parseInt(currentSection.split('.')[0]);
 // console.log(titles);
 // console.log(router.routes[1]);
 
-if (currentAppType === 'ors') {
-    switch (route) {
+if (false && currentAppType === 'ors') {
+    switch (param[0]) {
         // ----------> '/'
         case router.routes[0].route:
             props = {};
             break;
         // ----------> '/toc'
         case router.routes[1].route:
-            volumes = await myModule.getVolumes();
             props = {
                 division: 'Volumes',
                 title: 'OREGON REVISED STATUTES',
-                entries: volumes
+                entries: myModule.getVolumes()
             };
             break;
         // ----------> '/volume/*'
         case router.routes[2].route:
-            volumes = await myModule.getVolumes();
-            titles = await myModule.getTitles(true, id);
             props = {
                 division: 'Titles',
                 title: 'VOLUME ' + id,
-                subtitle: volumes.find(v => parseInt(v.id) === id).heading,
-                entries: titles
+                subtitle: myModule.getVolume(id).getAttribute('name'),
+                entries: myModule.getTitles(true, id)
             };
             break;
         // ----------> '/title/*'
         case router.routes[3].route:
-            titles = await myModule.getTitles(false, id);
-            chapters = await myModule.getChapters(true, id);
             props = {
                 division: 'Chapters',
                 title: 'TITLE ' + id,
-                subtitle: titles.find(t => parseInt(t.id) === id).heading,
-                entries: chapters
+                subtitle: myModule.getTitle(id),
+                entries: myModule.getChapters(true, id)
             };
             break;
         // ----------> '/chapter/*'
-        case router.routes[4].route:
+        /*case router.routes[4].route:
             chapters = await myModule.getChapters(false, id);
             sections = await myModule.getSections(true, id);
             props = {
@@ -150,33 +153,26 @@ if (currentAppType === 'ors') {
                 entries: sections
             };
             break;
-        /* /section/* */
+            */
+        /* /section/*
         case router.routes[5].route:
             console.log('a');
             props = {
                 body: 'abc'
             };
             break;
+            */
     }
 }
 
 const breadcrumbs = await myModule.getBreadcrumbs(
-    id,
-    id,
+    currentChapter,
+    currentChapter,
     currentChapter,
     currentSection
 );
 const sidebarFirstItems = await myModule.getSidebarFirstItems(currentChapter);
 const sidebarSecondItems = await myModule.getSidebarSecondItems(currentChapter);
-const orsRoutes = [
-    '/', // 0
-    '/toc', // 1
-    '/volume/1', // 2
-    '/title/1', // 3
-    '/chapter/1', // 4
-    '/section#1.001' // 5
-];
-const orsBaseRoute = orsRoutes[3];
 const orsFetchDynamicHtml = false;
 const body = await myModule.getBody(currentChapter, orsFetchDynamicHtml);
 const error = false; // For now, assume we don't have a 404.
@@ -186,16 +182,14 @@ root.render(
         view={root}
         currentAppType={currentAppType}
         headerPinned={headerPinned}
-        volumes={volumes}
-        titles={titles}
-        chapters={chapters}
-        sections={sections}
+        // volumes={volumes}
+        // titles={titles}
+        // chapters={chapters}
+        // sections={sections}
         breadcrumbs={breadcrumbs}
         sidebarFirstItems={sidebarFirstItems}
         sidebarSecondItems={sidebarSecondItems}
         body={body}
-        orsRoutes={orsRoutes}
-        orsBaseRoute={orsBaseRoute}
         // layout='2-cols'
         // />
     >
@@ -204,8 +198,8 @@ root.render(
     </App>
 );
 
-if (orsBaseRoute === orsRoutes[5] && orsFetchDynamicHtml)
-    document.getElementById('body').innerHTML = body;
+//if (orsBaseRoute === orsRoutes[5] && orsFetchDynamicHtml)
+//  document.getElementById('body').innerHTML = body;
 
 // document.title = 'Test';
 

@@ -12,20 +12,12 @@ import Footer from '@ocdla/global-components/src/Footer';
 /* eslint-enable */
 
 export default function App({
-    view,
-    currentAppType,
     headerPinned,
     // error,
-    volumes,
-    titles,
-    chapters,
-    sections,
     breadcrumbs,
     sidebarFirstItems,
     sidebarSecondItems,
     body,
-    orsRoutes,
-    orsBaseRoute,
     children
     // layout
 }) {

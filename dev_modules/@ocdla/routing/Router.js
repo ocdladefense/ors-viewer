@@ -22,29 +22,51 @@ export default class Router {
         // }
     }
 
-    addRoute(path, id, component = Not_Found) {
+    addRoute(path, component = Not_Found, params = {}) {
         const routeExists = this.routes.find(r => r.route === path);
 
         if (routeExists) {
             routeExists.id = id;
             routeExists.component = component;
-        } else this.routes.push({ route: path, id, component });
+        } else this.routes.push({ route: path, component, params });
     }
 
-    match(route) {
-        const normalizedRoute = route.replace(/\/+$/, '') || '/';
+    match(path) {
+        // if (path === '/') {
+        //     let { route, component, params } = this.routes['/'];
 
-        for (const r in this.routes) {
-            const [rRoute, rId, rComponent] = Object.values(this.routes[r]);
-            const matchFound = rId
-                ? normalizedRoute.match('^' + rRoute + '/(\\d+)$') ||
-                  normalizedRoute.match('^' + rRoute + '#(\\d+)\\.(\\d{3})$')
-                : normalizedRoute === rRoute;
+        //     return [component, params];
+        // }
+        // Leave the root path alone; compensate for any trailing slashes.
+        const normalized = path == '/' ? '/' : path.replace(/\/+$/, '');
+        let parts = normalized.split('/');
+        let _var = parts.length > 2 ? parts[parts.length - 2] : null;
+        // this.routes.shift(); // We're handling the document root path above.
+        for (const r in this.routes.reverse()) {
+            let { route, component, params } = this.routes[r];
+            //  '^' + rRoute + '#(\w+)\.(\d+)$'
+            // /toc
+            // /toc/volume/1
+            // /toc/volume/2
+            // /toc/section#123.456
+            // /chapter/278A
+            // prettier-ignore
+            route = route.replaceAll('/', '\/');
+            // May need to add in modifiers / flags.
+            let re = new RegExp(route);
+            console.log(re);
+            let matches = path.match(re);
 
-            if (matchFound) {
+            // if (!matches) continue;
+
+            // If matches is null, then there wasn't a match.
+            if (matches) {
                 console.log('1234');
 
-                return [rRoute, parseInt(matchFound[1]), rComponent];
+                if (null !== _var) {
+                    params[_var] = matches[1];
+                }
+                return [component, params];
             }
         }
 
