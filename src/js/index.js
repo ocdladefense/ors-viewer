@@ -46,29 +46,17 @@ switch (currentAppType) {
 
 const [Component, props] = router.match(window.location.pathname);
 
-const currentSection = parseFloat('1.001').toFixed(3); // Use string to workaround to prevent Prettier + vanilla JS rounding decimals for now.
-const currentChapter = parseInt(currentSection.split('.')[0]);
-
-const breadcrumbs = await myModule.getBreadcrumbs(
-    currentChapter,
-    currentChapter,
-    currentChapter,
-    currentSection
-);
-const sidebarFirstItems = await myModule.getSidebarFirstItems(currentChapter);
-const sidebarSecondItems = await myModule.getSidebarSecondItems(currentChapter);
-const orsFetchDynamicHtml = false;
-const body = await myModule.getBody(currentChapter, orsFetchDynamicHtml);
-const error = false; // For now, assume we don't have a 404.
+const { body, breadcrumbs, sidebarFirstItems, sidebarSecondItems } =
+    myModule.processRoute(props);
 
 root.render(
     <App
         view={root}
         currentAppType={currentAppType}
         headerPinned={headerPinned}
-        breadcrumbs={breadcrumbs}
-        sidebarFirstItems={sidebarFirstItems}
-        sidebarSecondItems={sidebarSecondItems}
+        breadcrumbs={breadcrumbs || ['']}
+        sidebarFirstItems={sidebarFirstItems || []}
+        sidebarSecondItems={sidebarSecondItems || []}
         body={body}>
         <Component {...props} />
     </App>

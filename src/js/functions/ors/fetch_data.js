@@ -26,6 +26,21 @@ const xml = await resp.text();
 const parser = new DOMParser();
 const parsedXML = parser.parseFromString(xml, 'application/xml');
 
+export function processRoute(params) {
+    const { chapter } = params;
+    const currentSection = parseFloat('1.001').toFixed(3); // Use string to workaround to prevent Prettier + vanilla JS rounding decimals for now.
+    const currentChapter = parseInt(currentSection.split('.')[0]);
+
+    const breadcrumbs = getBreadcrumbs(chapter);
+    const sidebarFirstItems = getSidebarFirstItems(currentChapter);
+    const sidebarSecondItems = getSidebarSecondItems(currentChapter);
+
+    const orsFetchDynamicHtml = false;
+    const body = getBody(currentChapter, orsFetchDynamicHtml);
+
+    return { breadcrumbs, sidebarFirstItems, sidebarSecondItems, body };
+}
+
 export const getVolume = volumeNumber => {
     return parsedXML.getElementById('vol-' + volumeNumber);
 };
@@ -153,7 +168,7 @@ export const getSections = async (isChapter, paramId) => {
     return jsonArray;
 };
 
-export const getBreadcrumbs = async (
+export const getBreadcrumbs = (
     currentVolume,
     currentTitle,
     currentChapter,
