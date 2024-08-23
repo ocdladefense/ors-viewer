@@ -5,11 +5,11 @@ import { vNode } from '@ocdla/view';
 import Entry from './Entry';
 /* eslint-enable */
 
-export default function TableOfContents({
+export default function Table_Of_Contents({
     division,
     title,
     subtitle,
-    entries
+    entries = []
 }) {
     return (
         <div class='flex flex-col gap-8'>

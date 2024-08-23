@@ -16,8 +16,8 @@ export default class OrsMock extends HttpMock {
         // Synesthetic responses.
         return id.includes('index')
             ? new Response(volumes, {
-                  headers: { 'Content-Type': 'application/xml' }
-              })
+                headers: { 'Content-Type': 'application/xml' }
+            })
             : new Response(this.imports[id]);
     }
 }

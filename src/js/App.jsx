@@ -4,10 +4,10 @@ import { vNode } from '@ocdla/view';
 import Navbar from '@ocdla/global-components/src/Navbar';
 import Breadcrumbs from '@ocdla/global-components/src/Breadcrumbs';
 // import Not_Found from '@ocdla/global-components/src/Not_Found';
-import Ors_Search from './components/Ors_Search';
-import TableOfContents from './components/TableOfContents';
-import Sidebar from '@ocdla/global-components/src/Sidebar';
-import Body from '@ocdla/global-components/src/Body';
+// import Ors_Search from './components/Ors_Search';
+// import Table_Of_Contents from './components/Table_Of_Contents';
+// import Sidebar from '@ocdla/global-components/src/Sidebar';
+// import Body from '@ocdla/global-components/src/Body';
 import Footer from '@ocdla/global-components/src/Footer';
 /* eslint-enable */
 
@@ -15,14 +15,15 @@ export default function App({
     headerPinned,
     // error,
     breadcrumbs,
-    sidebarFirstItems,
-    sidebarSecondItems,
-    body,
+    // sidebarFirstItems,
+    // sidebarSecondItems,
+    // body,
     children
     // layout
 }) {
     // There is a component that can be used to render a nice 404 error.
     // return <Not_Found />;
+
     return (
         <>
             <header
@@ -65,7 +66,7 @@ export default function App({
                                     return <Ors_Search />;
                                 case orsRoutes[1]:
                                     return (
-                                        <TableOfContents
+                                        <Table_Of_Contents
                                             division='Volumes'
                                             title='OREGON REVISED STATUTES'
                                             entries={volumes}
@@ -73,7 +74,7 @@ export default function App({
                                     );
                                 case orsRoutes[2]:
                                     return (
-                                        <TableOfContents
+                                        <Table_Of_Contents
                                             division='Titles'
                                             title={'VOLUME ' + titles[0].id}
                                             subtitle={titles[0].volumeName}
@@ -82,7 +83,7 @@ export default function App({
                                     );
                                 case orsRoutes[3]:
                                     return (
-                                        <TableOfContents
+                                        <Table_Of_Contents
                                             division='Chapters'
                                             title={'TITLE ' + chapters[0].id}
                                             subtitle={chapters[0].titleName}
@@ -91,7 +92,7 @@ export default function App({
                                     );
                                 case orsRoutes[4]:
                                     return (
-                                        <TableOfContents
+                                        <Table_Of_Contents
                                             division='Sections'
                                             title={
                                                 'CHAPTER ' +

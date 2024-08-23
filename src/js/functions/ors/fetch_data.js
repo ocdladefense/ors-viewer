@@ -28,25 +28,31 @@ const parsedXML = parser.parseFromString(xml, 'application/xml');
 
 export function processRoute(params) {
     const { chapter } = params;
-    const currentSection = parseFloat('1.001').toFixed(3); // Use string to workaround to prevent Prettier + vanilla JS rounding decimals for now.
-    const currentChapter = parseInt(currentSection.split('.')[0]);
-
-    const breadcrumbs = getBreadcrumbs(chapter);
-    const sidebarFirstItems = getSidebarFirstItems(currentChapter);
-    const sidebarSecondItems = getSidebarSecondItems(currentChapter);
-
+    // console.log('processRoute: ' + chapter);
+    // Use string to workaround to prevent Prettier + vanilla JS rounding decimals for now.
+    // const currentSection = parseFloat('1.001').toFixed(3);
+    // const currentChapter = parseInt(currentSection.split('.')[0]);
+    const currentChapter = chapter;
+    // const breadcrumbs = getBreadcrumbs(chapter);
+    // const sidebarFirstItems = getSidebarFirstItems(currentChapter);
+    // const sidebarSecondItems = getSidebarSecondItems(currentChapter);
     const orsFetchDynamicHtml = false;
     const body = getBody(currentChapter, orsFetchDynamicHtml);
 
-    return { breadcrumbs, sidebarFirstItems, sidebarSecondItems, body };
+    // return { breadcrumbs, sidebarFirstItems, sidebarSecondItems, body };
+    return { body };
 }
 
-export const getVolume = volumeNumber => {
-    return parsedXML.getElementById('vol-' + volumeNumber);
+export const getVolume = paramId => {
+    return parsedXML.getElementById('vol-' + paramId);
 };
 
-export const getTitle = titleNumber => {
-    return parsedXML.getElementById('title-' + titleNumber);
+export const getTitle = paramId => {
+    return parsedXML.getElementById('title-' + paramId);
+};
+
+export const getChapter = paramId => {
+    return parsedXML.getElementById('ch-' + paramId);
 };
 
 export const getVolumes = () => {
@@ -126,7 +132,7 @@ export const getChapters = paramId => {
     return jsonArray;
 };
 
-export const getSections = async (isChapter, paramId) => {
+export const getSections = async paramId => {
     // const url = new Url('https://ors.ocdla.org/index.xml');
     const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 
@@ -140,7 +146,7 @@ export const getSections = async (isChapter, paramId) => {
     // msword.chapterNum = paramId;
 
     const xml = OrsChapter.toStructuredChapter(msword);
-    let jsonArray = [];
+    let jsonArray = [{}];
 
     xml.sectionTitles.map(($section, sectionIndex) => {
         const chapterName = parsedXML
@@ -148,7 +154,13 @@ export const getSections = async (isChapter, paramId) => {
             .getAttribute('name');
         const chapterString =
             paramId + '.' + sectionIndex.toString().padStart(3, '0');
-        const returnSection = () => {
+
+        // console.log(paramId);
+        // console.log(chapterString.split('.')[0]);
+
+        if (paramId === chapterString.split('.')[0]) {
+            // console.log('a');
+            // if (paramId === parseInt(chapterString)) {
             jsonArray.push({
                 chapterName: chapterName,
                 id: chapterString,
@@ -156,13 +168,7 @@ export const getSections = async (isChapter, paramId) => {
                 href: baseUrl + '/section#' + chapterString,
                 label: $section
             });
-        };
-
-        if (
-            (isChapter && parseInt(chapterString) === paramId) ||
-            (!isChapter && parseInt(chapterString) === paramId)
-        )
-            returnSection();
+        }
     });
 
     return jsonArray;
@@ -247,8 +253,12 @@ export const getSidebarFirstItems = async currentChapter => {
 };
 
 export const getBody = async (currentChapter, orsFetchDynamicHtml) => {
+    // console.log('getBody: ' + currentChapter);
+    // console.log('getBody: ' + orsFetchDynamicHtml);
+    // con
     switch (orsFetchDynamicHtml) {
         case true:
+            // console.log('getBody: (a)');
             const url = new Url(
                 'https://appdev.ocdla.org/books-online/index.php'
             );
@@ -266,6 +276,7 @@ export const getBody = async (currentChapter, orsFetchDynamicHtml) => {
 
             return xml.toString();
         case false:
+            // console.log('getBody: (b)');
             const styleTabActive =
                 'tab-btn rounded-t-md border border-b-transparent p-4';
             const styleTabInactive =
@@ -360,7 +371,7 @@ export const getBody = async (currentChapter, orsFetchDynamicHtml) => {
     }
 };
 
-export const getSidebarSecondItems = async currentChapter => {
+export const getSidebarSecondItems = currentChapter => {
     switch (USE_MOCK) {
         // Development
         case true:

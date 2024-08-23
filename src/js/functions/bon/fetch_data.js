@@ -3,7 +3,7 @@
 import { vNode } from '@ocdla/view';
 import Link from '@ocdla/global-components/src/Defaults';
 import Folder from '@ocdla/global-components/src/Folder';
-// eslint-enable
+/* eslint-enable */
 import HttpClient from '@ocdla/lib-http/HttpClient';
 // import Outline from '@ocdla/ors/src/Outline';
 import Items_Breadcrumbs_Books_Online from '../../../data/json/books_online/breadcrumbs/items.json';
@@ -270,7 +270,8 @@ export const getBody = async () => {
     return (
         <div class='flex flex-col gap-4'>
             <h1 class='text-3xl font-bold'>
-                Felony Sentencing in Oregon: Guidelines, TableOfContents, Cases{' '}
+                Felony Sentencing in Oregon: Guidelines, Table_Of_Contents,
+                Cases{' '}
                 <button class='contrast-[200] saturate-0 hover:opacity-[67.5%]'>
                     🔖
                 </button>

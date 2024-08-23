@@ -7,7 +7,7 @@ module.exports = env => {
     return {
         mode: 'development',
         entry: {
-            app: path.resolve(__dirname, 'src/js/index.js')
+            app: path.resolve(__dirname, 'src/js/index.jsx')
         },
         snapshot: {
             managedPaths: []
