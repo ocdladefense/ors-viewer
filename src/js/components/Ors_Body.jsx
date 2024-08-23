@@ -10,10 +10,13 @@ import {
     getSidebarSecondItems
 } from '../functions/ors/fetch_data.js';
 
+export function body() {
+    return getBody(window.location.pathname.split('/').pop(), false);
+}
+
 export default function Ors_Body({ section }) {
     // console.log('Ors_Body: ' + section);
     // const sidebarFirstItems = getSidebarFirstItems(currentChapter);
-    const body = getBody(section, false);
     // const sidebarSecondItems = getSidebarSecondItems(currentChapter);
     // console.log('Ors_Body: ' + body);
 

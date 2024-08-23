@@ -26,23 +26,6 @@ const xml = await resp.text();
 const parser = new DOMParser();
 const parsedXML = parser.parseFromString(xml, 'application/xml');
 
-export function processRoute(params) {
-    const { chapter } = params;
-    // console.log('processRoute: ' + chapter);
-    // Use string to workaround to prevent Prettier + vanilla JS rounding decimals for now.
-    // const currentSection = parseFloat('1.001').toFixed(3);
-    // const currentChapter = parseInt(currentSection.split('.')[0]);
-    const currentChapter = chapter;
-    // const breadcrumbs = getBreadcrumbs(chapter);
-    // const sidebarFirstItems = getSidebarFirstItems(currentChapter);
-    // const sidebarSecondItems = getSidebarSecondItems(currentChapter);
-    const orsFetchDynamicHtml = false;
-    const body = getBody(currentChapter, orsFetchDynamicHtml);
-
-    // return { breadcrumbs, sidebarFirstItems, sidebarSecondItems, body };
-    return { body };
-}
-
 export const getVolume = paramId => {
     return parsedXML.getElementById('vol-' + paramId);
 };
@@ -253,122 +236,20 @@ export const getSidebarFirstItems = async currentChapter => {
 };
 
 export const getBody = async (currentChapter, orsFetchDynamicHtml) => {
-    // console.log('getBody: ' + currentChapter);
-    // console.log('getBody: ' + orsFetchDynamicHtml);
-    // con
-    switch (orsFetchDynamicHtml) {
-        case true:
-            // console.log('getBody: (a)');
-            const url = new Url(
-                'https://appdev.ocdla.org/books-online/index.php'
-            );
+    const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 
-            url.buildQuery('chapter', currentChapter.toString());
+    url.buildQuery('chapter', currentChapter.toString());
 
-            const client = new HttpClient();
-            const req = new Request(url.toString());
-            const resp = await client.send(req);
-            const msword = await OrsChapter.fromResponse(resp);
+    const client = new HttpClient();
+    const req = new Request(url.toString());
+    const resp = await client.send(req);
+    const msword = await OrsChapter.fromResponse(resp);
 
-            msword.chapterNum = currentChapter;
+    msword.chapterNum = currentChapter;
 
-            const xml = OrsChapter.toStructuredChapter(msword);
+    const xml = OrsChapter.toStructuredChapter(msword);
 
-            return xml.toString();
-        case false:
-            // console.log('getBody: (b)');
-            const styleTabActive =
-                'tab-btn rounded-t-md border border-b-transparent p-4';
-            const styleTabInactive =
-                'tab-btn rounded-t-md border border-transparent border-b-inherit p-4 text-blue-400 hover:text-blue-500 hover:underline hover:underline-offset-2';
-            const toggleTabs = tabBtnClicked => {
-                const tabBtns = document.getElementsByClassName('tab-btn');
-                const tabBodies = document.getElementsByClassName('tab-body');
-
-                Array.from(tabBtns).forEach($tabBtn => {
-                    $tabBtn.className =
-                        tabBtnClicked.target === $tabBtn
-                            ? styleTabActive
-                            : styleTabInactive;
-                });
-
-                Array.from(tabBodies).forEach($tabBody =>
-                    tabBtnClicked.target.id.split('-')[2] ===
-                    $tabBody.id.split('-')[2]
-                        ? $tabBody.classList.remove('hidden')
-                        : $tabBody.classList.add('hidden')
-                );
-            };
-
-            return (
-                <>
-                    <div class='mb-4'>
-                        <h3 class='text-5xl font-black tracking-tighter'>
-                            ORS 1.001
-                        </h3>
-                        <h6 class='text-2xl font-thin'>
-                            State policy for courts
-                        </h6>
-                    </div>
-                    <div class='flex flex-col gap-4'>
-                        <ul class='flex'>
-                            <li>
-                                <button
-                                    id='tab-btn-1'
-                                    class={styleTabActive}
-                                    onclick={toggleTabs}>
-                                    Text
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    id='tab-btn-2'
-                                    class={styleTabInactive}
-                                    onclick={toggleTabs}>
-                                    Annotations
-                                </button>
-                            </li>
-                            <li class='w-full border border-transparent border-b-inherit p-4'>
-                                &nbsp;
-                            </li>
-                        </ul>
-                    </div>
-                    <p
-                        id='tab-body-1'
-                        class='tab-body flex flex-col gap-4'>
-                        The Legislative Assembly hereby declares that, as a
-                        matter of statewide concern, it is in the best interests
-                        of the people of this state that the judicial branch of
-                        state government, including the appellate, tax and
-                        circuit courts, be funded and operated at the state
-                        level. The Legislative Assembly finds that state funding
-                        and operation of the judicial branch can provide for
-                        best statewide allocation of governmental resources
-                        according to the actual needs of the people and of the
-                        judicial branch by establishing an accountable,
-                        equitably funded and uniformly administered system of
-                        justice for all the people of this state. [1981 s.s. c.3
-                        §1]
-                        <hr />
-                        <small>
-                            <i>
-                                Source: Section 1.001 — State policy for courts,{' '}
-                                <Link
-                                    href='https://­oregonlegislature.­gov/bills_laws/ors/ors001.­html'
-                                    label='https://­oregonlegislature.­gov/bills_laws/ors/ors001.­html'
-                                />
-                            </i>
-                        </small>
-                    </p>
-                    <p
-                        id='tab-body-2'
-                        class='tab-body flex hidden flex-col gap-4'>
-                        <p>Law Review Citations</p>
-                        <p>50 WLR 291 (2014)</p>
-                    </p>
-                </>
-            );
-    }
+    return xml.toString();
 };
 
 export const getSidebarSecondItems = currentChapter => {

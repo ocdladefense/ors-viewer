@@ -8,7 +8,8 @@ import Ors_Search from './components/Ors_Search';
 import Volumes_Toc from './components/Volumes_Toc';
 import Titles_Toc from './components/Titles_Toc';
 import Chapters_Toc from './components/Chapters_Toc';
-import Sections_Toc from './components/Sections_Toc';
+// import Sections_Toc from './components/Sections_Toc';
+import { body } from './components/Ors_Body';
 import Ors_Body from './components/Ors_Body';
 /* eslint-enable */
 import HttpClient from '@ocdla/lib-http/HttpClient';
@@ -20,7 +21,7 @@ if (USE_LOCAL_STATUTES_XML)
 
 // Available Types: 'bon' || 'ors'.
 const currentAppType = APP_NAME;
-const myModule = await import(`./functions/${currentAppType}/fetch_data.js`);
+// const myModule = await import(`./functions/${currentAppType}/fetch_data.js`);
 // Available Positions: '' (absolute / static) || 'pinned' (fixed / sticky).
 const headerPinned = '';
 const $root = document.getElementById('root');
@@ -43,21 +44,19 @@ switch (currentAppType) {
         router.addRoute('/toc/title/(\\w+)', Chapters_Toc, {
             division: 'Chapters'
         });
-        router.addRoute('/toc/chapter/(\\w+)', Sections_Toc, {
-            division: 'Sections'
-        });
+        // router.addRoute('/chapter/(\\w+)', Sections_Toc, {
+        //     division: 'Sections'
+        // });
         // router.addRoute('/section/(\\d+)\\.(\\d+)', Ors_Body);
         // router.addRoute('/toc/section/[+-]?([0-9]*[.])?[0-9]+', Ors_Body);
-        router.addRoute('/toc/section/(\\w+)', Ors_Body);
+        router.addRoute('/chapter/(\\w+)', Ors_Body, {
+            orsFetchDynamicHtml: true
+        });
         break;
 }
 
 /* eslint-disable-next-line no-unused-vars */
 const [Component, props] = router.match(window.location.pathname);
-// const { body, breadcrumbs, sidebarFirstItems, sidebarSecondItems } =
-//     myModule.processRoute(props);
-
-// console.log(body);
 
 root.render(
     <App
@@ -75,3 +74,9 @@ root.render(
 
 // if (orsBaseRoute === orsRoutes[5] && orsFetchDynamicHtml)
 //     document.getElementById('body').innerHTML = body;
+
+if (Component === Ors_Body) {
+    const _body = await body();
+
+    document.getElementById('body').innerHTML = _body;
+}
