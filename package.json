@@ -8,9 +8,11 @@
         "watch-development-ors-viewer": "webpack serve --env USE_MOCK --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors",
         "watch-production-books-online": "webpack serve --env USE_LOCAL_STATUTES_XML --env APP_NAME=bon",
         "watch-production-ors-viewer": "webpack serve --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors",
+        "watch": "webpack serve --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors --open",
+        "update": "cp package.json package-main.json && package-json-merge package-main.json package-overrides.json > package.json",
         "lint": "eslint -c eslint.config.mjs .",
         "lint-fix": "eslint -c eslint.config.mjs --fix",
-        "build": "webpack --config webpack.config.js",
+        "build": "webpack --config webpack.config.js --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors",
         "git-reset": "git reset --soft HEAD~1",
         "git-force": "git push origin +main --force"
     },
@@ -19,7 +21,7 @@
         "@ocdla/lib-http": "file:./dev_modules/@ocdla/lib-http",
         "@ocdla/ors": "file:./dev_modules/@ocdla/ors",
         "@ocdla/routing": "file:./dev_modules/@ocdla/routing",
-        "@ocdla/view": "^2.3.14",
+        "@ocdla/view": "file:./dev_modules/@ocdla/view",
         "autoprefixer": "^10.4.19",
         "dotenv": "^16.4.5",
         "globals": "^15.6.0",
@@ -45,6 +47,7 @@
         "style-loader": "^3.3.4",
         "webpack": "^5.92.1",
         "webpack-cli": "^5.1.4",
-        "webpack-dev-server": "^4.15.2"
+        "webpack-dev-server": "^4.15.2",
+        "package-json-merge": "git+https://github.com/ocdladefense/package-json-merge.git"
     }
 }
