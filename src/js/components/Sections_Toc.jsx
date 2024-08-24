@@ -5,7 +5,7 @@ import Table_Of_Contents from './Table_Of_Contents';
 /* eslint-enable */
 import { getChapter, getSections } from '../functions/ors/fetch_data.js';
 
-const entries = window.Location.pathname.includes('chapter')
+const entries = window.location.pathname.includes('chapter')
     ? await getSections(window.location.pathname.split('/').pop())
     : null;
 

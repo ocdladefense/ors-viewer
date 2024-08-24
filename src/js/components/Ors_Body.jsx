@@ -5,32 +5,39 @@ import Sidebar from '@ocdla/global-components/src/Sidebar';
 import Body from '@ocdla/global-components/src/Body';
 /* eslint-enable */
 import {
-    getSidebarFirstItems,
+    getSections,
     getBody,
-    getSidebarSecondItems
+    getSidebarSecond
 } from '../functions/ors/fetch_data.js';
 
+// const sidebarFirst = window.location.pathname.includes('section')
+const sidebarFirst = window.location.pathname.includes('chapter')
+    ? await getSections(window.location.pathname.split('/').pop(), true)
+    : null;
+
+// console.log(window.location.pathname.split('/'));
+
+// const sidebarSecond = window.location.pathname.includes('section')
+const sidebarSecond = window.location.pathname.includes('chapter')
+    ? await getSidebarSecond(window.location.pathname.split('/').pop(), true)
+    : null;
+
 export function body() {
-    return getBody(window.location.pathname.split('/').pop(), false);
+    return getBody(window.location.pathname.split('/').pop());
 }
 
-export default function Ors_Body({ section }) {
-    // console.log('Ors_Body: ' + section);
-    // const sidebarFirstItems = getSidebarFirstItems(currentChapter);
-    // const sidebarSecondItems = getSidebarSecondItems(currentChapter);
-    // console.log('Ors_Body: ' + body);
-
+export default function Ors_Body() {
     return (
         <div class='lg:grid lg:grid-cols-6'>
-            {/* {/* <Sidebar
+            <Sidebar
                 type='left'
-                items={sidebarFirstItems}
-            /> */}
+                items={sidebarFirst}
+            />
             <Body body={body} />
-            {/* <Sidebar
+            <Sidebar
                 type='right'
-                items={sidebarSecondItems}
-            /> */}
+                items={sidebarSecond}
+            />
         </div>
     );
 }

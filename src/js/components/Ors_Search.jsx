@@ -18,7 +18,7 @@ export default function Ors_Search() {
                 <input
                     class='w-full rounded-l-md border border-neutral-300 p-4 lg:w-1/2'
                     type='search'
-                    placeholder='ENTER'
+                    placeholder='Search'
                 />
                 <button class='rounded-r-md border border-black bg-black p-4 font-bold text-white'>
                     GO

@@ -1,15 +1,10 @@
 /** @jsx vNode */ /** @jsxFrag "Fragment" */
-/* eslint-disable no-unused-vars */
+/* eslint-disable-next-line no-unused-vars */
 import { vNode } from '@ocdla/view';
-import Link from '@ocdla/global-components/src/Defaults';
-/* eslint-enable */
 import OrsMock from '../../mock/OrsMock';
 import Url from '@ocdla/lib-http/Url';
 import HttpClient from '@ocdla/lib-http/HttpClient';
 import OrsChapter from '@ocdla/ors/src/OrsChapter';
-import Items_Breadcrumbs_Ors_Viewer from '../../../data/json/ors_viewer/breadcrumbs/items.json';
-import Items_Sidebar_Left_Ors_Viewer from '../../../data/json/ors_viewer/sidebar_left/items.json';
-import Items_Sidebar_Right_Ors_Viewer from '../../../data/json/ors_viewer/sidebar_right/items.json';
 // import Outline from '@ocdla/ors/src/Outline';
 
 if (USE_LOCAL_STATUTES_XML)
@@ -104,7 +99,6 @@ export const getChapters = paramId => {
 
         if (paramId === titleId) {
             jsonArray.push({
-                // titleName: titleName,
                 href: chapterHref,
                 id: chapterId,
                 label: chapterName
@@ -115,7 +109,7 @@ export const getChapters = paramId => {
     return jsonArray;
 };
 
-export const getSections = async paramId => {
+export const getSections = async (paramId, fromSidebar) => {
     // const url = new Url('https://ors.ocdla.org/index.xml');
     const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 
@@ -125,30 +119,32 @@ export const getSections = async paramId => {
     const req = new Request(url.toString());
     const resp = await client.send(req);
     const msword = await OrsChapter.fromResponse(resp);
-
-    // msword.chapterNum = paramId;
-
     const xml = OrsChapter.toStructuredChapter(msword);
-    let jsonArray = [{}];
+    let jsonArray = [];
+
+    // console.log(xml.doc.documentElement.innerHTML);
 
     xml.sectionTitles.map(($section, sectionIndex) => {
         const chapterName = parsedXML
             .getElementById('ch-' + paramId)
             .getAttribute('name');
-        const chapterString =
-            paramId + '.' + sectionIndex.toString().padStart(3, '0');
+        const chapterString = fromSidebar
+            ? paramId
+            : paramId + '.' + sectionIndex.toString().padStart(3, '0');
+        const matchFound = paramId === chapterString.split('.')[0];
 
-        // console.log(paramId);
-        // console.log(chapterString.split('.')[0]);
-
-        if (paramId === chapterString.split('.')[0]) {
-            // console.log('a');
-            // if (paramId === parseInt(chapterString)) {
+        if (matchFound) {
             jsonArray.push({
                 chapterName: chapterName,
                 id: chapterString,
-                active: sectionIndex === paramId ? true : undefined,
-                href: baseUrl + '/section#' + chapterString,
+                active: fromSidebar
+                    ? paramId.split('.')[1] === sectionIndex
+                    : paramId === sectionIndex
+                      ? true
+                      : null,
+                href: baseUrl + '/section/' + chapterString,
+                // href: '/section#' + chapterString,
+                heading: fromSidebar ? chapterString : null,
                 label: $section
             });
         }
@@ -163,114 +159,59 @@ export const getBreadcrumbs = (
     currentChapter,
     currentSection
 ) => {
-    switch (USE_MOCK) {
-        // Development
-        case true:
-            return Items_Breadcrumbs_Ors_Viewer;
-        // Production
-        default:
-            return [
-                {
-                    href: baseUrl,
-                    label: 'Ors'
-                },
-                {
-                    href: baseUrl + '/volume/' + currentVolume,
-                    label: 'Vol. ' + currentVolume
-                },
-                {
-                    href: baseUrl + '/title/' + currentTitle,
-                    label: 'Title ' + currentTitle
-                },
-                {
-                    href: baseUrl + '/chapter/' + currentChapter,
-                    label:
-                        'Chap. ' +
-                        currentChapter +
-                        '. Courts & Judicial Officers Generally'
-                },
-                {
-                    href: baseUrl + '/ors_' + currentSection,
-                    label: '§ ' + currentSection
-                }
-            ];
-    }
+    return [
+        {
+            href: baseUrl,
+            label: 'Ors'
+        },
+        {
+            href: baseUrl + '/volume/' + currentVolume,
+            label: 'Vol. ' + currentVolume
+        },
+        {
+            href: baseUrl + '/title/' + currentTitle,
+            label: 'Title ' + currentTitle
+        },
+        {
+            href: baseUrl + '/chapter/' + currentChapter,
+            label:
+                'Chap. ' +
+                currentChapter +
+                '. Courts & Judicial Officers Generally'
+        },
+        {
+            href: baseUrl + '/ors_' + currentSection,
+            label: '§ ' + currentSection
+        }
+    ];
 };
 
-export const getSidebarFirstItems = async currentChapter => {
-    switch (USE_MOCK) {
-        // Development
-        case true:
-            return Items_Sidebar_Left_Ors_Viewer;
-        // Production
-        default:
-            // const url = new Url('https://ors.ocdla.org/index.xml');
-            const url = new Url(
-                'https://appdev.ocdla.org/books-online/index.php'
-            );
-
-            url.buildQuery('chapter', currentChapter.toString());
-
-            const client = new HttpClient();
-            const req = new Request(url.toString());
-            const resp = await client.send(req);
-            const msword = await OrsChapter.fromResponse(resp);
-
-            msword.chapterNum = currentChapter;
-
-            const xml = OrsChapter.toStructuredChapter(msword);
-            const jsonArray = xml.sectionTitles.map((label, section) => {
-                const chapterString =
-                    xml.chapterNum + '.' + section.toString().padStart(3, '0');
-
-                return {
-                    active: section === currentChapter ? true : undefined,
-                    href: '?chapter=' + xml.chapterNum + '#section-' + section,
-                    heading: chapterString,
-                    label: label
-                };
-            });
-
-            return jsonArray;
-    }
-};
-
-export const getBody = async (currentChapter, orsFetchDynamicHtml) => {
+export const getBody = async paramId => {
     const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 
-    url.buildQuery('chapter', currentChapter.toString());
+    url.buildQuery('chapter', paramId.toString());
 
     const client = new HttpClient();
     const req = new Request(url.toString());
     const resp = await client.send(req);
     const msword = await OrsChapter.fromResponse(resp);
-
-    msword.chapterNum = currentChapter;
-
     const xml = OrsChapter.toStructuredChapter(msword);
 
     return xml.toString();
 };
 
-export const getSidebarSecondItems = currentChapter => {
-    switch (USE_MOCK) {
-        // Development
-        case true:
-            return Items_Sidebar_Right_Ors_Viewer;
-        // Production
-        default:
-            return [
-                // {
-                //     href: '/',
-                //     label: 'Current through early 2024'
-                // },
-                {
-                    href:
-                        'https://oregonlegislature.gov/bills_laws/ors/ors' +
-                        currentChapter.toString().padStart(3, '0') +
-                        '.html',
-                    label: '§ ' + currentChapter + '.001’s source a oregon​.gov'
-                }
-            ];
-    }
+export const getSidebarSecond = async paramId => {
+    return [
+        // {
+        //     href: '/',
+        //     label: 'Current through early 2024'
+        // },
+        {
+            href:
+                'https://oregonlegislature.gov/bills_laws/ors/ors' +
+                paramId.toString().padStart(3, '0') +
+                '.html',
+            label: '§ ' + paramId + '.001’s source at oregon​.gov'
+        }
+    ];
 };
