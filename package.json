@@ -21,7 +21,7 @@
         "@ocdla/lib-http": "file:./dev_modules/@ocdla/lib-http",
         "@ocdla/ors": "file:./dev_modules/@ocdla/ors",
         "@ocdla/routing": "file:./dev_modules/@ocdla/routing",
-        "@ocdla/view": "file:./dev_modules/@ocdla/view",
+        "@ocdla/view": "^2.3.14",
         "autoprefixer": "^10.4.19",
         "dotenv": "^16.4.5",
         "globals": "^15.6.0",
@@ -41,13 +41,13 @@
         "eslint": "^9.7.0",
         "html-loader": "^5.1.0",
         "html-webpack-plugin": "^5.5.4",
+        "package-json-merge": "git+https://github.com/ocdladefense/package-json-merge.git",
         "postcss-loader": "^8.1.1",
         "prettier": "^3.3.3",
         "prettier-plugin-tailwindcss": "^0.6.5",
         "style-loader": "^3.3.4",
         "webpack": "^5.92.1",
         "webpack-cli": "^5.1.4",
-        "webpack-dev-server": "^4.15.2",
-        "package-json-merge": "git+https://github.com/ocdladefense/package-json-merge.git"
+        "webpack-dev-server": "^4.15.2"
     }
 }
