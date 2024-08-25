@@ -1,10 +1,10 @@
 /** @jsx vNode */
 /* eslint-disable no-unused-vars */
 import { vNode } from '@ocdla/view';
-import Search from '@ocdla/global-components/src/Search';
+import GloabalSearch from '@ocdla/global-components/src/Search';
 /* eslint-enable */
 
-export default function Ors_Search() {
+export default function Search() {
     return (
         <div class='flex flex-col items-center gap-8 p-4 text-center lg:p-32'>
             <h3 class='text-5xl font-black tracking-tighter'>
@@ -18,7 +18,7 @@ export default function Ors_Search() {
                     window.location.pathname = '/toc';
                 }}>
                 <ul class='flex size-full rounded-md bg-blue-600'>
-                    <Search placeholder='Search' />
+                    <GloabalSearch placeholder='Search' />
                 </ul>
             </form>
         </div>

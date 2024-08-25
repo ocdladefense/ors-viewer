@@ -7,8 +7,8 @@ import router from './routes';
 import App from './App';
 import HttpClient from '@ocdla/lib-http/HttpClient';
 import OrsMock from './mock/OrsMock';
-import Ors_Body from './components/Ors_Body';
-import { body } from './components/Ors_Body';
+import Ors_Body from './components/Chapter';
+import { body } from './components/Chapter';
 
 /* eslint-enable */
 if (USE_LOCAL_STATUTES_XML)

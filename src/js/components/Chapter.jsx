@@ -26,7 +26,7 @@ export function body() {
     return getBody(window.location.pathname.split('/').pop());
 }
 
-export default function Ors_Body() {
+export default function Chapter() {
     return (
         <div class='lg:grid lg:grid-cols-6'>
             <Sidebar
