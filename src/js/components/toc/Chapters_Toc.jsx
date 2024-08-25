@@ -3,7 +3,7 @@
 import { vNode } from '@ocdla/view';
 import Table_Of_Contents from './Table_Of_Contents';
 /* eslint-enable */
-import { getTitle, getChapters } from '../functions/ors/fetch_data.js';
+import { getTitle, getChapters } from '../../functions/ors/fetch_data.js';
 
 export default function Chapters_Toc({ division, title }) {
     const _title = 'TITLE ' + title;

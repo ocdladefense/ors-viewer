@@ -3,10 +3,10 @@
 import Router from '@ocdla/routing/Router';
 // import Not_Found from '@ocdla/global-components/src/Not_Found';
 import Ors_Search from './components/Ors_Search';
-import Volumes_Toc from './components/Volumes_Toc';
-import Titles_Toc from './components/Titles_Toc';
-import Chapters_Toc from './components/Chapters_Toc';
-import Sections_Toc from './components/Sections_Toc';
+import Volumes_Toc from './components/toc/Volumes_Toc';
+import Titles_Toc from './components/toc/Titles_Toc';
+import Chapters_Toc from './components/toc/Chapters_Toc';
+import Sections_Toc from './components/toc/Sections_Toc';
 import Ors_Body from './components/Ors_Body';
 
 const router = new Router();
