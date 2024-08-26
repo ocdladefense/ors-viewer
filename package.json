@@ -21,7 +21,7 @@
         "@ocdla/lib-http": "file:./dev_modules/@ocdla/lib-http",
         "@ocdla/ors": "file:./dev_modules/@ocdla/ors",
         "@ocdla/routing": "file:./dev_modules/@ocdla/routing",
-        "@ocdla/view": "^2.3.14",
+        "@ocdla/view": "^4.0.0",
         "autoprefixer": "^10.4.19",
         "dotenv": "^16.4.5",
         "globals": "^15.6.0",

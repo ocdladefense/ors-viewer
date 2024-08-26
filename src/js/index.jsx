@@ -2,13 +2,11 @@
 import '../css/input.css';
 
 /* eslint-disable no-unused-vars */
-import { vNode, View } from '@ocdla/view';
+import { vNode, View, getEffects } from '@ocdla/view';
 import router from './routes';
 import App from './App';
 import HttpClient from '@ocdla/lib-http/HttpClient';
 import OrsMock from './mock/OrsMock';
-import Ors_Body from './components/Chapter';
-import { body } from './components/Chapter';
 
 /* eslint-enable */
 if (USE_LOCAL_STATUTES_XML)
@@ -32,9 +30,3 @@ root.render(
         <Component {...props} />
     </App>
 );
-
-if (Component === Ors_Body) {
-    const _body = await body();
-
-    document.getElementById('body').innerHTML = _body;
-}
