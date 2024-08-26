@@ -128,9 +128,8 @@ export const getSections = async (paramId, fromSidebar) => {
         const chapterName = parsedXML
             .getElementById('ch-' + paramId)
             .getAttribute('name');
-        const chapterString = fromSidebar
-            ? paramId
-            : paramId + '.' + sectionIndex.toString().padStart(3, '0');
+        const chapterString =
+            paramId + '.' + sectionIndex.toString().padStart(3, '0');
         const matchFound = paramId === chapterString.split('.')[0];
 
         if (matchFound) {
@@ -142,8 +141,9 @@ export const getSections = async (paramId, fromSidebar) => {
                     : paramId === sectionIndex
                       ? true
                       : null,
-                href: '/chapter/' + chapterString,
-                // href: '/section#' + chapterString,
+                href: fromSidebar
+                    ? '/chapter#' + chapterString
+                    : '/chapter/' + paramId,
                 heading: fromSidebar ? chapterString : null,
                 label: $section
             });

@@ -9,7 +9,7 @@ import './chapter.css';
 import {
     getSections,
     getBody,
-    getTitle,
+    getChapter,
     getSidebarSecond
 } from '../functions/ors/fetch_data.js';
 
@@ -32,7 +32,8 @@ export default function Chapter({ chapter }) {
     let sidebarFirst = getResult('sidebarFirst');
     let sidebarSecond = getResult('sidebarSecond');
 
-    let title = getTitle(chapter).getAttribute('name');
+    let title = getChapter(chapter).parentElement.getAttribute('name');
+
     /** From React grammar for using innerHTML:
      *             <div dangerouslySetInnerHTML={
                 { __html: htmlContent }
