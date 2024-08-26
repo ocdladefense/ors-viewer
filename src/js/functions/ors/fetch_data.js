@@ -5,6 +5,7 @@ import OrsMock from '../../mock/OrsMock';
 import Url from '@ocdla/lib-http/Url';
 import HttpClient from '@ocdla/lib-http/HttpClient';
 import OrsChapter from '@ocdla/ors/src/Chapter';
+import Parser from '@ocdla/ors/src/Parser';
 
 if (USE_LOCAL_STATUTES_XML)
     HttpClient.register('https://ors.ocdla.org', new OrsMock());
@@ -194,9 +195,11 @@ export const getBody = async paramId => {
     const req = new Request(url.toString());
     const resp = await client.send(req);
     const msword = await OrsChapter.fromResponse(resp);
+    msword.chapterNum = paramId;
     const xml = OrsChapter.toStructuredChapter(msword);
 
-    return xml.toString();
+    console.log(xml.doc.documentElement);
+    return xml.toString(); //Parser.replaceAll(xml.toString());
 };
 
 export const getSidebarSecond = async paramId => {

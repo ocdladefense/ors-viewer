@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { vNode, useEffect, getResult } from '@ocdla/view';
 import Sidebar from '@ocdla/global-components/src/Sidebar';
+import './chapter.css';
 // import Body from '@ocdla/global-components/src/Body';
 
 /* eslint-enable */
@@ -41,6 +42,7 @@ export default function Chapter({ chapter }) {
                 type='left'
                 items={sidebarFirst}
             />
+
             <section
                 dangerouslySetInnerHTML={chapterContents}
                 id='body'
