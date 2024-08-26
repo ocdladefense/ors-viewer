@@ -44,8 +44,11 @@ export default function Chapter({ chapter }) {
             <section
                 dangerouslySetInnerHTML={chapterContents}
                 id='body'
-                class='flex w-full flex-col gap-4 p-4 lg:col-span-4 lg:col-start-2 lg:me-auto lg:border-x lg:p-8'></section>
-            {/*<Body dangerouslySetInnerHTML={body} />*/}
+                class='flex w-full flex-col gap-4 p-4 lg:col-span-4 lg:col-start-2 lg:me-auto lg:border-x lg:p-8 [&_*]:mb-4'></section>
+            {/* <Body
+                dangerouslySetInnerHTML={body}
+                typeOrs={typeOrs}
+            /> */}
             <Sidebar
                 type='right'
                 items={sidebarSecond}
