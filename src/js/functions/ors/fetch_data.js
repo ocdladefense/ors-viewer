@@ -142,7 +142,7 @@ export const getSections = async (paramId, fromSidebar) => {
                     : paramId === sectionIndex
                       ? true
                       : null,
-                href: baseUrl + '/section/' + chapterString,
+                href: '/chapter/' + chapterString,
                 // href: '/section#' + chapterString,
                 heading: fromSidebar ? chapterString : null,
                 label: $section

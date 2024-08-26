@@ -29,12 +29,12 @@ switch (APP_NAME) {
             division: 'Chapters'
         });
         // router.addRoute('/chapter/[+-]?([0-9]*[.])?[0-9]+', Sections_Toc, {
-        router.addRoute('/chapter/(\\w+)', Chapter);
+        // router.addRoute('/chapter/(\\w+)', Chapter);
         router.addRoute('/toc/chapter/(\\w+)', Sections_Toc, {
             division: 'Sections'
         });
+        router.addRoute('/chapter/(\\w+)\\.(\\w+)', Chapter);
         // router.addRoute('/section/(\\w+)', Ors_Body);
-        // router.addRoute('/section\\#(\\w+)\\.(\\w+)', Ors_Body);
         // router.addRoute('/toc/section/(\\w+)\\.(\\w+)', Chapter);
         // router.addRoute('/section/(\\d+)\\.(\\d+)', Ors_Body);
         // router.addRoute('/toc/section/(\\d+)\\.(\\d+)', Ors_Body, {
