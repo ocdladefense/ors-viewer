@@ -32,7 +32,7 @@ export default function Chapter({ chapter }) {
     let sidebarFirst = getResult('sidebarFirst');
     let sidebarSecond = getResult('sidebarSecond');
 
-    let title = getChapter(chapter).parentElement.getAttribute('name');
+    let title = getChapter(chapter).getAttribute('name');
 
     /** From React grammar for using innerHTML:
      *             <div dangerouslySetInnerHTML={
