@@ -1,5 +1,11 @@
 .subsection {
-    display: none;
+    /* trying to hide duplicate labels. */
+    /* display: none; */
+}
+
+.section-heading {
+    margin-top: 2rem;
+    font-weight: bold;
 }
 
 .level-1 {
