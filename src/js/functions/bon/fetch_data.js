@@ -282,11 +282,7 @@ export const getBody = async () => {
             </p>
             <h1 class='text-3xl font-bold'>Chapter 1 - Introduction</h1>
             <p class='flex items-center gap-2'>
-                <div>Edited by:</div>{' '}
-                <Link
-                    href='/'
-                    label='Jesse Wm. Barton'
-                />
+                <div>Edited by:</div> <Link href='/'>Jesse Wm. Barton</Link>
             </p>
             <ul class='flex gap-4'>
                 <Folder

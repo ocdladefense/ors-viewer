@@ -1,6 +1,9 @@
 import HttpMock from '@ocdla/lib-http/HttpMock';
 import Url from '@ocdla/lib-http/Url';
 import volumes from '../../data/xml/ors_viewer/statutes.xml';
+/* eslint-disable no-unused-vars */
+import Link from './@ocdla/global-components/src/';
+/* eslint-enable */
 
 export default class OrsMock extends HttpMock {
     constructor() {
@@ -13,12 +16,14 @@ export default class OrsMock extends HttpMock {
         const url = new Url(req.url);
         const id = url.getPath();
 
+        /* eslint-disable indent */
         // Synesthetic responses.
         return id.includes('index')
             ? new Response(volumes, {
                   headers: { 'Content-Type': 'application/xml' }
               })
             : new Response(this.imports[id]);
+        /* eslint-enable */
     }
 
     getMock() {
@@ -96,10 +101,9 @@ export default class OrsMock extends HttpMock {
                     <small>
                         <i>
                             Source: Section 1.001 — State policy for courts,{' '}
-                            <Link
-                                href='https://­oregonlegislature.­gov/bills_laws/ors/ors001.­html'
-                                label='https://­oregonlegislature.­gov/bills_laws/ors/ors001.­html'
-                            />
+                            <Link href='https://­oregonlegislature.­gov/bills_laws/ors/ors001.­html'>
+                                https://­oregonlegislature.­gov/bills_laws/ors/ors001.­html
+                            </Link>
                         </i>
                     </small>
                 </p>
