@@ -2,6 +2,8 @@
 /* eslint-disable no-unused-vars */
 import { vNode, useEffect, getResult } from '@ocdla/view';
 import Sidebar from '@ocdla/global-components/src/Sidebar';
+import SidebarItemLeft from '@ocdla/global-components/src/SidebarItemLeft';
+import SidebarItemRight from '@ocdla/global-components/src/SidebarItemRight';
 import './chapter.css';
 // import Body from '@ocdla/global-components/src/Body';
 
@@ -41,11 +43,11 @@ export default function Chapter({ chapter }) {
      */
     return (
         <div class='lg:grid lg:grid-cols-6'>
-            <Sidebar
-                type='left'
-                items={sidebarFirst}
-            />
-
+            <Sidebar>
+                {sidebarFirst
+                    ? sidebarFirst.map(props => <SidebarItemLeft {...props} />)
+                    : null}
+            </Sidebar>
             <section
                 id='body'
                 class='flex w-full flex-col gap-4 p-4 lg:col-span-4 lg:col-start-2 lg:me-auto lg:border-x lg:p-8 [&_*]:mb-4'>
@@ -60,10 +62,15 @@ export default function Chapter({ chapter }) {
                 dangerouslySetInnerHTML={body}
                 typeOrs={typeOrs}
             /> */}
-            <Sidebar
-                type='right'
-                items={sidebarSecond}
-            />
+            <Sidebar>
+                {/* eslint-disable indent */}
+                {sidebarSecond
+                    ? sidebarSecond.map(props => (
+                          <SidebarItemRight {...props} />
+                      ))
+                    : null}
+                {/* eslint-enable */}
+            </Sidebar>
         </div>
     );
 }

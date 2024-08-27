@@ -3,7 +3,7 @@
 import { vNode } from '@ocdla/view';
 import Navbar from '@ocdla/global-components/src/Navbar';
 import Breadcrumbs from '@ocdla/global-components/src/Breadcrumbs';
-// import Not_Found from '@ocdla/global-components/src/Not_Found';
+// import NotFound from '@ocdla/global-components/src/NotFound';
 import Footer from '@ocdla/global-components/src/Footer';
 /* eslint-enable */
 
@@ -15,7 +15,7 @@ export default function App({
     // layout
 }) {
     // There is a component that can be used to render a nice 404 error.
-    // return <Not_Found />;
+    // return <NotFound />;
 
     return (
         <>

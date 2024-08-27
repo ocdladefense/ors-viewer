@@ -14,9 +14,9 @@ export default function Entry({ href, id, heading, label }) {
                     <li>
                         <Link
                             href={href}
-                            extraClasses={'font-bold'}
-                            label={id}
-                        />
+                            extraClasses={'font-bold'}>
+                            {id}
+                        </Link>
                     </li>
                     <li>
                         <ul class='flex flex-col gap-2'>

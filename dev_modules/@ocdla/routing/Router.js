@@ -1,7 +1,7 @@
 // This import requires the defining of its extension type.
 /** @jsx vNode */
 
-import Not_Found from '@ocdla/global-components/src/Not_Found.jsx';
+import NotFound from '@ocdla/global-components/src/NotFound.jsx';
 
 export default class Router {
     // constructor(route, component) {
@@ -21,7 +21,7 @@ export default class Router {
         this.routes = [];
     }
 
-    addRoute(path, component = Not_Found, params = {}) {
+    addRoute(path, component = NotFound, params = {}) {
         const routeExists = this.routes.find(r => r.route === path);
 
         if (routeExists) {
@@ -77,6 +77,6 @@ export default class Router {
             }
         }
 
-        return [Not_Found, {}];
+        return [NotFound, {}];
     }
 }

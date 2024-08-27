@@ -1,7 +1,7 @@
 /** @jsx vNode */
 
 import Router from '@ocdla/routing/Router';
-// import Not_Found from '@ocdla/global-components/src/Not_Found';
+// import NotFound from '@ocdla/global-components/src/NotFound';
 import Search from './components/Search';
 import Volumes_Toc from './components/toc/Volumes_Toc';
 import Titles_Toc from './components/toc/Titles_Toc';
