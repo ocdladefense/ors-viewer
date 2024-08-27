@@ -198,8 +198,54 @@ export const getBody = async paramId => {
     msword.chapterNum = paramId;
     const xml = OrsChapter.toStructuredChapter(msword);
 
-    console.log(xml.doc.documentElement);
-    return xml.toString(); //Parser.replaceAll(xml.toString());
+    let work = [
+        {
+            explanation:
+                "Find all Oregon Laws references with the pattern like '2019 c. 123 § 1'",
+            patterns: [
+                /(?<year>\d{4})\s*c\.(?<chapter>\d+)\s+[§sS]+(?<section>\d+,*\s?)+/g
+            ],
+            replacer: function (groups) {
+                return `!OREGON LAWS ${groups.year}!`;
+            }
+        },
+        {
+            patterns: [
+                /ORS\s+(?<chapter>\w+)\.(?<section>\d+)(?:\s?\((?<subsection>[0-9a-zA-Z]{1,3})\))*/g,
+                /(?<!ORS\s+\d*)(?<chapter>\w+)\.(?<section>\d+)(?:\s?\((?<subsection>[0-9a-zA-Z]{1,3})\))*/g
+            ],
+            replacer: function (groups) {
+                let subsection = groups.subsection
+                    ? `(${groups.subsection})`
+                    : '';
+
+                return `<a href="/chapter/${groups.chapter}#section-${groups.section}" style="color:blue;" data-action="show-ors" data-chapter="${groups.chapter}" data-section="${groups.section}" data-subsection="${subsection}">ORS ${groups.chapter}.${groups.section}${subsection}</a>`;
+            }
+        }
+    ];
+
+    let transform = true;
+    if (!transform) return xml.toString();
+    for (let node of xml.getAllTextNodes(xml.doc.documentElement)) {
+        let parser,
+            frag,
+            html = node.data;
+
+        if (node.parentNode.nodeName == 'a') {
+            continue;
+        }
+
+        for (let job of work) {
+            parser = new Parser(job.patterns);
+            parser.replaceWith(job.replacer);
+            html = parser.parse(html);
+        }
+
+        frag = Parser.createDocumentFragment(html);
+        node.parentNode.replaceChild(frag, node);
+    }
+
+    return xml.toString();
 };
 
 export const getSidebarSecond = async paramId => {
