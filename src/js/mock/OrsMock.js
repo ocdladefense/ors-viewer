@@ -2,7 +2,7 @@ import HttpMock from '@ocdla/lib-http/HttpMock';
 import Url from '@ocdla/lib-http/Url';
 import volumes from '../../data/xml/ors_viewer/statutes.xml';
 /* eslint-disable no-unused-vars */
-import Link from './@ocdla/global-components/src/';
+import Link from '@ocdla/global-components/src/Defaults';
 /* eslint-enable */
 
 export default class OrsMock extends HttpMock {
