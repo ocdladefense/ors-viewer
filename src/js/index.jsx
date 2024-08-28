@@ -1,8 +1,7 @@
 /** @jsx vNode */
 import '../css/input.css';
-
 /* eslint-disable no-unused-vars */
-import { vNode, View, getEffects } from '@ocdla/view';
+import { vNode, View } from '@ocdla/view';
 import router from './routes';
 import App from './App';
 import HttpClient from '@ocdla/lib-http/HttpClient';
@@ -19,7 +18,7 @@ const currentAppType = APP_NAME;
 const headerPinned = '';
 const $root = document.getElementById('root');
 const root = View.createRoot($root);
-
+/* eslint-disable-next-line no-unused-vars */
 const [Component, props] = router.match(window.location.pathname);
 
 root.render(

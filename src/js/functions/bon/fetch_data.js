@@ -1,4 +1,4 @@
-/** @jsx vNode */ /** @jsxFrag "Fragment" */
+/** @jsx vNode */
 /* eslint-disable no-unused-vars */
 import { vNode } from '@ocdla/view';
 import Link from '@ocdla/global-components/src/Defaults';
