@@ -43,7 +43,7 @@ export default function Chapter({ chapter }) {
      */
     return (
         <div class='lg:grid lg:grid-cols-6'>
-            <Sidebar>
+            <Sidebar sticky={true}>
                 {sidebarFirst
                     ? sidebarFirst.map(props => <SidebarItemLeft {...props} />)
                     : null}
@@ -62,7 +62,7 @@ export default function Chapter({ chapter }) {
                 dangerouslySetInnerHTML={body}
                 typeOrs={typeOrs}
             /> */}
-            <Sidebar>
+            <Sidebar sticky={true}>
                 {/* eslint-disable indent */}
                 {sidebarSecond
                     ? sidebarSecond.map(props => (
