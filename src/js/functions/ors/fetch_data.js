@@ -105,7 +105,7 @@ export const getChapters = paramId => {
     return jsonArray;
 };
 
-export const getSections = async (paramId, fromSidebar) => {
+export const getSections = async (paramId, hash, fromSidebar) => {
     // const url = new Url('https://ors.ocdla.org/index.xml');
     const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 
@@ -127,17 +127,16 @@ export const getSections = async (paramId, fromSidebar) => {
         const matchFound = paramId === chapterString.split('.')[0];
 
         if (matchFound) {
+            const hashId = hash ? hash.split('-')[1] : null;
+
             jsonArray.push({
                 chapterName: chapterName,
                 id: chapterString,
-                active: fromSidebar
-                    ? paramId.split('.')[1] === sectionIndex
-                    : paramId === sectionIndex
-                      ? true
-                      : null,
-                href: fromSidebar
-                    ? '/chapter/' + paramId + '#section-' + sectionIndex
-                    : '/chapter/' + paramId,
+                active:
+                    fromSidebar && hashId
+                        ? sectionIndex === parseInt(hashId)
+                        : null,
+                href: '/chapter/' + paramId + '#section-' + sectionIndex,
                 heading: fromSidebar ? chapterString : null,
                 label: $section
             });
@@ -147,7 +146,15 @@ export const getSections = async (paramId, fromSidebar) => {
     return jsonArray;
 };
 
-export const getBreadcrumbs = (type, paramId) => {
+export const getBreadcrumbs = (type, paramId, hash) => {
+    const chapter = paramId ? getChapter(paramId) : '';
+    const titleId = chapter ? chapter.parentElement.id.split('-')[1] : '';
+    const title = getTitle(paramId);
+    const volumeIdFromTitle = title ? title.parentElement.id.split('-')[1] : '';
+    const volumeIdFromSection = titleId
+        ? getTitle(titleId).parentElement.id.split('-')[1]
+        : '';
+    const chapterName = chapter ? chapter.getAttribute('name') : '';
     let jsonArray = [];
 
     jsonArray.push({
@@ -163,15 +170,10 @@ export const getBreadcrumbs = (type, paramId) => {
             });
             break;
         case 'chapters':
-            const title = getTitle(paramId);
-            const volumeId = title.parentElement
-                .getAttribute('id')
-                .split('-')[1];
-
             jsonArray.push(
                 {
-                    href: baseUrl + '/volume/' + volumeId,
-                    label: 'Vol. ' + volumeId
+                    href: baseUrl + '/volume/' + volumeIdFromTitle,
+                    label: 'Vol. ' + volumeIdFromTitle
                 },
                 {
                     href: baseUrl + '/title/' + paramId,
@@ -180,18 +182,30 @@ export const getBreadcrumbs = (type, paramId) => {
             );
             break;
         case 'sections':
+            jsonArray.push(
+                {
+                    href: baseUrl + '/volume/' + volumeIdFromSection,
+                    label: 'Vol. ' + volumeIdFromSection
+                },
+                {
+                    href: baseUrl + '/title/' + titleId,
+                    label: 'Title ' + titleId
+                },
+                {
+                    href: baseUrl + '/chapter/' + paramId,
+                    label: 'Chap. ' + paramId
+                }
+            );
+            break;
         case 'chapter':
-            const chapter = getChapter(paramId);
-            // const chapterId = chapter.getAttribute('id').split('-')[1];
-            const chapterName = chapter.getAttribute('name');
-            const titleId = chapter.parentElement.id.split('-')[1];
-            const volumeId_3_4 =
-                getTitle(titleId).parentElement.id.split('-')[1];
+            const hashId = hash ? hash.split('-')[1] : null;
+            const sectionString =
+                paramId + '.' + hashId.toString().padStart(3, '0');
 
             jsonArray.push(
                 {
-                    href: baseUrl + '/volume/' + volumeId_3_4,
-                    label: 'Vol. ' + volumeId_3_4
+                    href: baseUrl + '/volume/' + volumeIdFromSection,
+                    label: 'Vol. ' + volumeIdFromSection
                 },
                 {
                     href: baseUrl + '/title/' + titleId,
@@ -200,13 +214,12 @@ export const getBreadcrumbs = (type, paramId) => {
                 {
                     href: baseUrl + '/chapter/' + paramId,
                     label: 'Chap. ' + paramId + '. ' + chapterName
+                },
+                {
+                    href: '/chapter/' + paramId + '#section-' + hashId,
+                    label: '§ ' + sectionString
                 }
-                // {
-                //     href: '/chapter#section-0',
-                //     label: '§ ' + chapterId + '.0'
-                // }
             );
-
             break;
     }
 

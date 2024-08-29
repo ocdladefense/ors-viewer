@@ -20,7 +20,10 @@ export default function Chapter({ chapter }) {
     // The key can be used in getResult(key) to get the result of the function.
     useEffect('theChapter', async () => await getBody(chapter));
 
-    useEffect('sidebarFirst', async () => await getSections(chapter, true));
+    useEffect(
+        'sidebarFirst',
+        async () => await getSections(chapter, window.location.hash, true)
+    );
 
     useEffect(
         'sidebarSecond',

@@ -30,7 +30,7 @@ export default class Router {
         } else this.routes.push({ route: path, component, params });
     }
 
-    match(path) {
+    match(path, hash) {
         // if (path === '/') {
         //     let { route, component, params } = this.routes['/'];
 
@@ -71,7 +71,10 @@ export default class Router {
             if (matches) {
                 // console.log('1234');
 
-                if (null !== _var) params[_var] = matches[1];
+                if (null !== _var) {
+                    params[_var] = matches[1];
+                    params['hash'] = hash;
+                }
 
                 return [component, params];
             }

@@ -22,7 +22,10 @@ const currentAppType = APP_NAME;
 const headerPinned = false;
 const $root = document.getElementById('root');
 const root = View.createRoot($root);
-const [Component, props] = router.match(window.location.pathname);
+const [Component, props] = router.match(
+    window.location.pathname,
+    window.location.hash
+);
 let breadcrumbItems;
 
 switch (Component) {
@@ -33,8 +36,10 @@ switch (Component) {
         breadcrumbItems = getBreadcrumbs('chapters', props.title);
         break;
     case Sections_Toc:
-    case Chapter:
         breadcrumbItems = getBreadcrumbs('sections', props.chapter);
+        break;
+    case Chapter:
+        breadcrumbItems = getBreadcrumbs('chapter', props.chapter, props.hash);
         break;
     default:
         breadcrumbItems = getBreadcrumbs();
