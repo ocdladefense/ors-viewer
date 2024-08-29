@@ -21,7 +21,7 @@ export default function App({
         <>
             <header
                 // prettier-ignore
-                class={`${headerPinned === 'pinned' ? 'sticky top-0 ' : ''}container mx-auto flex w-full flex-col bg-white lg:h-32`}>
+                class={`${headerPinned ? 'sticky top-0 ' : ''}container mx-auto flex w-full flex-col bg-white lg:h-32`}>
                 <Navbar />
                 <Breadcrumbs crumbs={breadcrumbs} />
             </header>

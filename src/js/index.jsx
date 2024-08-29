@@ -14,8 +14,7 @@ if (USE_LOCAL_STATUTES_XML)
 // Available Types: 'bon' || 'ors'.
 const currentAppType = APP_NAME;
 // const myModule = await import(`./functions/${currentAppType}/fetch_data.js`);
-// Available Positions: '' (absolute / static) || 'pinned' (fixed / sticky).
-const headerPinned = '';
+const headerPinned = false;
 const $root = document.getElementById('root');
 const root = View.createRoot($root);
 /* eslint-disable-next-line no-unused-vars */
