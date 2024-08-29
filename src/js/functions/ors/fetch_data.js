@@ -2,7 +2,6 @@ import OrsMock from '../../mock/OrsMock';
 import Url from '@ocdla/lib-http/Url';
 import HttpClient from '@ocdla/lib-http/HttpClient';
 import OrsChapter from '@ocdla/ors/src/Chapter';
-// import Parser from '@ocdla/ors/src/Parser';
 
 if (USE_LOCAL_STATUTES_XML)
     HttpClient.register('https://ors.ocdla.org', new OrsMock());
@@ -119,8 +118,6 @@ export const getSections = async (paramId, fromSidebar) => {
     const xml = OrsChapter.toStructuredChapter(msword);
     let jsonArray = [];
 
-    // console.log(xml.doc.documentElement.innerHTML);
-
     xml.sectionTitles.map(($section, sectionIndex) => {
         const chapterName = parsedXML
             .getElementById('ch-' + paramId)
@@ -150,37 +147,70 @@ export const getSections = async (paramId, fromSidebar) => {
     return jsonArray;
 };
 
-export const getBreadcrumbs = (
-    currentVolume,
-    currentTitle,
-    currentChapter,
-    currentSection
-) => {
-    return [
-        {
-            href: baseUrl,
-            label: 'Ors'
-        },
-        {
-            href: baseUrl + '/volume/' + currentVolume,
-            label: 'Vol. ' + currentVolume
-        },
-        {
-            href: baseUrl + '/title/' + currentTitle,
-            label: 'Title ' + currentTitle
-        },
-        {
-            href: baseUrl + '/chapter/' + currentChapter,
-            label:
-                'Chap. ' +
-                currentChapter +
-                '. Courts & Judicial Officers Generally'
-        },
-        {
-            href: baseUrl + '/ors_' + currentSection,
-            label: '§ ' + currentSection
-        }
-    ];
+export const getBreadcrumbs = (type, paramId) => {
+    let jsonArray = [];
+
+    jsonArray.push({
+        href: baseUrl,
+        label: 'Ors'
+    });
+
+    switch (type) {
+        case 'titles':
+            jsonArray.push({
+                href: baseUrl + '/volume/' + paramId,
+                label: 'Vol. ' + paramId
+            });
+            break;
+        case 'chapters':
+            const title = getTitle(paramId);
+            const volumeId = title.parentElement
+                .getAttribute('id')
+                .split('-')[1];
+
+            jsonArray.push(
+                {
+                    href: baseUrl + '/volume/' + volumeId,
+                    label: 'Vol. ' + volumeId
+                },
+                {
+                    href: baseUrl + '/title/' + paramId,
+                    label: 'Title ' + paramId
+                }
+            );
+            break;
+        case 'sections':
+        case 'chapter':
+            const chapter = getChapter(paramId);
+            // const chapterId = chapter.getAttribute('id').split('-')[1];
+            const chapterName = chapter.getAttribute('name');
+            const titleId = chapter.parentElement.id.split('-')[1];
+            const volumeId_3_4 =
+                getTitle(titleId).parentElement.id.split('-')[1];
+
+            jsonArray.push(
+                {
+                    href: baseUrl + '/volume/' + volumeId_3_4,
+                    label: 'Vol. ' + volumeId_3_4
+                },
+                {
+                    href: baseUrl + '/title/' + titleId,
+                    label: 'Title ' + titleId
+                },
+                {
+                    href: baseUrl + '/chapter/' + paramId,
+                    label: 'Chap. ' + paramId + '. ' + chapterName
+                }
+                // {
+                //     href: '/chapter#section-0',
+                //     label: '§ ' + chapterId + '.0'
+                // }
+            );
+
+            break;
+    }
+
+    return jsonArray;
 };
 
 export const getBody = async paramId => {
