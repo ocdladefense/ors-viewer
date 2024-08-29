@@ -7,6 +7,7 @@ ECHO 3 - [ development - npm run watch-production-books-online ]
 ECHO 4 - [ development - npm run watch-production-ors-viewer ]
 ECHO 5 - [ development - npm run lint ]
 ECHO 6 - [ development - npm run lint-fix ]
+ECHO 7 - [ development - npm run jsdoc-build ]
 ECHO 8 - [ development - depcheck ]
 ECHO 9 - [ development - check and install NPM updates ]
 ECHO 10 - [ development - npm run git-reset ]
@@ -37,6 +38,10 @@ IF %input% == 5 (
 
 IF %input% == 6 (
     CALL npm run lint-fix
+)
+
+IF %input% == 7 (
+    CALL npm run jsdoc-build
 )
 
 IF %input% == 8 (
