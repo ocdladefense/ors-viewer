@@ -45,22 +45,26 @@ npm run [BUILD]
 
     -   **Possible solutions:** Update the ORS module to import and inject styles from the default hyperlink theme **or** or do the importing and injecting of the styles inside the function that's fetching the ORS body.
 
+-   Implement prop structure to allow the stating of a grid size for dynamic grid size functionality (via the Chapter component). For instance to state which sidebars are used or if they are even being used, and depending on that, to pass the correct grid size to TailwindCSS.
+
+-   Restructure the passing of props for the Chapter component to accept props from index.js to allow the passing of top-level variable. For instance for the specifying of which sidebars should be sticky.
+
+-   Implement search functionality.
+
+    -   **Possible solutions:** Use PHP REST API **or** Salesforce API.
+
+-   Reimplement app switcher functionality.
+
+    -   **Possible solutions:** Implement asynchronous functionality for the OCDLA View library.
+
 #### Bug Report
 
 -   Fix body anchors not working as expected due to asynchronous fetching.
 
     -   **Possible solutions:** create and execute a custom scroll-into-view feature based on the id given by the browser URL.
 
--   Re-implement functionality of highlighting active section links in the left sidebar.
-
-    -   **Possible solutions:** Get a float / decimal value from the browser URL **OR** assign an id that has a string w/ integer value that matches the same format as the current browser URL format.
+-   Fix sticky (or fixed) positioning for navbar / header to behave as expected with sidebar(s).
 
 #### Misc
 
--   Implement search functionality.
-
-    -   **Possible solutions:** Use PHP REST API **or** Salesforce API.
-
--   Re-implement app switcher functionality.
-
-    -   **Possible solutions:** Implement asynchronous functionality for the OCDLA View library.
+-   Make image imports use dynamic imports.
