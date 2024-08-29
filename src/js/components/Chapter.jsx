@@ -1,11 +1,11 @@
-/** @jsx vNode */
+/** @jsx vNode */ /** @jsxFrag "Fragment" */
 /* eslint-disable no-unused-vars */
 import { vNode, useEffect, getResult } from '@ocdla/view';
 import Sidebar from '@ocdla/global-components/src/Sidebar';
 import SidebarItemLeft from '@ocdla/global-components/src/SidebarItemLeft';
 import SidebarItemRight from '@ocdla/global-components/src/SidebarItemRight';
 import './chapter.css';
-// import Body from '@ocdla/global-components/src/Body';
+import Body from '@ocdla/global-components/src/Body';
 
 /* eslint-enable */
 import {
@@ -18,29 +18,27 @@ import {
 export default function Chapter({ chapter }) {
     // useEffect assigns a function (to be executed on each render) to a key.
     // The key can be used in getResult(key) to get the result of the function.
-    useEffect('theChapter', async function () {
-        return await getBody(chapter);
-    });
+    useEffect('theChapter', async () => await getBody(chapter));
 
-    useEffect('sidebarFirst', async function () {
-        return await getSections(chapter, true);
-    });
+    useEffect('sidebarFirst', async () => await getSections(chapter, true));
 
-    useEffect('sidebarSecond', async function () {
-        return await getSidebarSecond(chapter, true);
-    });
+    useEffect(
+        'sidebarSecond',
+        async () => await getSidebarSecond(chapter, true)
+    );
 
-    let chapterContents = getResult('theChapter');
-    let sidebarFirst = getResult('sidebarFirst');
-    let sidebarSecond = getResult('sidebarSecond');
+    const chapterContents = getResult('theChapter');
+    const sidebarFirst = getResult('sidebarFirst');
+    const sidebarSecond = getResult('sidebarSecond');
+    const title = getChapter(chapter).getAttribute('name');
 
-    let title = getChapter(chapter).getAttribute('name');
+    /*
+        From React grammar for using innerHTML:
 
-    /** From React grammar for using innerHTML:
-     *             <div dangerouslySetInnerHTML={
-                { __html: htmlContent }
-             } />
-     */
+        <div dangerouslySetInnerHTML={
+            { __html: htmlContent }
+        } />
+    */
     return (
         <div class='lg:grid lg:grid-cols-6'>
             <Sidebar sticky={true}>
@@ -48,20 +46,15 @@ export default function Chapter({ chapter }) {
                     ? sidebarFirst.map(props => <SidebarItemLeft {...props} />)
                     : null}
             </Sidebar>
-            <section
-                id='body'
-                class='flex w-full flex-col gap-4 p-4 lg:col-span-4 lg:col-start-2 lg:me-auto lg:border-x lg:p-8 [&_*]:mb-4'>
+            <Body typeOrs={true}>
+                {' '}
                 <h1 class='text-2xl font-bold'>
                     Chapter {chapter}
                     <br />
                     {title}
                 </h1>
                 <div dangerouslySetInnerHTML={chapterContents}></div>{' '}
-            </section>
-            {/* <Body
-                dangerouslySetInnerHTML={body}
-                typeOrs={typeOrs}
-            /> */}
+            </Body>
             <Sidebar sticky={true}>
                 {/* eslint-disable indent */}
                 {sidebarSecond
