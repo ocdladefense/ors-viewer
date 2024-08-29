@@ -40,6 +40,20 @@ switch (Component) {
         break;
     case Chapter:
         breadcrumbItems = getBreadcrumbs('chapter', props.chapter, props.hash);
+
+        // window.addEventListener('hashchange', () => window.location.reload());
+
+        window.addEventListener('hashchange', () => {
+            root.render(
+                <App
+                    view={root}
+                    currentAppType={currentAppType}
+                    headerPinned={headerPinned}
+                    breadcrumbs={breadcrumbItems}>
+                    <Component {...props} />
+                </App>
+            );
+        });
         break;
     default:
         breadcrumbItems = getBreadcrumbs();
