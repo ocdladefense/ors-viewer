@@ -157,11 +157,6 @@ export const getBreadcrumbs = (type, paramId, hash) => {
     const chapterName = chapter ? chapter.getAttribute('name') : '';
     let jsonArray = [];
 
-    jsonArray.push({
-        href: baseUrl,
-        label: 'Ors'
-    });
-
     switch (type) {
         case 'titles':
             jsonArray.push({
@@ -198,28 +193,76 @@ export const getBreadcrumbs = (type, paramId, hash) => {
             );
             break;
         case 'chapter':
-            const hashId = hash ? hash.split('-')[1] : null;
+            const hashId = hash ? hash.split('-')[1] : paramId;
             const sectionString =
                 paramId + '.' + hashId.toString().padStart(3, '0');
 
-            jsonArray.push(
-                {
-                    href: baseUrl + '/volume/' + volumeIdFromSection,
-                    label: 'Vol. ' + volumeIdFromSection
-                },
-                {
-                    href: baseUrl + '/title/' + titleId,
-                    label: 'Title ' + titleId
-                },
-                {
-                    href: baseUrl + '/chapter/' + paramId,
-                    label: 'Chap. ' + paramId + '. ' + chapterName
-                },
-                {
+            // jsonArray.push(
+            //     {
+            //         href: baseUrl + '/volume/' + volumeIdFromSection,
+            //         label: 'Vol. ' + volumeIdFromSection
+            //     },
+            //     {
+            //         href: baseUrl + '/title/' + titleId,
+            //         label: 'Title ' + titleId
+            //     },
+            //     {
+            //         href: baseUrl + '/chapter/' + paramId,
+            //         label: 'Chap. ' + paramId + '. ' + chapterName
+            //     }
+            // );
+
+            // let node = xml.getElementById('ch-1');
+            // do {
+            //     let tagName = node.tagName; // Helps us determine whether we want "Vol","Title" or "Ch."
+            //     crumbs.push({ name: tagName, value: node.getAttribute('id') });
+            // } while ((node = node.parentNode) != null);
+
+            let node = getChapter(paramId);
+            const URL_FRONT_SLASH = '/';
+            const CHAR_SPACE = ' ';
+            let _crumbs = [];
+            do {
+                // jsonArray.push({
+                //     href:
+                //         baseUrl +
+                //         '/' +
+                //         element.tagName +
+                //         '/' +
+                //         element.id.split('-')[1],
+                //     label: ''
+                // });
+                jsonArray.push({
+                    href: [baseUrl, node.tagName, node.id.split('-')[1]].join(
+                        URL_FRONT_SLASH
+                    ),
+                    label: [node.tagName, node.id.split('-')[1]].join(
+                        CHAR_SPACE
+                    )
+                });
+                console.log(node.tagName, node.parentNode);
+                // console.log(node.tagName);
+            } while (
+                (node = node.parentNode) !== null &&
+                node.parentNode.nodeType !== Node.DOCUMENT_NODE
+            );
+
+            jsonArray = jsonArray.reverse();
+
+            //jsonArray = jsonArray.concat(_crumbs);
+
+            jsonArray.unshift({
+                href: baseUrl,
+                label: 'ORS'
+            });
+
+            if (hash) {
+                jsonArray.push({
                     href: '/chapter/' + paramId + '#section-' + hashId,
                     label: '§ ' + sectionString
-                }
-            );
+                });
+            }
+
             break;
     }
 

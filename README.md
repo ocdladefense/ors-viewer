@@ -10,7 +10,7 @@
 git clone https://github.com/ocdladefense/ors-viewer.git
 ```
 
-#### Step 2 (Git) - Optional:
+#### `OPTIONAL` Step 2 (Git)
 
 ```
 git pull
@@ -27,15 +27,23 @@ git submodule update --init --recursive
 
 ```
 npm update
-npm run [WATCH]
+npm run [BUILD]
 ```
 
 **or**
 
 ```
 npm update
-npm run [BUILD]
+npm run [WATCH]
 ```
+
+#### `OPTIONAL` Step 5 (Visual Studio Code)
+
+-   Install the Prettier plugin: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+
+#### `OPTIONAL` Step 6 (Visual Studio Code)
+
+-   Install the ESLint plugin: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
 
 # To-Do
 
@@ -68,3 +76,8 @@ npm run [BUILD]
 #### Misc
 
 -   Make image imports use dynamic imports.
+
+# Resources
+
+-   https://codebeautify.org/json-fixer
+-   https://codebeautify.org/remove-empty-lines
