@@ -147,124 +147,58 @@ export const getSections = async (paramId, hash, fromSidebar) => {
 };
 
 export const getBreadcrumbs = (type, paramId, hash) => {
-    const chapter = paramId ? getChapter(paramId) : '';
-    const titleId = chapter ? chapter.parentElement.id.split('-')[1] : '';
-    const title = getTitle(paramId);
-    const volumeIdFromTitle = title ? title.parentElement.id.split('-')[1] : '';
-    const volumeIdFromSection = titleId
-        ? getTitle(titleId).parentElement.id.split('-')[1]
-        : '';
-    const chapterName = chapter ? chapter.getAttribute('name') : '';
+    let node;
     let jsonArray = [];
 
     switch (type) {
         case 'titles':
-            jsonArray.push({
-                href: baseUrl + '/volume/' + paramId,
-                label: 'Vol. ' + paramId
-            });
+            node = getVolume(paramId);
             break;
         case 'chapters':
-            jsonArray.push(
-                {
-                    href: baseUrl + '/volume/' + volumeIdFromTitle,
-                    label: 'Vol. ' + volumeIdFromTitle
-                },
-                {
-                    href: baseUrl + '/title/' + paramId,
-                    label: 'Title ' + paramId
-                }
-            );
+            node = getTitle(paramId);
             break;
         case 'sections':
-            jsonArray.push(
-                {
-                    href: baseUrl + '/volume/' + volumeIdFromSection,
-                    label: 'Vol. ' + volumeIdFromSection
-                },
-                {
-                    href: baseUrl + '/title/' + titleId,
-                    label: 'Title ' + titleId
-                },
-                {
-                    href: baseUrl + '/chapter/' + paramId,
-                    label: 'Chap. ' + paramId
-                }
-            );
-            break;
         case 'chapter':
-            const hashId = hash ? hash.split('-')[1] : paramId;
-            const sectionString =
-                paramId + '.' + hashId.toString().padStart(3, '0');
-
-            // jsonArray.push(
-            //     {
-            //         href: baseUrl + '/volume/' + volumeIdFromSection,
-            //         label: 'Vol. ' + volumeIdFromSection
-            //     },
-            //     {
-            //         href: baseUrl + '/title/' + titleId,
-            //         label: 'Title ' + titleId
-            //     },
-            //     {
-            //         href: baseUrl + '/chapter/' + paramId,
-            //         label: 'Chap. ' + paramId + '. ' + chapterName
-            //     }
-            // );
-
-            // let node = xml.getElementById('ch-1');
-            // do {
-            //     let tagName = node.tagName; // Helps us determine whether we want "Vol","Title" or "Ch."
-            //     crumbs.push({ name: tagName, value: node.getAttribute('id') });
-            // } while ((node = node.parentNode) != null);
-
-            let node = getChapter(paramId);
-            const URL_FRONT_SLASH = '/';
-            const CHAR_SPACE = ' ';
-            let _crumbs = [];
-            do {
-                // jsonArray.push({
-                //     href:
-                //         baseUrl +
-                //         '/' +
-                //         element.tagName +
-                //         '/' +
-                //         element.id.split('-')[1],
-                //     label: ''
-                // });
-                jsonArray.push({
-                    href: [baseUrl, node.tagName, node.id.split('-')[1]].join(
-                        URL_FRONT_SLASH
-                    ),
-                    label: [node.tagName, node.id.split('-')[1]].join(
-                        CHAR_SPACE
-                    )
-                });
-                console.log(node.tagName, node.parentNode);
-                // console.log(node.tagName);
-            } while (
-                (node = node.parentNode) !== null &&
-                node.parentNode.nodeType !== Node.DOCUMENT_NODE
-            );
-
-            jsonArray = jsonArray.reverse();
-
-            //jsonArray = jsonArray.concat(_crumbs);
-
-            jsonArray.unshift({
-                href: baseUrl,
-                label: 'ORS'
-            });
-
-            if (hash) {
-                jsonArray.push({
-                    href: '/chapter/' + paramId + '#section-' + hashId,
-                    label: '§ ' + sectionString
-                });
-            }
-
+            node = getChapter(paramId);
             break;
     }
+
+    if (node) {
+        const URL_FRONT_SLASH = '/';
+        const CHAR_SPACE = ' ';
+        const hashId = hash ? hash.split('-')[1] : paramId ? paramId : '';
+        const sectionString =
+            paramId + '.' + hashId.toString().padStart(3, '0');
+
+        // VolumeId, TitleId, ChapterId
+        do {
+            jsonArray.push({
+                href: [baseUrl, node.tagName, node.id.split('-')[1]].join(
+                    URL_FRONT_SLASH
+                ),
+                label: [node.tagName, node.id.split('-')[1]].join(CHAR_SPACE)
+            });
+        } while (
+            (node = node.parentNode) !== null &&
+            node.parentNode.nodeType !== Node.DOCUMENT_NODE
+        );
+
+        // SectionId
+        if (hash) {
+            jsonArray.unshift({
+                href: '/chapter/' + paramId + '#section-' + hashId,
+                label: '§ ' + sectionString
+            });
+        }
+
+        jsonArray = jsonArray.reverse();
+    }
+
+    // Default ORS
+    jsonArray.unshift({
+        href: baseUrl,
+        label: 'ORS'
+    });
 
     return jsonArray;
 };

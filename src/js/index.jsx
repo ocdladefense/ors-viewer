@@ -18,7 +18,6 @@ if (USE_LOCAL_STATUTES_XML)
 
 // Available Types: 'bon' || 'ors'.
 const currentAppType = APP_NAME;
-// const myModule = await import(`./functions/${currentAppType}/fetch_data.js`);
 const headerPinned = false;
 const $root = document.getElementById('root');
 const root = View.createRoot($root);
@@ -43,7 +42,13 @@ switch (Component) {
 
         // window.addEventListener('hashchange', () => window.location.reload());
 
-        window.addEventListener('hashchange', () => {
+        window.addEventListener('hashchange', href => {
+            breadcrumbItems = getBreadcrumbs(
+                'chapter',
+                props.chapter,
+                href.newURL.split('#')[1]
+            );
+
             root.render(
                 <App
                     view={root}
