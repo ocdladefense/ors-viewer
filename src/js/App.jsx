@@ -20,7 +20,7 @@ export default function App({
     return (
         <>
             <header
-                // prettier-ignore
+                /* prettier-ignore */
                 class={`${headerPinned ? 'sticky top-0 ' : ''}container mx-auto flex w-full flex-col bg-white lg:h-32`}>
                 <Navbar />
                 <Breadcrumbs crumbs={breadcrumbs} />

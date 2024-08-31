@@ -54,7 +54,7 @@ export default class Router {
             // /toc/volume/2
             // /toc/section#123.456
             // /chapter/278A
-            // prettier-ignore
+            /* prettier-ignore */
 
             route = route.replaceAll('/', '\\/');
 
