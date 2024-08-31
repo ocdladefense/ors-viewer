@@ -17,16 +17,8 @@ const xml = await resp.text();
 const parser = new DOMParser();
 const parsedXML = parser.parseFromString(xml, 'application/xml');
 
-export const getVolume = paramId => {
-    return parsedXML.getElementById('vol-' + paramId);
-};
-
-export const getTitle = paramId => {
-    return parsedXML.getElementById('title-' + paramId);
-};
-
-export const getChapter = paramId => {
-    return parsedXML.getElementById('ch-' + paramId);
+export const getNode = paramId => {
+    return parsedXML.getElementById(paramId);
 };
 
 export const getVolumes = () => {
@@ -152,14 +144,14 @@ export const getBreadcrumbs = (type, paramId, hash) => {
 
     switch (type) {
         case 'titles':
-            node = getVolume(paramId);
+            node = getNode('vol-' + paramId);
             break;
         case 'chapters':
-            node = getTitle(paramId);
+            node = getNode('title-' + paramId);
             break;
         case 'sections':
         case 'chapter':
-            node = getChapter(paramId);
+            node = getNode('ch-' + paramId);
             break;
     }
 

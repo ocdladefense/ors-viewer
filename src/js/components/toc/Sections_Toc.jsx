@@ -3,7 +3,7 @@
 import { vNode } from '@ocdla/view';
 import Table_Of_Contents from './Table_Of_Contents';
 /* eslint-enable */
-import { getChapter, getSections } from '../../functions/ors/fetch_data.js';
+import { getNode, getSections } from '../../functions/ors/fetch_data.js';
 
 const entries = window.location.pathname.includes('chapter')
     ? await getSections(window.location.pathname.split('/').pop())
@@ -11,7 +11,7 @@ const entries = window.location.pathname.includes('chapter')
 
 export default function Sections_Toc({ division, chapter }) {
     const _chapter = 'CHAPTER ' + chapter;
-    const subtitle = getChapter(chapter).getAttribute('name');
+    const subtitle = getNode('ch-' + chapter).getAttribute('name');
     // const entries = [];
 
     // new Promise()

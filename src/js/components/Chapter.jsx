@@ -11,7 +11,7 @@ import Body from '@ocdla/global-components/src/Body';
 import {
     getSections,
     getBody,
-    getChapter,
+    getNode,
     getSidebarSecond
 } from '../functions/ors/fetch_data.js';
 
@@ -33,7 +33,7 @@ export default function Chapter({ chapter }) {
     const chapterContents = getResult('theChapter');
     const sidebarFirst = getResult('sidebarFirst');
     const sidebarSecond = getResult('sidebarSecond');
-    const title = getChapter(chapter).getAttribute('name');
+    const title = getNode('ch-' + chapter).getAttribute('name');
 
     /*
         From React grammar for using innerHTML:
