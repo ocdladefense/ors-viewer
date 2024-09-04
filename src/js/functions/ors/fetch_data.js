@@ -212,7 +212,16 @@ export const getBody = async paramId => {
     return xml.toString();
 };
 
-export const getSidebarSecond = async paramId => {
+export const getSidebarSecond = async (paramId, hash) => {
+    const hashId = hash ? hash.split('-')[1] : paramId ? paramId : '';
+    // prettier-ignore
+    const label =
+        '§ ' +
+        (hash ? paramId + '.' + hashId.toString().padStart(3, '0') : paramId) +
+        '\'s source at oregon​.gov';
+
+    // console.log(hashId);
+
     return [
         // {
         //     href: '/',
@@ -220,10 +229,10 @@ export const getSidebarSecond = async paramId => {
         // },
         {
             href:
-                'https://oregonlegislature.gov/bills_laws/ors/ors' +
-                paramId.toString().padStart(3, '0') +
+                'https://www.oregonlegislature.gov/bills_laws/ors/ors' +
+                paramId +
                 '.html',
-            label: '§ ' + paramId + '.001’s source at oregon​.gov'
+            label: label
         }
     ];
 };

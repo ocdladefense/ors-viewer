@@ -27,7 +27,7 @@ export default function Chapter({ chapter }) {
 
     useEffect(
         'sidebarSecond',
-        async () => await getSidebarSecond(chapter, true)
+        async () => await getSidebarSecond(chapter, window.location.hash, true)
     );
 
     const chapterContents = getResult('theChapter');
