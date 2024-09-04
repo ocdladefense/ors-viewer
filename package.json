@@ -10,12 +10,14 @@
         "watch-production-ors-viewer": "webpack serve --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors",
         "watch": "webpack serve --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors --open",
         "update": "cp package.json package-main.json && package-json-merge package-main.json package-overrides.json > package.json",
-        "lint": "eslint -c eslint.config.mjs .",
+        "lint": "eslint -c eslint.config.mjs ./",
         "lint-fix": "eslint -c eslint.config.mjs --fix",
-        "build": "webpack --config webpack.config.js --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors",
         "jsdoc-build": "jsdoc -c jsdoc.json",
         "git-reset": "git reset --soft HEAD~1",
-        "git-force": "git push origin +main --force"
+        "git-force": "git push origin +main --force",
+        "build": "webpack --config webpack.config.js --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors",
+        "serve-docs": "serve ./docs --listen 1234",
+        "serve": "serve ./dist --listen 1234"
     },
     "dependencies": {
         "@ocdla/global-components": "file:./dev_modules/@ocdla/global-components",
@@ -45,6 +47,7 @@
         "postcss-loader": "^8.1.1",
         "prettier": "^3.3.3",
         "prettier-plugin-tailwindcss": "^0.6.5",
+        "serve": "^14.2.3",
         "style-loader": "^3.3.4",
         "webpack": "^5.92.1",
         "webpack-cli": "^5.1.4",
