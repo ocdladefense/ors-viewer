@@ -4,6 +4,20 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const copyPlugin = require('copy-webpack-plugin');
 
 module.exports = env => {
+    /*
+        [EXAMPLE]
+        • Here's how to export an MPA instead of a SPA.
+        • You'll probably still need to tweak a lot of stuff to make wildcard routes (id routes) work as expected.
+    */
+    // const routes = ['index', 'toc'];
+    // const multipleHtmlPlugins = routes.map(filename => {
+    //     return new htmlWebpackPlugin({
+    //         template: './src/index.html',
+    //         filename: `${filename}.html`,
+    //         chunks: 'app'
+    //     });
+    // });
+
     return {
         mode: 'development',
         entry: {
@@ -20,6 +34,10 @@ module.exports = env => {
             extensions: ['.js', '.jsx']
         },
         output: {
+            /*
+                [REQUIRED]
+                • For routes other than root.
+            */
             publicPath: '/',
             path: path.resolve(__dirname, 'dist'),
             filename: '[name].bundle.js',
@@ -33,6 +51,16 @@ module.exports = env => {
             open: false,
             hot: true,
             compress: true,
+            /*
+                [REQUIRED]
+                • For routes other than root.
+
+                [WARNING]
+                • This feature only works in development.
+                • For production, view the "-s" flag for the "serve" command in package.json or use an equivalent option for your production server to fallback to index.html for expected SPA behavior / structure.
+                • For the VSCode "Live Server" extension, add the following for an equivalent fallback option:
+                    • "liveServer.settings.file": "index.html"
+            */
             historyApiFallback: true
         },
         devtool: 'source-map',
@@ -106,10 +134,11 @@ module.exports = env => {
             }),
             new htmlWebpackPlugin({
                 template: path.resolve(__dirname, 'src/index.html'),
-                chunks: ['app'],
+                chunks: 'app',
                 inject: 'body',
                 filename: 'index.html'
             }),
+            // ...multipleHtmlPlugins,
             new copyPlugin({
                 patterns: [
                     // {

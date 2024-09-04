@@ -16,8 +16,8 @@
         "git-reset": "git reset --soft HEAD~1",
         "git-force": "git push origin +main --force",
         "build": "webpack --config webpack.config.js --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors",
-        "serve-docs": "serve ./docs --listen 1234",
-        "serve": "serve ./dist --listen 1234"
+        "serve-docs": "serve ./docs -p 1234 -n -s",
+        "serve": "serve ./dist -p 1234 -n -s"
     },
     "dependencies": {
         "@ocdla/global-components": "file:./dev_modules/@ocdla/global-components",
