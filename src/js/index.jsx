@@ -1,3 +1,7 @@
+/**
+ * @fileoverview This file is the root of the ORS Viewer application.
+ */
+
 /** @jsx vNode */
 import '../css/input.css';
 /* eslint-disable no-unused-vars */
@@ -12,6 +16,8 @@ import Chapters_Toc from './components/toc/Chapters_Toc';
 import Sections_Toc from './components/toc/Sections_Toc';
 import Chapter from './components/Chapter';
 import { getBreadcrumbs } from './functions/ors/fetch_data';
+
+console.log(`IS_PRODUCTION - ${BASE_PATH}`);
 
 if (USE_LOCAL_STATUTES_XML)
     HttpClient.register('https://ors.ocdla.org', new OrsMock());
@@ -59,6 +65,13 @@ switch (Component) {
                 </App>
             );
         });
+        // const currentHash = window.location.hash;
+        // window.location.hash = currentHash + '_temp';
+        // window.location.hash = currentHash;
+
+        // const currentHash = window.location.hash;
+        // history.replaceState(null, '', currentHash + '_temp');
+        // history.replaceState(null, '', currentHash);
         break;
     default:
         breadcrumbItems = getBreadcrumbs();
@@ -74,3 +87,15 @@ root.render(
         <Component {...props} />
     </App>
 );
+
+if (BASE_PATH) {
+    // const links = document.querySelectorAll('a');
+
+    // links.forEach(link =>
+    //     link.href && !link.href.startsWith('http')
+    //         ? (link.href =
+    //               BASE_PATH + link.getAttribute('href').replace(/^\//, ''))
+    //         : ''
+    // );
+    console.log(BASE_PATH);
+}

@@ -17,5 +17,9 @@
     "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
     "[xml]": {
         "editor.defaultFormatter": "DotJoshJohnson.xml"
-    }
+    },
+    "liveServer.settings.port": 1234,
+    "liveServer.settings.file": "index.html",
+    "liveServer.settings.root": "/dist",
+    "cSpell.words": ["depdencicies"]
 }

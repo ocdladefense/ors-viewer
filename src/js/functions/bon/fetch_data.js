@@ -1,3 +1,7 @@
+/**
+ * @fileoverview This file contains ORS Viewer fetch functions; left over from the app switcher functionality for Books Online.
+ */
+
 /** @jsx vNode */
 /* eslint-disable no-unused-vars */
 import { vNode } from '@ocdla/view';

@@ -1,3 +1,7 @@
+/**
+ * @fileoverview This file checks whether the ORS Viewer application is being hosted locally or remotely (basically CORS checks) to return appropriate data accordingly.
+ */
+
 import HttpMock from '@ocdla/lib-http/HttpMock';
 import Url from '@ocdla/lib-http/Url';
 import volumes from '../../data/xml/ors_viewer/statutes.xml';
@@ -7,8 +11,6 @@ import Link from '@ocdla/global-components/src/Defaults';
 
 export default class OrsMock extends HttpMock {
     constructor() {
-        // console.log(volumes);
-
         super();
     }
 
@@ -26,6 +28,7 @@ export default class OrsMock extends HttpMock {
         /* eslint-enable */
     }
 
+    // Left over code from the app switcher functionality for Books Online.
     getMock() {
         // console.log('getBody: (b)');
         const styleTabActive =

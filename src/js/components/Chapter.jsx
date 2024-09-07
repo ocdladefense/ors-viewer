@@ -4,7 +4,7 @@ import { vNode, useEffect, getResult } from '@ocdla/view';
 import Sidebar from '@ocdla/global-components/src/Sidebar';
 import SidebarItemLeft from '@ocdla/global-components/src/SidebarItemLeft';
 import SidebarItemRight from '@ocdla/global-components/src/SidebarItemRight';
-import './chapter.css';
+import '../../css/chapter.css';
 import Body from '@ocdla/global-components/src/Body';
 
 /* eslint-enable */

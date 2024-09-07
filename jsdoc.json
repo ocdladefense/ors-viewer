@@ -1,8 +1,8 @@
 {
     "source": {
-        "include": ["src/js/jsdoc"],
-        "includePattern": ".js$",
-        "excludePattern": "(node_modules/|docs)"
+        "include": ["src"],
+        "includePattern": ".jsx?$",
+        "excludePattern": "(node_modules|dist|docs)"
     },
     "plugins": ["plugins/markdown"],
     "templates": {
@@ -11,6 +11,6 @@
     },
     "opts": {
         "recurse": true,
-        "destination": "./docs/"
+        "destination": "./docs"
     }
 }

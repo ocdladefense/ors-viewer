@@ -60,6 +60,7 @@ module.exports = env => {
                 • For production, view the "-s" flag for the "serve" command in package.json or use an equivalent option for your production server to fallback to index.html for expected SPA behavior / structure.
                 • For the VSCode "Live Server" extension, add the following for an equivalent fallback option:
                     • "liveServer.settings.file": "index.html"
+                • These flags / settings / options should already be setup or at least depicted in examples already inside of "package.json" or ".vscode/settings.json", so be sure to take a look at those files for usage examples.
             */
             historyApiFallback: true
         },
@@ -130,13 +131,17 @@ module.exports = env => {
                 USE_LOCAL_STATUTES_XML: JSON.stringify(
                     env.USE_LOCAL_STATUTES_XML || true
                 ),
-                APP_NAME: JSON.stringify(env.APP_NAME)
+                APP_NAME: JSON.stringify(env.APP_NAME),
+                BASE_PATH: JSON.stringify(env.BASE_PATH || false)
             }),
             new htmlWebpackPlugin({
                 template: path.resolve(__dirname, 'src/index.html'),
                 chunks: 'app',
                 inject: 'body',
-                filename: 'index.html'
+                filename: 'index.html',
+                templateParameters: {
+                    title: 'HTML Webpack Plugin'
+                }
             }),
             // ...multipleHtmlPlugins,
             new copyPlugin({

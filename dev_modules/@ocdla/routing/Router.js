@@ -1,6 +1,4 @@
 // This import requires the defining of its extension type.
-/** @jsx vNode */
-
 import NotFound from '@ocdla/global-components/src/NotFound.jsx';
 
 export default class Router {
@@ -17,8 +15,9 @@ export default class Router {
     //     }
     // }
 
-    constructor() {
+    constructor(basePath) {
         this.routes = [];
+        this.basePath = basePath;
     }
 
     addRoute(path, component = NotFound, params = {}) {
@@ -60,17 +59,12 @@ export default class Router {
 
             // May need to add in modifiers / flags.
             const re = new RegExp(route);
-
-            // console.log(re);
-
             const matches = path.match(re);
 
             // if (!matches) continue;
 
             // If matches is null, then there wasn't a match.
             if (matches) {
-                // console.log('1234');
-
                 if (null !== _var) {
                     params[_var] = matches[1];
                     params['hash'] = hash;

@@ -1,3 +1,7 @@
+/**
+ * @fileoverview This file is the meat-and-potatoes of the ORS Viewer application and contains the general layout.
+ */
+
 /** @jsx vNode */ /** @jsxFrag "Fragment" */
 /* eslint-disable no-unused-vars */
 import { vNode } from '@ocdla/view';

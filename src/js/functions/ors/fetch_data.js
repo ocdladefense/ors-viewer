@@ -1,3 +1,7 @@
+/**
+ * @fileoverview This file contains ORS Viewer fetch functions.
+ */
+
 import OrsMock from '../../mock/OrsMock';
 import Url from '@ocdla/lib-http/Url';
 import HttpClient from '@ocdla/lib-http/HttpClient';
@@ -17,9 +21,24 @@ const xml = await resp.text();
 const parser = new DOMParser();
 const parsedXML = parser.parseFromString(xml, 'application/xml');
 
+/**
+ * @description Gets a certain element from a previously fetched XML file.
+ * @example
+ *  getNode(7)
+ * @param {number} paramId - Accepts an integer as the id of the wanted element.
+ * @returns {HTMLElement} Returns an array of [volume] objects.
+ */
+
 export const getNode = paramId => {
     return parsedXML.getElementById(paramId);
 };
+
+/**
+ * @description Gets all of the volumes from a previously fetched XML file.
+ * @example
+ * getVolumes()
+ * @returns {string} Returns an array of [volume] objects.
+ */
 
 export const getVolumes = () => {
     const xmlVolumes = parsedXML.getElementsByTagName('volume');
@@ -51,6 +70,14 @@ export const getVolumes = () => {
     return jsonArray;
 };
 
+/**
+ * @description Gets all of the chapters for a title from a previously fetched XML file.
+ * @example
+ * getTitles(7)
+ * @param {number} paramId - Accepts an integer as the id of the wanted title.
+ * @returns {string} Returns an array of [chapter] objects.
+ */
+
 export const getTitles = paramId => {
     const xmlTitles = parsedXML.getElementsByTagName('title');
     let jsonArray = [];
@@ -75,6 +102,14 @@ export const getTitles = paramId => {
     return jsonArray;
 };
 
+/**
+ * @description Gets all of the sections for a chapter from a previously fetched XML file.
+ * @example
+ * getChapters(7)
+ * @param {number} paramId - Accepts an integer as the id of the wanted chapter.
+ * @returns {string} Returns an array of [section] objects.
+ */
+
 export const getChapters = paramId => {
     const xmlChapters = parsedXML.getElementsByTagName('chapter');
     let jsonArray = [];
@@ -96,6 +131,16 @@ export const getChapters = paramId => {
 
     return jsonArray;
 };
+
+/**
+ * @description Gets all of the sections for a chapter from fetched data from a remote PHP file.
+ * @example
+ * getSections(7, '1010', true)
+ * @param {number} paramId - Accepts an integer as the id of the wanted chapter.
+ * @param {string} hash - Accepts a string as the id of the wanted section.
+ * @param {boolean} [fromSidebar] - Optionally accepts a boolean to determine whether the fetched sections are for sidebar first.
+ * @returns {string} Returns an array of [section] objects.
+ */
 
 export const getSections = async (paramId, hash, fromSidebar) => {
     // const url = new Url('https://ors.ocdla.org/index.xml');
@@ -137,6 +182,16 @@ export const getSections = async (paramId, hash, fromSidebar) => {
 
     return jsonArray;
 };
+
+/**
+ * @description Gets one or more breadcrumb links (default, active volume, active title, active chapter or active section).
+ * @example
+ * getBreadcrumbs('titles', 7, '1010')
+ * @param {string} [type] - Optionally accepts a string to determine which element type is wanted.
+ * @param {number} [paramId] - Optionally accepts an integer as the id of the wanted volume, title or chapter.
+ * @param {string} [hash] - Optionally accepts a string as the id of the wanted section.
+ * @returns {string} Returns an array of [hyperlink] objects.
+ */
 
 export const getBreadcrumbs = (type, paramId, hash) => {
     let node;
@@ -195,6 +250,14 @@ export const getBreadcrumbs = (type, paramId, hash) => {
     return jsonArray;
 };
 
+/**
+ * @description Gets HTML text for a chapter from fetched data from a remote PHP file.
+ * @example
+ * getBody(7)
+ * @param {number} paramId - Accepts an integer as the id of the wanted chapter.
+ * @returns {string} Returns HTML text.
+ */
+
 export const getBody = async paramId => {
     const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 
@@ -204,13 +267,18 @@ export const getBody = async paramId => {
     const req = new Request(url.toString());
     const resp = await client.send(req);
     const msword = await OrsChapter.fromResponse(resp);
-
-    msword.chapterNum = paramId;
-
     const xml = OrsChapter.toStructuredChapter(msword);
 
     return xml.toString();
 };
+
+/**
+ * @description Gets miscellaneous data for a chapter.
+ * @example
+ * getSidebarSecond(7, '1010')
+ * @param {number} paramId - Accepts an integer as the id of the wanted chapter.
+ * @returns {string} Returns a miscellaneous array of [hyperlink] objects'.
+ */
 
 export const getSidebarSecond = async (paramId, hash) => {
     const hashId = hash ? hash.split('-')[1] : paramId ? paramId : '';
@@ -219,8 +287,6 @@ export const getSidebarSecond = async (paramId, hash) => {
         '§ ' +
         (hash ? paramId + '.' + hashId.toString().padStart(3, '0') : paramId) +
         '\'s source at oregon​.gov';
-
-    // console.log(hashId);
 
     return [
         // {

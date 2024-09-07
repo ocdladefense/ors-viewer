@@ -1,5 +1,8 @@
-/** @jsx vNode */
+/**
+ * @fileoverview This file defines the browser URL routes for the ORS Viewer application.
+ */
 
+/** @jsx vNode */
 import Router from '@ocdla/routing/Router';
 // import NotFound from '@ocdla/global-components/src/NotFound';
 import Search from './components/Search';
@@ -9,7 +12,7 @@ import Chapters_Toc from './components/toc/Chapters_Toc';
 import Sections_Toc from './components/toc/Sections_Toc';
 import Chapter from './components/Chapter';
 
-const router = new Router();
+const router = new Router(BASE_PATH || '/');
 export default router;
 
 switch (APP_NAME) {
