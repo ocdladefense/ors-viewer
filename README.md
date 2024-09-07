@@ -99,7 +99,10 @@ npm run [WATCH]
 
 #### Feature
 
--   Finish implementing base path for production usage.
+-   Finish dynamic production paths.
+
+    -   Base path support, etc.
+    -   `TIP` See Webpack config `output` key settings (particularly `publicPath` and `path`).
 
 -   Make ORS body headings use default hyperlink theme.
 
