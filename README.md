@@ -79,7 +79,7 @@ npm run [WATCH]
 
 -   Alternatively, you can also use the already set up, `serve` Node package for production testing.
 
--   For production testing on GitHub Pages, you will need to use x2 SPA hacks, as described in `webpack.config.js`.
+-   For production testing on GitHub Pages, you can also use the already set up x2 SPA hacks, as described in `webpack.config.js`.
 
 #### `[OPTIONAL]:` Step 10 (Visual Studio Code)
 
