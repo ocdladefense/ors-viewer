@@ -61,6 +61,8 @@ module.exports = env => {
                 • For the VSCode "Live Server" extension, add the following for an equivalent fallback option:
                     • "liveServer.settings.file": "index.html"
                 • These flags / settings / options should already be setup or at least depicted in examples already inside of "package.json" or ".vscode/settings.json", so be sure to take a look at those files for usage examples.
+                •  For GitHub Pages, use these x2 SPA hack: https://smashingmagazine.com/2016/08/sghpa-single-page-app-hack-github-pages
+                    • Proof of concept: https://tnguyen.github.io
             */
             historyApiFallback: true
         },
