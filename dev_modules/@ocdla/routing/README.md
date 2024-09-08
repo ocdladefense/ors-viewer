@@ -1,8 +1,14 @@
-# routing
+# Routing
 
 -   Node package for the conducting of URL paths.
 
-# Installation
+## Changelog
+
+#### 0.1.0
+
+-   Initial release.
+
+## Installation
 
 #### (NPM)
 
@@ -10,7 +16,7 @@
 npm install @ocdla/routing
 ```
 
-# To-Do
+## To-Do
 
 #### Feature
 
