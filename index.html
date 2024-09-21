@@ -1,38 +1,69 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-        />
-        <title>OCDLA | Ors Viewer</title>
-        <link
-            rel="icon"
-            href="data:;base64,="
-        />
-        <link
-            rel="preconnect"
-            href="https://fonts.googleapis.com"
-        />
-        <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossorigin
-        />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+<head>
+    <meta charset="UTF-8" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    />
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    />
+    <meta
+        name="googlebot"
+        content="noindex, nofollow"
+    />
+    <meta
+        name="googlebot-news"
+        content="noindex, nofollow"
+    />
+    <meta
+        name="slurp"
+        content="noindex, nofollow"
+    />
+    <meta
+        name="msnbot"
+        content="noindex, nofollow"
+    />
+    <title>OCDLA | Ors Viewer</title>
+    <!-- <title><%= htmlWebpackPlugin.options.title %></title> -->
+    <link
+        rel="icon"
+        href="data:;base64,="
+    />
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    />
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet"
+    />
+    <!-- <link
+            href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
             rel="stylesheet"
-        />
-    </head>
+        /> -->
+    <!-- <base href="/" /> -->
+    <script>
+        (() => {
+            const redirect = sessionStorage.redirect;
 
-    <!-- <body
-        id="root"
-        class="min-w-screen min-h-screen flex items-center justify-center bg-no-repeat bg-gradient-to-br from-amber-50 from-0% from-sky-50 via-25% to-sky-300 to-50% text-white antialiased"
-    > -->
-    <body
-        id="root"
-        class="text-sm"
-        ><noscript>This page requires JavaScript.</noscript><script defer src="app.bundle.js"></script></body
-    >
+            delete sessionStorage.redirect;
+
+            if (redirect && redirect !== location.href)
+                history.replaceState(null, null, redirect);
+        })();
+    </script>
+</head>
+
+<body
+    id="root"
+    class="text-sm"
+><noscript>This page requires JavaScript.</noscript><script defer src="/app.bundle.js"></script></body>
 </html>
