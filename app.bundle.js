@@ -5574,7 +5574,7 @@ async function refresh() {
 /******/ 	
 /******/ 	/* webpack/runtime/publicPath */
 /******/ 	(() => {
-/******/ 		__webpack_require__.p = "";
+/******/ 		__webpack_require__.p = "/ors-viewer/";
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/nonce */
