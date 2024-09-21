@@ -38,7 +38,7 @@ module.exports = env => {
                 [REQUIRED]
                 • For routes other than root.
             */
-            publicPath: '/',
+            publicPath: '',
             path: path.resolve(__dirname, 'dist'),
             filename: '[name].bundle.js',
             assetModuleFilename: 'images/[name][ext]',
