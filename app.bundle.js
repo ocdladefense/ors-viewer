@@ -2297,7 +2297,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
-console.log("IS_PRODUCTION - ".concat("/"));
+console.log("IS_PRODUCTION - ".concat(false));
 if (true) _ocdla_lib_http_HttpClient__WEBPACK_IMPORTED_MODULE_3__["default"].register('https://ors.ocdla.org', new _mock_OrsMock__WEBPACK_IMPORTED_MODULE_4__["default"]());
 
 // Available Types: 'bon' || 'ors'.
@@ -2352,17 +2352,7 @@ root.render((0,_ocdla_view__WEBPACK_IMPORTED_MODULE_1__.vNode)(_App__WEBPACK_IMP
   headerPinned: headerPinned,
   breadcrumbs: breadcrumbItems
 }, (0,_ocdla_view__WEBPACK_IMPORTED_MODULE_1__.vNode)(Component, props)));
-if (true) {
-  // const links = document.querySelectorAll('a');
-
-  // links.forEach(link =>
-  //     link.href && !link.href.startsWith('http')
-  //         ? (link.href =
-  //               BASE_PATH + link.getAttribute('href').replace(/^\//, ''))
-  //         : ''
-  // );
-  console.log("/");
-}
+if (false) {}
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
 
@@ -2513,7 +2503,7 @@ var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_com
 
 
 
-var router = new _ocdla_routing_Router__WEBPACK_IMPORTED_MODULE_0__["default"]("/" || 0);
+var router = new _ocdla_routing_Router__WEBPACK_IMPORTED_MODULE_0__["default"]( false || '/');
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
 switch ("ors") {
   case 'bon':
