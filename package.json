@@ -15,7 +15,7 @@
         "jsdoc:build": "jsdoc -c jsdoc.json",
         "git:reset": "git reset --soft HEAD~1",
         "git:force": "git push origin +abcdefghi --force",
-        "build": "webpack --config webpack.config.js --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors --env BASE_PATH=/ors-viewer/",
+        "build": "webpack --config webpack.config.js --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors --env BASE_PATH=/",
         "serve": "serve ./dist -p 1234 -n -s",
         "serve:docs": "serve ./docs -p 1234 -n"
     },
