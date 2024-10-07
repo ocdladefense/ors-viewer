@@ -142,46 +142,69 @@ export const getChapters = paramId => {
  * @returns {string} Returns an array of [section] objects.
  */
 
-export const getSections = async (paramId, hash, fromSidebar) => {
+export const getSections = async (chapterNumber, hash, fromSidebar) => {
     // const url = new Url('https://ors.ocdla.org/index.xml');
+    const url = new Url('https://appdev.ocdla.org/books-online/index.php');
+
+    url.buildQuery('chapter', chapterNumber.toString());
+
+      const client = new HttpClient();
+      const req = new Request(url.toString());
+      const chapter = await client.send(req).then(resp => OrsChapter.fromResponse(resp, chapterNumber));
+
+    // const xml = OrsChapter.toStructuredChapter(msword);
+    let items = [];
+
+
+    for(let sectionNumber in chapter.sectionTitles) {
+         // chapter.sectionTitles.forEach(($section, sectionIndex) => {
+        const chapterName = parsedXML.getElementById('ch-' + chapterNumber).getAttribute('name');
+        const chapterString = chapterNumber + '.' + sectionNumber.toString().padStart(3, '0');
+        const matchFound = chapterNumber === chapterString.split('.')[0];
+        const hashId = hash ? hash.split('-')[1] : null;
+
+        items.push({
+            chapterName: chapterName,
+            id: chapterString,
+            active: fromSidebar && hashId ? sectionNumber === parseInt(hashId) : null,
+            href: '/chapter/' + chapterNumber + '#section-' + sectionNumber,
+            heading: fromSidebar ? chapterString : null,
+            label: chapter.sectionTitles[sectionNumber]
+        });
+    }
+
+    return items;
+};
+
+
+
+/**
+ * @description Gets HTML text for a chapter from fetched data from a remote PHP file.
+ * @example
+ * getBody(7)
+ * @param {number} paramId - Accepts an integer as the id of the wanted chapter.
+ * @returns {string} Returns HTML text.
+ */
+
+export const getBody = async paramId => {
     const url = new Url('https://appdev.ocdla.org/books-online/index.php');
 
     url.buildQuery('chapter', paramId.toString());
 
+    // const msword = await OrsChapter.fromResponse(resp);
+    // const xml = OrsChapter.toStructuredChapter(msword);
+
     const client = new HttpClient();
     const req = new Request(url.toString());
-    const resp = await client.send(req);
-    const msword = await OrsChapter.fromResponse(resp);
-    const xml = OrsChapter.toStructuredChapter(msword);
-    let jsonArray = [];
+    const chapter = await client.send(req).then(resp => OrsChapter.fromResponse(resp, paramId));
 
-    xml.sectionTitles.map(($section, sectionIndex) => {
-        const chapterName = parsedXML
-            .getElementById('ch-' + paramId)
-            .getAttribute('name');
-        const chapterString =
-            paramId + '.' + sectionIndex.toString().padStart(3, '0');
-        const matchFound = paramId === chapterString.split('.')[0];
-
-        if (matchFound) {
-            const hashId = hash ? hash.split('-')[1] : null;
-
-            jsonArray.push({
-                chapterName: chapterName,
-                id: chapterString,
-                active:
-                    fromSidebar && hashId
-                        ? sectionIndex === parseInt(hashId)
-                        : null,
-                href: '/chapter/' + paramId + '#section-' + sectionIndex,
-                heading: fromSidebar ? chapterString : null,
-                label: $section
-            });
-        }
-    });
-
-    return jsonArray;
+    return chapter.toString();
 };
+
+
+
+
+
 
 /**
  * @description Gets one or more breadcrumb links (default, active volume, active title, active chapter or active section).
@@ -250,27 +273,7 @@ export const getBreadcrumbs = (type, paramId, hash) => {
     return jsonArray;
 };
 
-/**
- * @description Gets HTML text for a chapter from fetched data from a remote PHP file.
- * @example
- * getBody(7)
- * @param {number} paramId - Accepts an integer as the id of the wanted chapter.
- * @returns {string} Returns HTML text.
- */
 
-export const getBody = async paramId => {
-    const url = new Url('https://appdev.ocdla.org/books-online/index.php');
-
-    url.buildQuery('chapter', paramId.toString());
-
-    const client = new HttpClient();
-    const req = new Request(url.toString());
-    const resp = await client.send(req);
-    const msword = await OrsChapter.fromResponse(resp);
-    const xml = OrsChapter.toStructuredChapter(msword);
-
-    return xml.toString();
-};
 
 /**
  * @description Gets miscellaneous data for a chapter.
@@ -279,7 +282,6 @@ export const getBody = async paramId => {
  * @param {number} paramId - Accepts an integer as the id of the wanted chapter.
  * @returns {string} Returns a miscellaneous array of [hyperlink] objects'.
  */
-
 export const getSidebarSecond = async (paramId, hash) => {
     const hashId = hash ? hash.split('-')[1] : paramId ? paramId : '';
     // prettier-ignore
