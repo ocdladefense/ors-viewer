@@ -8,10 +8,62 @@
     font-weight: bold;
 }
 
+
+.WordSection1 p {
+    padding-bottom:0.5rem;
+
+}
+[id*="section"] h2 {
+    font-weight: bold;
+}
+
+
+.subsection {
+    display:inline-block;
+    margin-top: 8px;
+}
+.statute {
+    font-family: monospace;
+    border-left: 3px solid blue;
+    margin-left: 50px;
+    max-width: 80%;
+    padding-left: 20px;
+}
+.level-0 {
+    margin-left: 0px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 .level-1 {
-    padding-left: 10px;
+    margin-left: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .level-2 {
-    padding-left: 20px;
+    margin-left: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.level-3 {
+    margin-left: 45px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.level-4 {
+    margin-left: 60px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.level-5 {
+    margin-left: 75px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.section-label {
+    padding: 5px;
+    font-size:larger;
+    font-weight: bold;
 }
