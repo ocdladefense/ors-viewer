@@ -130,7 +130,10 @@ module.exports = env => {
             new webpack.DefinePlugin({
                 USE_MOCK: JSON.stringify(env.USE_MOCK || false),
                 USE_LOCAL_STATUTES_XML: JSON.stringify(
-                    env.USE_LOCAL_STATUTES_XML || true
+                    env.USE_LOCAL_STATUTES_XML || false
+                ),
+                USE_LOCAL_REFERENCE_PARSER: JSON.stringify(
+                    env.USE_LOCAL_REFERENCE_PARSER || false
                 ),
                 APP_NAME: JSON.stringify(env.APP_NAME),
                 BASE_PATH: JSON.stringify(env.BASE_PATH || false)

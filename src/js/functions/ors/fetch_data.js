@@ -5,7 +5,7 @@
 import OrsMock from '../../mock/OrsMock';
 import Url from '@ocdla/lib-http/Url';
 import HttpClient from '@ocdla/lib-http/HttpClient';
-import OrsChapter from '@ocdla/ors/src/Chapter';
+import OrsChapter from '@ocdladefense/ors/src/Chapter';
 
 if (USE_LOCAL_STATUTES_XML)
     HttpClient.register('https://ors.ocdla.org', new OrsMock());

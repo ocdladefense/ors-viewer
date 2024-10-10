@@ -10,6 +10,7 @@ import App from './App';
 /* eslint-enable */
 import HttpClient from '@ocdla/lib-http/HttpClient';
 import OrsMock from './mock/OrsMock';
+import OcdlaApiMock from './mock/OcdlaApiMock';
 import router from './routes';
 import Titles_Toc from './components/toc/Titles_Toc';
 import Chapters_Toc from './components/toc/Chapters_Toc';
@@ -21,6 +22,8 @@ console.log(`IS_PRODUCTION - ${BASE_PATH}`);
 
 if (USE_LOCAL_STATUTES_XML)
     HttpClient.register('https://ors.ocdla.org', new OrsMock());
+if (USE_LOCAL_REFERENCE_PARSER)
+    HttpClient.register('https://api.ocdla.org', new OcdlaApiMock());
 
 // Available Types: 'bon' || 'ors'.
 const currentAppType = APP_NAME;

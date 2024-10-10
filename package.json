@@ -10,15 +10,15 @@
         "jsdoc:build": "jsdoc -c jsdoc.json",
         "git:reset": "git reset --soft HEAD~1",
         "git:force": "git push origin +abcdefghi --force",
-        "build": "webpack --config webpack.config.js --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors",
-        "watch": "webpack serve --open --env USE_LOCAL_STATUTES_XML --env APP_NAME=ors",
+        "build": "webpack --config webpack.config.js --env USE_LOCAL_STATUTES_XML --env USE_LOCAL_REFERENCE_PARSER --env APP_NAME=ors",
+        "watch": "webpack serve --open --env USE_LOCAL_STATUTES_XML --env USE_LOCAL_REFERENCE_PARSER --env APP_NAME=ors",
         "serve": "serve ./dist -p 1234 -n -s",
         "serve:docs": "serve ./docs -p 1234 -n"
     },
     "dependencies": {
         "@ocdla/global-components": "file:./dev_modules/@ocdla/global-components",
         "@ocdla/lib-http": "file:./dev_modules/@ocdla/lib-http",
-        "@ocdla/ors": "file:./dev_modules/@ocdla/ors",
+        "@ocdladefense/ors": "file:./dev_modules/@ocdla/ors",
         "@ocdla/routing": "file:./dev_modules/@ocdla/routing",
         "@ocdla/view": "^2.4.0",
         "autoprefixer": "^10.4.19",
