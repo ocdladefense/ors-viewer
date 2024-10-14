@@ -3,8 +3,6 @@
  */
 
 /** @jsx vNode */
-import Router from '@ocdla/routing/Router';
-// import NotFound from '@ocdla/global-components/src/NotFound';
 import Search from './components/Search';
 import Volumes_Toc from './components/toc/Volumes_Toc';
 import Titles_Toc from './components/toc/Titles_Toc';
@@ -12,14 +10,48 @@ import Chapters_Toc from './components/toc/Chapters_Toc';
 import Sections_Toc from './components/toc/Sections_Toc';
 import Chapter from './components/Chapter';
 
-const router = new Router(BASE_PATH || '/');
-export default router;
 
-switch (APP_NAME) {
-    case 'bon':
-        router.addRoute('/', 'xyz');
-        break;
-    case 'ors':
+const routes = [
+    {
+        path: "/",
+        callback: Search
+    },
+    {
+        path: "/toc",
+        callback: Volumes_Toc,
+        params: {
+            division: 'Volumes',
+            title: 'OREGON REVISED STATUTES'
+        }
+    },
+    {
+        path: "/toc/volume/(\\w+)",
+        callback: Titles_Toc,
+        params: {
+            division: 'Titles'
+        }
+    },
+    {
+        path: "/toc/title/(\\w+)",
+        callback: Chapters_Toc,
+        params: {
+            division: 'Chapters'
+        }
+    },
+    {
+        path: "/chapter/(\\w+)",
+        callback: Chapter
+    },
+    {
+        path: "/toc/chapter/(\\w+)",
+        callback: Sections_Toc,
+        params: {
+            division: 'Sections'
+        }
+    }
+];
+
+/*
         router.addRoute('/', Search);
         router.addRoute('/toc', Volumes_Toc, {
             division: 'Volumes',
@@ -42,5 +74,7 @@ switch (APP_NAME) {
         // router.addRoute('/section/(\\d+)\\.(\\d+)', Ors_Body);
         // router.addRoute('/toc/section/(\\d+)\\.(\\d+)', Ors_Body, {
         // router.addRoute('/toc/section/[+-]?([0-9]*[.])?[0-9]+', Ors_Body);
-        break;
-}
+        
+*/
+
+export default routes;

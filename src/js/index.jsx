@@ -1,8 +1,10 @@
+/** @jsx vNode */
+
 /**
  * @fileoverview This file is the root of the ORS Viewer application.
  */
 
-/** @jsx vNode */
+
 import '../css/input.css';
 /* eslint-disable no-unused-vars */
 import { vNode, View } from '@ocdla/view';
@@ -11,7 +13,9 @@ import App from './App';
 import HttpClient from '@ocdla/lib-http/HttpClient';
 import OrsMock from './mock/OrsMock';
 import OcdlaApiMock from './mock/OcdlaApiMock';
-import router from './routes';
+import Router from '@ocdla/lib-routing/src/Router.js';
+import routes from './routes';
+import NotFound from '@ocdla/global-components/src/NotFound.jsx';
 import Titles_Toc from './components/toc/Titles_Toc';
 import Chapters_Toc from './components/toc/Chapters_Toc';
 import Sections_Toc from './components/toc/Sections_Toc';
@@ -25,14 +29,20 @@ if (USE_LOCAL_STATUTES_XML)
 if (USE_LOCAL_REFERENCE_PARSER)
     HttpClient.register('https://api.ocdla.org', new OcdlaApiMock());
 
+
+
+const router = new Router();
+router.setBasePath(BASE_PATH || '/');
+router.setNotFoundCallback(NotFound);
+routes.forEach(route => router.addRoute(route.path, route.callback, route.params || {}));
+
 // Available Types: 'bon' || 'ors'.
 const currentAppType = APP_NAME;
 const headerPinned = false;
 const $root = document.getElementById('root');
 const root = View.createRoot($root);
 const [Component, props] = router.match(
-    window.location.pathname,
-    window.location.hash
+    window.location.pathname
 );
 let breadcrumbItems;
 
@@ -47,34 +57,7 @@ switch (Component) {
         breadcrumbItems = getBreadcrumbs('sections', props.chapter);
         break;
     case Chapter:
-        breadcrumbItems = getBreadcrumbs('chapter', props.chapter, props.hash);
-
-        // window.addEventListener('hashchange', () => window.location.reload());
-
-        window.addEventListener('hashchange', href => {
-            breadcrumbItems = getBreadcrumbs(
-                'chapter',
-                props.chapter,
-                href.newURL.split('#')[1]
-            );
-
-            root.render(
-                <App
-                    view={root}
-                    currentAppType={currentAppType}
-                    headerPinned={headerPinned}
-                    breadcrumbs={breadcrumbItems}>
-                    <Component {...props} />
-                </App>
-            );
-        });
-        // const currentHash = window.location.hash;
-        // window.location.hash = currentHash + '_temp';
-        // window.location.hash = currentHash;
-
-        // const currentHash = window.location.hash;
-        // history.replaceState(null, '', currentHash + '_temp');
-        // history.replaceState(null, '', currentHash);
+        breadcrumbItems = getBreadcrumbs('chapter', props.chapter, window.location.hash);
         break;
     default:
         breadcrumbItems = getBreadcrumbs();
@@ -90,15 +73,3 @@ root.render(
         <Component {...props} />
     </App>
 );
-
-if (BASE_PATH) {
-    // const links = document.querySelectorAll('a');
-
-    // links.forEach(link =>
-    //     link.href && !link.href.startsWith('http')
-    //         ? (link.href =
-    //               BASE_PATH + link.getAttribute('href').replace(/^\//, ''))
-    //         : ''
-    // );
-    console.log(BASE_PATH);
-}
