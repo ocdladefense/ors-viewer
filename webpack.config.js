@@ -72,7 +72,7 @@ module.exports = env => {
                     test: /\.(js|jsx)$/,
                     exclude: [
                         /node_modules\/(?!@ocdla\/global-components)/,
-                        /dev_modules\/(?!@ocdla\/global-components)/
+                        /dev_modules\/(?!@local\/global-components)/
                     ],
                     use: {
                         loader: 'babel-loader',
@@ -88,7 +88,7 @@ module.exports = env => {
                     test: /\.html$/i,
                     exclude: [
                         /node_modules\/(?!@ocdla\/global-components)/,
-                        /dev_modules\/(?!@ocdla\/global-components)/
+                        /dev_modules\/(?!@local\/global-components)/
                     ],
                     use: ['html-loader']
                 },
@@ -96,7 +96,7 @@ module.exports = env => {
                     test: /\.css$/i,
                     exclude: [
                         /node_modules\/(?!@ocdla\/global-components)/,
-                        /dev_modules\/(?!@ocdla\/global-components)/
+                        /dev_modules\/(?!@local\/global-components)/
                     ],
                     use: ['style-loader', 'css-loader', 'postcss-loader']
                 },
@@ -104,7 +104,7 @@ module.exports = env => {
                     test: /\.(svg|eot|ttf|woff|woff2)$/i,
                     exclude: [
                         /node_modules\/(?!@ocdla\/global-components)/,
-                        /dev_modules\/(?!@ocdla\/global-components)/
+                        /dev_modules\/(?!@local\/global-components)/
                     ],
                     type: 'asset/resource'
                 },
@@ -112,7 +112,7 @@ module.exports = env => {
                     test: /\.(png|jpg|gif)$/i,
                     exclude: [
                         /node_modules\/(?!@ocdla\/global-components)/,
-                        /dev_modules\/(?!@ocdla\/global-components)/
+                        /dev_modules\/(?!@local\/global-components)/
                     ],
                     type: 'asset/resource'
                 },
@@ -120,7 +120,7 @@ module.exports = env => {
                     test: /\.xml$/i,
                     exclude: [
                         /node_modules\/(?!@ocdla\/global-components)/,
-                        /dev_modules\/(?!@ocdla\/global-components)/
+                        /dev_modules\/(?!@local\/global-components)/
                     ],
                     type: 'asset/source'
                 }
